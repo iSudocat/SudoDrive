@@ -37,4 +37,3 @@ namespace Client.CefUtils.Scheme
 
     }
 }
-`
