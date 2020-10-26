@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Server.Exceptions;
+using Server.Services;
+using Server.Services.Implements;
 
 namespace Server.Controllers
 {
@@ -12,6 +10,17 @@ namespace Server.Controllers
     [Route("api/[controller]")]
     public class TestController : Controller
     {
+        private DataBaseService _databaseService;
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="databaseService">通过依赖注入获得数据库对象</param>
+        public TestController(IDatabaseService databaseService)
+        {
+            _databaseService = databaseService as DataBaseService;
+        }
+
         /// <summary>
         /// 一般方法测试
         /// </summary>

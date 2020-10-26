@@ -28,6 +28,7 @@ namespace Server
         {
             services.AddControllers();
 
+            // 配置 JWT
             services.Configure<TokenManagementModel>(Configuration.GetSection("tokenManagement"));
             var token = Configuration.GetSection("tokenManagement").Get<TokenManagementModel>();
 
@@ -56,9 +57,13 @@ namespace Server
                 options.Filters.Add<ApiResultFilter>();
             });
 
-            // 依赖注入
+            // 配置数据库
+            services.Configure<DatabaseManagementModel>(Configuration.GetSection("databaseManagementModel"));
+
+            // 容器注册
             services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IDatabaseService, DataBaseService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
