@@ -12,15 +12,12 @@ namespace Server.Middlewares
     {
         private readonly RequestDelegate _next;
 
-        private IDatabaseService _databaseService;
-
-        public AuthenticateWithHeader(RequestDelegate next, IDatabaseService databaseService)
+        public AuthenticateWithHeader(RequestDelegate next)
         {
             _next = next;
-            _databaseService = databaseService;
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext context, IDatabaseService databaseService)
         {
             string auth = context.Request.Headers["Authorization"];
 
@@ -58,7 +55,7 @@ namespace Server.Middlewares
                 }
 
                 // 获取到当前的登录用户
-                context.Items["actor"] = _databaseService.Users.Find(actor);
+                context.Items["actor"] = databaseService.Users.Find(actor);
 
             }
             else
