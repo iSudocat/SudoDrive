@@ -11,7 +11,7 @@ namespace Server.Models.Entities
     {
 
         [Key]
-        public uint GroupId { get; set; }
+        public uint Id { get; set; }
         [Required]
         public string GroupName { get; set; }
 

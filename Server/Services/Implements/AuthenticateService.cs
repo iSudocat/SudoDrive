@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Server.Models;
+using Server.Models.Entities;
 using Server.Models.VO;
 
 namespace Server.Services.Implements
@@ -26,11 +27,13 @@ namespace Server.Services.Implements
         public bool IsAuthenticated(LoginRequestModel requestModel, out string token)
         {
             token = string.Empty;
-            if (!_userService.IsValid(requestModel))
+            User loginUser;
+            if (!_userService.IsValid(requestModel, out loginUser))
                 return false;
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name,requestModel.Username)
+                new Claim(ClaimTypes.Name, "" + loginUser.Username),
+                new Claim(ClaimTypes.Actor, "" + loginUser.Id)
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagementModel.Secret));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

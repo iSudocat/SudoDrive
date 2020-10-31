@@ -10,7 +10,7 @@ namespace Server.Models.Entities
     public class File
     {
         [Key]
-        public uint FileId { get; set; }
+        public uint Id { get; set; }
 
         [Required]
         public string FileName { get; set; }
@@ -35,7 +35,7 @@ namespace Server.Models.Entities
         /// </summary>
         [Required]
         public uint UserId { get; set; }
-        [ForeignKey("UserId")]
+        [ForeignKey("GroupId")]
         public User User { get; set; }
 
         [Required]

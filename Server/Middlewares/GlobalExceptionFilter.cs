@@ -26,14 +26,15 @@ namespace Server.Middlewares
             {
                 var e = context.Exception as APIException;
                 status = e.Status;
+                data = e.ApiExceptionData ?? e.Data;
             }
             else
             {
                 status = 500;
+                data = context.Exception.Data;
             }
 
             message = context.Exception.Message;
-            data = context.Exception.Data;
 
             _logger.LogError(context.Exception, message, data);
 
