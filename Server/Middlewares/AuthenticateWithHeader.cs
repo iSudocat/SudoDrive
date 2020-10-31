@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Server.Exceptions;
+using Server.Services;
 
 namespace Server.Middlewares
 {
@@ -11,9 +12,12 @@ namespace Server.Middlewares
     {
         private readonly RequestDelegate _next;
 
-        public AuthenticateWithHeader(RequestDelegate next)
+        private IDatabaseService _databaseService;
+
+        public AuthenticateWithHeader(RequestDelegate next, IDatabaseService databaseService)
         {
             _next = next;
+            _databaseService = databaseService;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -54,7 +58,7 @@ namespace Server.Middlewares
                 }
 
                 // 获取到当前的登录用户
-                context.Items["actor"] = actor;
+                context.Items["actor"] = _databaseService.Users.Find(actor);
 
             }
 
