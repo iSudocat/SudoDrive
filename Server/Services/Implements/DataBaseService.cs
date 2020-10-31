@@ -22,7 +22,5 @@ namespace Server.Services.Implements
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupToUser> GroupsToUsersRelation { get; set; }
         public DbSet<GroupToPermission> GroupsToPermissionsRelation { get; set; }
-
-
     }
 }
