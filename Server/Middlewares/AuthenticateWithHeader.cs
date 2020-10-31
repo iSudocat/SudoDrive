@@ -61,6 +61,10 @@ namespace Server.Middlewares
                 context.Items["actor"] = _databaseService.Users.Find(actor);
 
             }
+            else
+            {
+                context.Items["actor"] = null;
+            }
 
             // Call the next delegate/middleware in the pipeline
             await _next(context);
