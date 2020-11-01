@@ -72,7 +72,7 @@ namespace Server
                     services.AddScoped<IDatabaseService, MySqlDataBaseService>();
                     break;
 
-                case "mairadb":
+                case "mariadb":
                 case "mysql":
                     services.AddScoped<IDatabaseService, PostgreSqlDataBaseService>();
                     break;

@@ -49,7 +49,7 @@ namespace Server.Middlewares
                         }
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     throw new InvalidArgumentException();
                 }
