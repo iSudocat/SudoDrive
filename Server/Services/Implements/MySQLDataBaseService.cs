@@ -5,11 +5,11 @@ using Server.Models.Entities;
 
 namespace Server.Services.Implements
 {
-    public class DataBaseService : DbContext, IDatabaseService
+    public class MySqlDataBaseService : DbContext, IDatabaseService
     {
         private DatabaseManagementModel _connectionInfo;
 
-        public DataBaseService(IOptions<DatabaseManagementModel> databaseManagementModel)
+        public MySqlDataBaseService(IOptions<DatabaseManagementModel> databaseManagementModel)
         {
             _connectionInfo = databaseManagementModel.Value;
         }

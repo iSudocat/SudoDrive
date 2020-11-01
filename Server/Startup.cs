@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Server.Exceptions;
 using Server.Middlewares;
 using Server.Models;
 using Server.Models.VO;
@@ -59,11 +60,26 @@ namespace Server
 
             // 配置数据库
             services.Configure<DatabaseManagementModel>(Configuration.GetSection("databaseManagementModel"));
+            var databaseConfig = Configuration.GetSection("databaseManagementModel").Get<DatabaseManagementModel>();
 
             // 容器注册
             services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IDatabaseService, DataBaseService>();
+            switch (databaseConfig.Type.ToLower())
+            {
+                case "postgresql":
+                case "pgsql":
+                    services.AddScoped<IDatabaseService, MySqlDataBaseService>();
+                    break;
+
+                case "mairadb":
+                case "mysql":
+                    services.AddScoped<IDatabaseService, PostgreSqlDataBaseService>();
+                    break;
+
+                default :
+                    throw new InvalidArgumentException();
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
