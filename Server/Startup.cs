@@ -58,8 +58,8 @@ namespace Server
             });
 
             // 配置数据库
-            services.Configure<DatabaseManagementModel>(Configuration.GetSection("databaseManagementModel"));
-            var databaseConfig = Configuration.GetSection("databaseManagementModel").Get<DatabaseManagementModel>();
+            services.Configure<DatabaseManagementModel>(Configuration.GetSection("database"));
+            var databaseConfig = Configuration.GetSection("database").Get<DatabaseManagementModel>();
 
             // 容器注册
             services.AddScoped<IAuthenticateService, AuthenticateService>();
