@@ -29,8 +29,8 @@ namespace Server
             services.AddControllers();
 
             // 配置 JWT
-            services.Configure<TokenManagementModel>(Configuration.GetSection("tokenManagement"));
-            var token = Configuration.GetSection("tokenManagement").Get<TokenManagementModel>();
+            services.Configure<TokenManagementModel>(Configuration.GetSection("Authentication"));
+            var token = Configuration.GetSection("Authentication").Get<TokenManagementModel>();
 
             services.AddAuthentication(x =>
             {
@@ -58,8 +58,8 @@ namespace Server
             });
 
             // 配置数据库
-            services.Configure<DatabaseManagementModel>(Configuration.GetSection("database"));
-            var databaseConfig = Configuration.GetSection("database").Get<DatabaseManagementModel>();
+            services.Configure<DatabaseManagementModel>(Configuration.GetSection("Database"));
+            var databaseConfig = Configuration.GetSection("Database").Get<DatabaseManagementModel>();
 
             // 容器注册
             services.AddScoped<IAuthenticateService, AuthenticateService>();

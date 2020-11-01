@@ -5,10 +5,10 @@ namespace Server.Models.VO
     public class DatabaseManagementModel
     {
 
-        [JsonProperty("type")]
+        [JsonProperty("Type")]
         public string Type { get; set; }
 
-        [JsonProperty("connectionInfo")]
+        [JsonProperty("ConnectionInformation")]
         public string ConnectionInfo { get; set; }
     }
 }
