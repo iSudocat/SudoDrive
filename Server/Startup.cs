@@ -8,7 +8,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Server.Exceptions;
 using Server.Middlewares;
-using Server.Models;
 using Server.Models.VO;
 using Server.Services;
 using Server.Services.Implements;
@@ -69,12 +68,12 @@ namespace Server
             {
                 case "postgresql":
                 case "pgsql":
-                    services.AddScoped<IDatabaseService, MySqlDataBaseService>();
+                    services.AddScoped<IDatabaseService, PostgreSqlDataBaseService>();
                     break;
 
                 case "mariadb":
                 case "mysql":
-                    services.AddScoped<IDatabaseService, PostgreSqlDataBaseService>();
+                    services.AddScoped<IDatabaseService, MySqlDataBaseService> ();
                     break;
 
                 default :
