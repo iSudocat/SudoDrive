@@ -28,8 +28,8 @@
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
     <h3>CEF Test</h3>
-    <input v-model="NumA" @change="updateSum"/>
-    <input v-model="NumB" @change="updateSum"/>
+    <input v-model="NumA" @input="updateSum"/>
+    <input v-model="NumB" @input="updateSum"/>
     <span>Add: {{ addSum }}</span>
   </div>
 </template>

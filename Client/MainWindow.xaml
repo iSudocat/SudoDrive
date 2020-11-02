@@ -4,8 +4,12 @@
         xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
 
 
-        Title="MainWindow" Height="550" Width="625">
+        Title="MainWindow" Height="550" Width="625" Closing="Window_Closing">
     <Grid>
-        <cefSharp:ChromiumWebBrowser x:Name="browser" Grid.Row="0"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="175*"/>
+            <ColumnDefinition Width="442*"/>
+        </Grid.ColumnDefinitions>
+        <cefSharp:ChromiumWebBrowser x:Name="browser" Grid.Row="0" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>
