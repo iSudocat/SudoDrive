@@ -34,7 +34,7 @@ namespace Client
             CosConfig.Region = "ap-chengdu";
             #endregion
 
-            fileListThread = new Thread(FileList.listTask);
+            fileListThread = new Thread(FileTask.run);
             fileListThread.Start();
             
 
