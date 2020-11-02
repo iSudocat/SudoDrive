@@ -26,6 +26,8 @@ namespace Server.Services.Implements
 
         public override int SaveChanges()
         {
+            var now = DateTime.Now;
+
             var newEntities = this.ChangeTracker.Entries()
                 .Where(
                     x => x.State == EntityState.Added &&
@@ -46,13 +48,13 @@ namespace Server.Services.Implements
             foreach (var newEntity in newEntities)
             {
                 if (newEntity == null) continue;
-                newEntity.CreatedAt = DateTime.Now;
+                newEntity.CreatedAt = now;
             }
 
             foreach (var modifiedEntity in modifiedEntities)
             {
                 if (modifiedEntity == null) continue;
-                modifiedEntity.UpdatedAt = DateTime.Now;
+                modifiedEntity.UpdatedAt = now;
             }
 
             return base.SaveChanges();

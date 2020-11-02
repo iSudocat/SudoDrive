@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Server.Models.Entities
 {
-    public class Group
+    public class Group : ICreateTimeStampedModel, IUpdateTimeStampedModel
     {
 
         [Key]
@@ -15,5 +15,8 @@ namespace Server.Models.Entities
         [Required]
         public string GroupName { get; set; }
 
+        public DateTime CreatedAt { get; set; }
+
+        public DateTime UpdatedAt { get; set; }
     }
 }
