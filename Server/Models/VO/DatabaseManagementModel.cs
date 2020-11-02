@@ -9,6 +9,6 @@ namespace Server.Models.VO
         public string Type { get; set; }
 
         [JsonProperty("ConnectionInformation")]
-        public string ConnectionInfo { get; set; }
+        public string ConnectionInformation { get; set; }
     }
 }

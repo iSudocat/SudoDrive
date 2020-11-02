@@ -15,7 +15,7 @@ namespace Server.Services.Implements
         }
         
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseNpgsql(_connectionInfo.ConnectionInfo);
+            => options.UseNpgsql(_connectionInfo.ConnectionInformation);
 
         public DbSet<File> Files { get; set; }
         public DbSet<User> Users { get; set; }
