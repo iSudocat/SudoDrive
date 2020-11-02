@@ -12,7 +12,7 @@
           <img style="width: 25%;" src="https://avatars3.githubusercontent.com/u/42528067?s=400&u=375133832a4d631e7a1be26aa764b0ff91565f7f&v=4"/>
         </div>
         <div class="title-container">
-          <h3 class="title">登录</h3>
+          <h3 class="title">登录到SudoDrive</h3>
         </div>
 
         <el-form-item prop="username">
@@ -55,7 +55,7 @@
           type="primary"
           style="width:100%;margin-bottom:30px;"
           @click.native.prevent="handleLogin"
-        >Login
+        >登录
         </el-button>
       </el-form>
   </div>
@@ -139,8 +139,8 @@ export default {
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
 $bg: #283443;
-$light_gray: #fff;
-$cursor: #fff;
+$light_gray: #000000;
+$cursor: #000000;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .login-container .el-input input {
@@ -185,27 +185,28 @@ $cursor: #fff;
 </style>
 
 <style lang="scss" scoped>
-$bg: #2d3a4b;
-$dark_gray: #889aa4;
-$light_gray: #eee;
-
-body * {
-  outline: 1px solid red;
-}
-
+$bg: #A3E7FC;
+$dark_gray: #444444;
+$light_gray: #444444;
+$form_color: #ffffff;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-color: $bg;
+  //background-color: $bg;
+  background-image: url("https://github.com/A-Salty-Fish/WindowHomework/blob/main/42528067.png?raw=true");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   overflow: hidden;
 
   .login-form {
+    opacity: 90%;
     position: relative;
     width: 520px;
     max-width: 100%;
     padding: 60px 35px 0;
     margin: 0 auto;
     overflow: hidden;
+    background-color: $form_color;
   }
 
   .tips {
