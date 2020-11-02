@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace Client.TencentCos
 {
-    public class File
+    /// <summary>
+    /// 任务队列的文件控制块
+    /// </summary>
+    public class FCB
     {
         /// <summary>
         /// 内部处理Key
@@ -17,7 +20,7 @@ namespace Client.TencentCos
         /// <summary>
         /// 操作类型 1：上传，2：下载，3：删除
         /// </summary>
-        public int Operation { get; set; }
+        public OperationType Operation { get; set; }
 
         /// <summary>
         /// 文件名
@@ -52,7 +55,7 @@ namespace Client.TencentCos
         /// <summary>
         /// 任务状态 0：未开始，1：进行中，2：请求暂停，3：已暂停，4：请求开始，5：请求停止
         /// </summary>
-        public int Status { get; set; }
+        public StatusType Status { get; set; }
 
 
     }

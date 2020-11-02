@@ -13,8 +13,8 @@ namespace Client.TencentCos
     public static class FileTask
     {
 
-        private static SortedList<long, File> waitingList = new SortedList<long, File>();
-        private static SortedList<long, File> runningList = new SortedList<long, File>();
+        private static SortedList<long, FCB> waitingList = new SortedList<long, FCB>();
+        private static SortedList<long, FCB> runningList = new SortedList<long, FCB>();
 
         private static long key = 0;
 
@@ -23,7 +23,7 @@ namespace Client.TencentCos
         private static Mutex waitinglistMutex = new Mutex();
         private static Mutex runninglistMutex = new Mutex();
 
-        public static void Add(File file)
+        public static void Add(FCB file)
         {
             waitinglistMutex.WaitOne();
             file.Key = key;
@@ -47,15 +47,15 @@ namespace Client.TencentCos
             runninglistMutex.ReleaseMutex();
         }
 
-        public static int GetStatus(long key)
+        public static StatusType GetStatus(long key)
         {
             runninglistMutex.WaitOne();
-            int status = runningList[key].Status;
+            var status = runningList[key].Status;
             runninglistMutex.ReleaseMutex();
             return status;
         }
 
-        public static void SetStatus(long key, int status)
+        public static void SetStatus(long key, StatusType status)
         {
             runninglistMutex.WaitOne();
             runningList[key].Status = status;
@@ -74,7 +74,7 @@ namespace Client.TencentCos
                 if (waitingList.Count != 0)
                 {
                     IList<long> waitingListkeys = waitingList.Keys;
-                    IList<File> waitingListValues = waitingList.Values;
+                    IList<FCB> waitingListValues = waitingList.Values;
 
                     int difference = runningLimit - runningList.Count;
                     for (int i = 0; i < difference; i--)
@@ -94,7 +94,7 @@ namespace Client.TencentCos
                 }
 
                 runninglistMutex.WaitOne();
-                foreach (File file in runningList.Values)
+                foreach (FCB file in runningList.Values)
                 {
                     switch (file.Status)
                     {
