@@ -29,7 +29,7 @@ namespace Server.Controllers
         {
             User user = new User();
             user.Username = registerRequestModel.Username;
-            user.Password = registerRequestModel.Password;
+            user.Password = BCrypt.Net.BCrypt.HashPassword(registerRequestModel.Password);
             _databaseService.Users.Add(user);
             _databaseService.SaveChanges();
             return "Succeed";
