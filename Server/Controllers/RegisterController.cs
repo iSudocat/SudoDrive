@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Server.Models.Entities;
+using Server.Models.VO;
 using Server.Services;
 using System;
 using System.Collections.Generic;
@@ -24,11 +25,11 @@ namespace Server.Controllers
         }
 
         [HttpPost]
-        public ActionResult<String> register(string username,string password)
+        public ActionResult<String> Register([FromBody] RegisterRequestModel registerRequestModel)
         {
             User user = new User();
-            user.Username = username;
-            user.Password = password;
+            user.Username = registerRequestModel.Username;
+            user.Password = registerRequestModel.Password;
             _databaseService.Users.Add(user);
             _databaseService.SaveChanges();
             return "Succeed";
