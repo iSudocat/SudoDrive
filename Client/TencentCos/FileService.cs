@@ -17,10 +17,10 @@ namespace Client.TencentCos
 {
     public class FileService
     {
-        private File file;
+        private FCB file;
         private CosXml cosXml;
 
-        public FileService(File file, CosXml cosXml)
+        public FileService(FCB file, CosXml cosXml)
         {
             this.file = file;
             this.cosXml = cosXml;
@@ -35,7 +35,7 @@ namespace Client.TencentCos
 
         public void GetFileList()
         {
-
+            //TODO 从后端获取文件列表
         }
 
         public void Upload()
