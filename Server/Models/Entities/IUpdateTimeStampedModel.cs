@@ -2,9 +2,8 @@ using System;
 
 namespace Server.Models.Entities
 {
-    public interface ITimeStampedModel
+    public interface IUpdateTimeStampedModel
     {
-        DateTime CreatedAt { get; set; }
         DateTime UpdatedAt { get; set; }
     }
 }

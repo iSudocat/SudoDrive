@@ -30,24 +30,23 @@ namespace Server.Services.Implements
                 .Where(
                     x => x.State == EntityState.Added &&
                          x.Entity != null &&
-                         x.Entity as ITimeStampedModel != null
+                         x.Entity as ICreateTimeStampedModel != null
                 )
-                .Select(x => x.Entity as ITimeStampedModel);
+                .Select(x => x.Entity as ICreateTimeStampedModel);
 
             var modifiedEntities = this.ChangeTracker.Entries()
                 .Where(
-                    x => x.State == EntityState.Modified &&
+                    x => (x.State == EntityState.Modified || x.State == EntityState.Added) &&
                          x.Entity != null &&
-                         x.Entity as ITimeStampedModel != null
+                         x.Entity as IUpdateTimeStampedModel != null
                 )
-                .Select(x => x.Entity as ITimeStampedModel);
+                .Select(x => x.Entity as IUpdateTimeStampedModel);
 
 
             foreach (var newEntity in newEntities)
             {
                 if (newEntity == null) continue;
                 newEntity.CreatedAt = DateTime.Now;
-                newEntity.UpdatedAt = DateTime.Now;
             }
 
             foreach (var modifiedEntity in modifiedEntities)
