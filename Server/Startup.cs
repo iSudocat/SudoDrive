@@ -62,7 +62,7 @@ namespace Server
             services.Configure<DatabaseManagementModel>(Configuration.GetSection("Database"));
             var databaseConfig = Configuration.GetSection("Database").Get<DatabaseManagementModel>();
 
-            // 配置数据库
+            // 配置腾讯云 Cos
             services.Configure<TencentCosManagementModel>(Configuration.GetSection("TencentCos"));
 
             // 容器注册
