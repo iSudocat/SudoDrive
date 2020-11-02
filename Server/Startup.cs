@@ -61,6 +61,9 @@ namespace Server
             services.Configure<DatabaseManagementModel>(Configuration.GetSection("Database"));
             var databaseConfig = Configuration.GetSection("Database").Get<DatabaseManagementModel>();
 
+            // 配置数据库
+            services.Configure<TencentCosManagementModel>(Configuration.GetSection("TencentCos"));
+
             // 容器注册
             services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddScoped<IUserService, UserService>();
