@@ -30,7 +30,12 @@ namespace Client.TencentCos
         {
             Thread.Sleep(3000);
             Console.WriteLine(file.FileName);
-            FileList.Remove(file.Key);
+            FileTask.Remove(file.Key);
+        }
+
+        public void GetFileList()
+        {
+
         }
 
         public void Upload()
@@ -52,20 +57,20 @@ namespace Client.TencentCos
 
             uploadTask.progressCallback = delegate (long completed, long total)
             {
-                FileList.SetProgress(file.Key, completed, total);
+                FileTask.SetProgress(file.Key, completed, total);
                 Console.WriteLine(String.Format("progress = {0:##.##}%", completed * 100.0 / total));
-                switch (FileList.GetStatus(file.Key))
+                switch (FileTask.GetStatus(file.Key))
                 {
                     case StatusType.RequestPause:
                         {
                             uploadTask.Pause();
-                            FileList.SetStatus(file.Key, StatusType.Paused);
+                            FileTask.SetStatus(file.Key, StatusType.Paused);
                             break;
                         }
                     case StatusType.RequestRusume:
                         {
                             uploadTask.Resume();
-                            FileList.SetStatus(file.Key, StatusType.Running);
+                            FileTask.SetStatus(file.Key, StatusType.Running);
                             break;
                         }
                     default:
@@ -78,7 +83,7 @@ namespace Client.TencentCos
                 COSXMLUploadTask.UploadTaskResult result = cosResult as COSXMLUploadTask.UploadTaskResult;
                 Console.WriteLine(result.GetResultInfo());
                 string eTag = result.eTag;
-                FileList.Remove(file.Key);
+                FileTask.Remove(file.Key);
             };
             uploadTask.failCallback = delegate (CosClientException clientEx, CosServerException serverEx)
             {
@@ -112,21 +117,21 @@ namespace Client.TencentCos
 
             downloadTask.progressCallback = delegate (long completed, long total)
             {
-                FileList.SetProgress(file.Key, completed, total);
+                FileTask.SetProgress(file.Key, completed, total);
                 Console.WriteLine(String.Format("progress = {0:##.##}%", completed * 100.0 / total));
 
-                switch (FileList.GetStatus(file.Key))
+                switch (FileTask.GetStatus(file.Key))
                 {
                     case StatusType.RequestPause:
                         {
                             downloadTask.Pause();
-                            FileList.SetStatus(file.Key, StatusType.Paused);
+                            FileTask.SetStatus(file.Key, StatusType.Paused);
                             break;
                         }
                     case StatusType.RequestRusume:
                         {
                             downloadTask.Resume();
-                            FileList.SetStatus(file.Key, StatusType.Running);
+                            FileTask.SetStatus(file.Key, StatusType.Running);
                             break;
                         }
                     default:
@@ -138,7 +143,7 @@ namespace Client.TencentCos
                 COSXMLDownloadTask.DownloadTaskResult result = cosResult as COSXMLDownloadTask.DownloadTaskResult;
                 Console.WriteLine(result.GetResultInfo());
                 string eTag = result.eTag;
-                FileList.Remove(file.Key);
+                FileTask.Remove(file.Key);
             };
             downloadTask.failCallback = delegate (CosClientException clientEx, CosServerException serverEx)
             {

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Client.TencentCos
 {
-    public static class FileList
+    public static class FileTask
     {
 
         private static SortedList<long, File> waitingList = new SortedList<long, File>();
@@ -62,7 +62,7 @@ namespace Client.TencentCos
             runninglistMutex.ReleaseMutex();
         }
 
-        public static void listTask()
+        public static void run()
         {
             while (true)
             {

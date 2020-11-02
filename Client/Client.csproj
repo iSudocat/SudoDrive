@@ -92,7 +92,7 @@
     <Compile Include="TencentCos\CosConfig.cs" />
     <Compile Include="TencentCos\CosService.cs" />
     <Compile Include="TencentCos\File.cs" />
-    <Compile Include="TencentCos\FileList.cs" />
+    <Compile Include="TencentCos\FileTask.cs" />
     <Compile Include="TencentCos\FileService.cs" />
     <Compile Include="TencentCos\OperationType.cs" />
     <Compile Include="TencentCos\StatusType.cs" />
