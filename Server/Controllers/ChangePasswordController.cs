@@ -20,12 +20,11 @@ namespace Server.Controllers
         {
             _databaseService = databaseService;
         }
-        
+
         /// <summary>
         /// 修改密码
         /// </summary>
-        /// <param name="oldPassword"></param>
-        /// <param name="newPassword"></param>
+        /// <param name="changePasswordRequestModel"></param>
         /// <returns></returns>
         [HttpPut]
         public ActionResult ChangePassword(ChangePasswordRequestModel changePasswordRequestModel)

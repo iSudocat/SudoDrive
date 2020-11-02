@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Server.Exceptions;
 using Server.Models;
 using Server.Models.DTO;
 using Server.Models.VO;
@@ -28,7 +29,7 @@ namespace Server.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid Request");
+                throw new AuthenticateFailedException("Password or Username is wrong.");
             }
 
             string token;
@@ -37,7 +38,7 @@ namespace Server.Controllers
                 return Ok(new LoginResultModel(requestModel.Username, token));
             }
 
-            return BadRequest("Invalid Request");
+            throw new UnexpectedException();
 
         }
     }
