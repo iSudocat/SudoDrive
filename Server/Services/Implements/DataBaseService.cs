@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Server.Models.VO;
@@ -20,6 +22,41 @@ namespace Server.Services.Implements
 
             modelBuilder.Entity<GroupToUser>()
                 .HasKey(c => new { c.UserId, c.GroupId });
+        }
+
+        public override int SaveChanges()
+        {
+            var newEntities = this.ChangeTracker.Entries()
+                .Where(
+                    x => x.State == EntityState.Added &&
+                         x.Entity != null &&
+                         x.Entity as ITimeStampedModel != null
+                )
+                .Select(x => x.Entity as ITimeStampedModel);
+
+            var modifiedEntities = this.ChangeTracker.Entries()
+                .Where(
+                    x => x.State == EntityState.Modified &&
+                         x.Entity != null &&
+                         x.Entity as ITimeStampedModel != null
+                )
+                .Select(x => x.Entity as ITimeStampedModel);
+
+
+            foreach (var newEntity in newEntities)
+            {
+                if (newEntity == null) continue;
+                newEntity.CreatedAt = DateTime.Now;
+                newEntity.UpdatedAt = DateTime.Now;
+            }
+
+            foreach (var modifiedEntity in modifiedEntities)
+            {
+                if (modifiedEntity == null) continue;
+                modifiedEntity.UpdatedAt = DateTime.Now;
+            }
+
+            return base.SaveChanges();
         }
 
     }
