@@ -66,6 +66,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="COSXML, Version=5.4.14.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tencent.QCloud.Cos.Sdk.5.4.14\lib\netstandard2.0\COSXML.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -86,6 +89,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="TencentCos\CosConfig.cs" />
+    <Compile Include="TencentCos\CosService.cs" />
+    <Compile Include="TencentCos\File.cs" />
+    <Compile Include="TencentCos\FileList.cs" />
+    <Compile Include="TencentCos\FileService.cs" />
+    <Compile Include="TencentCos\OperationType.cs" />
+    <Compile Include="TencentCos\StatusType.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

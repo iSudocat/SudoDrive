@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +17,7 @@ using CefSharp;
 using CefSharp.Wpf;
 using Client.CefUtils.Function;
 using Client.CefUtils.Scheme;
+using Client.TencentCos;
 
 namespace Client
 {
@@ -24,8 +26,17 @@ namespace Client
     /// </summary>
     public partial class MainWindow : Window
     {
+        Thread fileListThread;
         public MainWindow()
         {
+            #region 临时测试用
+            CosConfig.Bucket = "sudodrive-1251910132";
+            CosConfig.Region = "ap-chengdu";
+            #endregion
+
+            fileListThread = new Thread(FileList.listTask);
+            fileListThread.Start();
+            
 
 #if DEBUG
             var settings = new CefSettings()
@@ -73,6 +84,11 @@ namespace Client
             browser.Address = "sudodrive://index.html";
 #endif
 
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            fileListThread.Abort();
         }
     }
 }
