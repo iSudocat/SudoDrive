@@ -11,12 +11,10 @@ namespace Server.Models.Entities
     {
 
         [Key]
-        [Column(Order = 1)]
-        public uint GroupId { get; set; }
+        public long GroupId { get; set; }
 
         [Key]
-        [Column(Order =2)]
-        public uint UserId { get; set; }
+        public long UserId { get; set; }
 
 
     }

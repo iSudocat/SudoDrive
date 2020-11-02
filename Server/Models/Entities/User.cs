@@ -10,7 +10,7 @@ namespace Server.Models.Entities
     public class User
     {
         [Key]
-        public uint Id { get; set; }
+        public long Id { get; set; }
         [Required]
         public string Username { get; set; }
         [Required]

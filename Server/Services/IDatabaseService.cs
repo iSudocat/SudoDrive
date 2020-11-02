@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Server.Models.Entities;
 
 namespace Server.Services
@@ -11,5 +12,6 @@ namespace Server.Services
         public DbSet<GroupToUser> GroupsToUsersRelation { get; set; }
         public DbSet<GroupToPermission> GroupsToPermissionsRelation { get; set; }
         public int SaveChanges();
+        public DatabaseFacade Database { get; }
     }
 }

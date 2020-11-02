@@ -10,11 +10,9 @@ namespace Server.Models.Entities
     public class GroupToPermission
     {
         [Key]
-        [Column(Order = 1)]
-        public uint GroupId { get; set; }
+        public long GroupId { get; set; }
 
         [Key]
-        [Column(Order = 2)]
         public string Permission { get; set; }
     }
 }
