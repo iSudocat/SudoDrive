@@ -1,10 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Server.Models.Entities;
 using Server.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Server.Exceptions;
 
 namespace Server.Controllers
 {
@@ -23,20 +20,27 @@ namespace Server.Controllers
             _databaseService = databaseService;
         }
         
-        //PUT: api/changepassword
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="oldPassword"></param>
+        /// <param name="newPassword"></param>
+        /// <returns></returns>
         [HttpPut]
-        public ActionResult changePassword(string oldPassword,string newPassword)
+        public ActionResult ChangePassword(string oldPassword,string newPassword)
         {
             var user= HttpContext.Items["actor"] as User;
             if (BCrypt.Net.BCrypt.Verify(oldPassword, user.Password))
             {
-                user.Password = newPassword;
+                var user_db = _databaseService.Users.Find(user.Id);
+                user_db.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
+                _databaseService.SaveChanges();
             }
             else
             {
-                return BadRequest("the oldpassword is not correct!");
+                throw new AuthenticateFailedException("The old password is not correct!");
             }
-            return NoContent();
+            return Ok();
         }
     }
 }
