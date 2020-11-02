@@ -17,7 +17,7 @@ namespace Server.Middlewares
             var status = 0;
             try
             {
-                status = (int) contextItem["status"];
+                status = (int?)contextItem["status"] ?? 0 ;
             }
             catch (KeyNotFoundException)
             {

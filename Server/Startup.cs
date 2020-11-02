@@ -74,13 +74,13 @@ namespace Server
             {
                 case "postgresql":
                 case "pgsql":
-                    services.AddScoped<IDatabaseService, PostgreSqlDataBaseService>();
+                    services.AddDbContext<IDatabaseService, PostgreSqlDataBaseService>();
                     databaseService = new PostgreSqlDataBaseService(databaseConfig);
                     break;
 
                 case "mariadb":
                 case "mysql":
-                    services.AddScoped<IDatabaseService, MySqlDataBaseService> ();
+                    services.AddDbContext<IDatabaseService, MySqlDataBaseService> ();
                     databaseService = new MySqlDataBaseService(databaseConfig);
                     break;
 
