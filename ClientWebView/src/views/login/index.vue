@@ -1,7 +1,5 @@
 <template>
   <div class="login-container">
-    <el-header />
-    <el-main>
       <el-form
         ref="loginForm"
         :model="loginForm"
@@ -60,8 +58,6 @@
         >Login
         </el-button>
       </el-form>
-    </el-main>
-    <el-footer />
   </div>
 </template>
 
@@ -154,6 +150,9 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   .el-input {
     display: inline-block;
     height: 47px;
