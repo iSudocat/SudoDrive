@@ -4,12 +4,10 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Server.Exceptions;
 using Server.Models.Entities;
 
-namespace Server.Services.Implements
+namespace Server.Middlewares
 {
-    [AttributeUsage(AttributeTargets.Class |
-                    AttributeTargets.Method
-        , AllowMultiple = true
-        , Inherited = true)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method
+        ,AllowMultiple = true, Inherited = true)]
     public class NeedPermissionAttribute : AuthorizeAttribute, IAuthorizationFilter
     {
         private string[] _permission;

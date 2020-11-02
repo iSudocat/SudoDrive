@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Server.Exceptions;
+using Server.Middlewares;
 using Server.Services;
 using Server.Services.Implements;
 
