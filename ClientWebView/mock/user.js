@@ -11,13 +11,13 @@ const tokens = {
 const users = {
   'admin-token': {
     roles: ['admin'],
-    introduction: 'I am a super administrator',
-    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+    introduction: 'I am an administrator',
+    avatar: 'https://avatars3.githubusercontent.com/u/42528067?s=400&u=375133832a4d631e7a1be26aa764b0ff91565f7f&v=4',
     name: 'Super Admin'
   },
   'editor-token': {
     roles: ['editor'],
-    introduction: 'I am an editor',
+    introduction: 'I am a user',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: 'Normal Editor'
   }
