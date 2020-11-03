@@ -103,6 +103,8 @@ namespace Server
 
             // app.UseHttpsRedirection();
 
+            app.UseMiddleware<AuthenticateFailed>();
+
             app.UseAuthentication();
 
             app.UseRouting();

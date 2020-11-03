@@ -7,7 +7,7 @@ namespace Server.Exceptions
 {
     public class UnauthenticatedException : APIException
     {
-        public UnauthenticatedException(object data = null) : base(-1, "Not logined.", data)
+        public UnauthenticatedException(object data = null) : base(-1, "Not logged in.", data)
         {
         }
     }
