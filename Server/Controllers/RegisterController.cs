@@ -34,9 +34,9 @@ namespace Server.Controllers
         {
             User user = new User();
             user.Username = registerRequestModel.Username;
-            if (_databaseService.Users.Find(user.Username)==null)
+            if (_databaseService.Users.Where(t => t.Username == user.Username)==null)
             {
-                throw new InvalidArgumentException("the username exsits already!");
+                throw new RegisterFailedException("the username exsits already!");
             }
             user.Password = BCrypt.Net.BCrypt.HashPassword(registerRequestModel.Password);
             _databaseService.Users.Add(user);
