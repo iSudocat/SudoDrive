@@ -132,11 +132,11 @@
       <el-pagination
         :current-page="currentPage"
         :page-sizes="[5,6,7,8,9,10,11,12]"
-        @size-change="handleSizeChange"
         :page-size="pageSize"
         :pager-count="pageCount"
         layout="total, sizes, pager"
         :total="tableData.length"
+        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       />
     </div>
