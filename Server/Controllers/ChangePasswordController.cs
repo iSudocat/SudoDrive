@@ -2,12 +2,14 @@ using Microsoft.AspNetCore.Mvc;
 using Server.Models.Entities;
 using Server.Services;
 using Server.Exceptions;
+using Server.Middlewares;
 using Server.Models.VO;
 
 namespace Server.Controllers
 {
     [Route("api/changepassword")]
     [ApiController]
+    [NeedPermission("user.profile.changepassword")]
     public class ChangePasswordController: Controller
     {
         private IDatabaseService _databaseService;

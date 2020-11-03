@@ -16,7 +16,7 @@ namespace Server.Models.Entities
         [Required]
         public string Password { get; set; }
 
-        public IList<GroupToUser> GroupToUser { get; set; }
+        public ICollection<GroupToUser> GroupToUser { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
@@ -29,14 +29,13 @@ namespace Server.Models.Entities
         /// <returns></returns>
         public bool? HasPermission(string[] permission)
         {
-            var groupIds = this.GroupToUser;
-            var groups= groupIds.Select(groupToUser => groupToUser.Group);
-
+            var groupToUser = this.GroupToUser;
+           
             var ret = false;
 
-            foreach (var group in groups)
+            foreach (var group in groupToUser)
             {
-                var result = group.HasPermission(permission);
+                var result = group.Group.HasPermission(permission);
                 if (result == false) return false;
                 if (result == true) ret = true;
             }

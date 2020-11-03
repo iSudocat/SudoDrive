@@ -31,7 +31,7 @@ namespace Server.Controllers
         {
             if (!ModelState.IsValid)
             {
-                throw new AuthenticateFailedException("Password or Username is wrong.");
+                throw new InvalidArgumentException();
             }
 
             string token;
@@ -39,8 +39,8 @@ namespace Server.Controllers
             {
                 return Ok(new LoginResultModel(requestModel.Username, token));
             }
-
-            throw new UnexpectedException();
+            
+            throw new AuthenticateFailedException("Password or Username is wrong.");
 
         }
     }

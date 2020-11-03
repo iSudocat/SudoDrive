@@ -23,13 +23,13 @@ namespace Server.Models.Entities
         [Required]
         public string GroupName { get; set; }
 
-        public IList<GroupToUser> GroupToUser { get; set; }
+        public ICollection<GroupToUser> GroupToUser { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
 
-        public IList<GroupToPermission> GroupToPermission { get; set; }
+        public ICollection<GroupToPermission> GroupToPermission { get; set; }
 
         /// <summary>
         /// 判断这个用户组是否有某个权限
@@ -45,10 +45,10 @@ namespace Server.Models.Entities
             hold.Sort();
 
             // 消极权限
-            if (hold.Find(s => s == "-*").Length > 0) return false;
+            if (hold.Find(s => s == "-*")?.Length > 0) return false;
 
             // 积极权限
-            if (hold.Find(s => s == "*").Length > 0) return true;
+            if (hold.Find(s => s == "*")?.Length > 0) return true;
 
             // t 表示当前检索到哪里
             // 如 permission = "a.b.c"
@@ -63,10 +63,10 @@ namespace Server.Models.Entities
                 var p = t + "*";
 
                 // 消极权限
-                if (hold.Find(s => s == "-" + p).Length > 0) return false;
+                if (hold.Find(s => s == "-" + p)?.Length > 0) return false;
 
                 // 积极权限
-                if (hold.Find(s => s == p).Length > 0) return true;
+                if (hold.Find(s => s == p)?.Length > 0) return true;
 
                 t += ".";
             }
@@ -74,10 +74,10 @@ namespace Server.Models.Entities
             t += permission[^1];
 
             // 消极权限
-            if (hold.Find(s => s == "-" + t).Length > 0) return false;
+            if (hold.Find(s => s == "-" + t)?.Length > 0) return false;
 
             // 积极权限
-            if (hold.Find(s => s == t).Length > 0) return true;
+            if (hold.Find(s => s == t)?.Length > 0) return true;
 
             return null;
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 using Server.Exceptions;
 using Server.Models.DTO;
 using Server.Models.Entities;
@@ -38,7 +39,9 @@ namespace Server.Middlewares
             var ret = false;
             if (user == null)
             {
-                var group = databaseService.Groups.Find(Group.GroupID.GUEST);
+                var group = databaseService.Groups
+                    .Include( s => s.GroupToPermission)
+                    .FirstOrDefault(s => s.Id == Group.GroupID.GUEST);
                 if (group == null)
                 {
                     this.SetAuthenticateFailedException(context);
@@ -60,6 +63,13 @@ namespace Server.Middlewares
             {
                 foreach (var s in _permission)
                 {
+                    long userId = user.Id;
+                    user = databaseService.Users
+                        .Include(s => s.GroupToUser)
+                        .ThenInclude(s => s.Group)
+                        .ThenInclude(s => s.GroupToPermission)
+                        .FirstOrDefault(s => s.Id == userId);
+
                     var result = user.HasPermission(s);
                     if (result == false)
                     {

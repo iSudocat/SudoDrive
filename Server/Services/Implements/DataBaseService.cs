@@ -63,7 +63,10 @@ namespace Server.Services.Implements
 
             modelBuilder.Entity<GroupToPermission>()
                 .HasData(
-                    new {GroupId = 1L, Permission = "*"}
+                    new {GroupId = Group.GroupID.ADMIN, Permission = "*"},
+                    new {GroupId = Group.GroupID.DEFAULT, Permission = "user.profile.changepassword" },
+                    new {GroupId = Group.GroupID.GUEST, Permission = "user.login" },
+                    new {GroupId = Group.GroupID.GUEST, Permission = "user.register" }
                 );
         }
 
