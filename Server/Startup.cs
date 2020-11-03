@@ -88,6 +88,10 @@ namespace Server
                     throw new InvalidArgumentException();
             }
 
+            // 注册 DAO
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IGroupRepository, GroupRepository>();
+
             // 数据库初始化
             databaseService.Database.Migrate();
 

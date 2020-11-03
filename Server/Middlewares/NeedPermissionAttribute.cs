@@ -32,16 +32,12 @@ namespace Server.Middlewares
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             var user = context.HttpContext.Items["actor"] as User;
-            var databaseService = context.HttpContext.RequestServices.GetService(typeof(IDatabaseService)) as IDatabaseService;
-
-            if (databaseService == null) throw new UnexpectedException();
 
             var ret = false;
             if (user == null)
             {
-                var group = databaseService.Groups
-                    .Include( s => s.GroupToPermission)
-                    .FirstOrDefault(s => s.Id == Group.GroupID.GUEST);
+                var groupRepo = context.HttpContext.RequestServices.GetService(typeof(IGroupRepository)) as IGroupRepository;
+                var group = groupRepo.FindByIdWithPermissions(Group.GroupID.GUEST);
                 if (group == null)
                 {
                     this.SetAuthenticateFailedException(context);
@@ -63,12 +59,9 @@ namespace Server.Middlewares
             {
                 foreach (var s in _permission)
                 {
+                    var userRepo = context.HttpContext.RequestServices.GetService(typeof(IUserRepository)) as IUserRepository;
                     long userId = user.Id;
-                    user = databaseService.Users
-                        .Include(s => s.GroupToUser)
-                        .ThenInclude(s => s.Group)
-                        .ThenInclude(s => s.GroupToPermission)
-                        .FirstOrDefault(s => s.Id == userId);
+                    user = userRepo.FindByIdWithGroupsAndPermissions(user.Id);
 
                     var result = user.HasPermission(s);
                     if (result == false)
