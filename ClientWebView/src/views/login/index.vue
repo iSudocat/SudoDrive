@@ -199,10 +199,13 @@ $form_color: #ffffff;
   min-height: 100%;
   width: 100%;
   //background-color: $bg;
+  //background-color: #ccc;
   background-image: url("https://github.com/A-Salty-Fish/WindowHomework/blob/main/42528067.png?raw=true");
+  background-blend-mode: screen;
   backdrop-filter: blur(12px);
   background-repeat: no-repeat;
-  background-size: 100% 100%;
+  background-position: center;
+  background-size: cover;
   overflow: hidden;
 
   .login-form {
