@@ -7,10 +7,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Server.Models.Entities
 {
-    public class File
+    public class File : ICreateTimeStampedModel, IUpdateTimeStampedModel
     {
         [Key]
-        public uint Id { get; set; }
+        public long Id { get; set; }
 
         [Required]
         public string FileName { get; set; }
@@ -19,29 +19,21 @@ namespace Server.Models.Entities
         public string FileType { get; set; }
 
         [Required]
-        public string FilePath{ get; set; }
-
-        [Required]
-        public DateTime LastUploadTime { get; set; }
-
-        [Required]
-        public DateTime LastUpdateTime { get; set; }
-
-        [Required]
-        public DateTime LastAccessTime { get; set; }
+        public string FilePath { get; set; }
 
         /// <summary>
         /// 最后上传用户的UserId
         /// </summary>
         [Required]
         public uint UserId { get; set; }
-        [ForeignKey("GroupId")]
-        public User User { get; set; }
+
+        [ForeignKey("GroupId")] public User User { get; set; }
 
         [Required]
         public string PermissionName { get; set; }
 
+        public DateTime CreatedAt { get; set; }
 
-
+        public DateTime UpdatedAt { get; set; }
     }
 }

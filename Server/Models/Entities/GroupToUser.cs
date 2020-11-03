@@ -9,15 +9,14 @@ namespace Server.Models.Entities
 {
     public class GroupToUser
     {
+        [Key]
+        public long GroupId { get; set; }
+
+        public Group Group { get; set; }
 
         [Key]
-        [Column(Order = 1)]
-        public uint GroupId { get; set; }
+        public long UserId { get; set; }
 
-        [Key]
-        [Column(Order =2)]
-        public uint UserId { get; set; }
-
-
+        public User User { get; set; }
     }
 }

@@ -29,8 +29,7 @@ namespace Server.Services.Implements
         public bool IsValid(LoginRequestModel req, out User loginUser)
         {
             // 从数据库中获取用户信息
-            loginUser = _databaseService.Users.Where(s => s.Username == req.Username).FirstOrDefault(null);
-
+            loginUser = _databaseService.Users.FirstOrDefault(s => s.Username == req.Username);
 
             // 若该用户不存在
             if (loginUser == null)

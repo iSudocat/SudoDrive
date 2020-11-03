@@ -6,12 +6,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Server.Middlewares;
 
 namespace Server.Controllers
 {
     [Route("api/register")]
     [ApiController]
-    public class RegisterController
+    [AllowAnonymous]
+    [NeedPermission("user.register")]
+    public class RegisterController : Controller
     {
         private IDatabaseService _databaseService;
 
@@ -25,14 +29,14 @@ namespace Server.Controllers
         }
 
         [HttpPost]
-        public ActionResult<String> Register([FromBody] RegisterRequestModel registerRequestModel)
+        public ActionResult<string> Register([FromBody] RegisterRequestModel registerRequestModel)
         {
             User user = new User();
             user.Username = registerRequestModel.Username;
             user.Password = BCrypt.Net.BCrypt.HashPassword(registerRequestModel.Password);
             _databaseService.Users.Add(user);
             _databaseService.SaveChanges();
-            return "Succeed";
+            return Ok();
         }
 
     }

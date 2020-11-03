@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Server.Exceptions;
+using Server.Middlewares;
 using Server.Models;
 using Server.Models.DTO;
 using Server.Models.VO;
@@ -14,6 +16,8 @@ namespace Server.Controllers
 {
     [Route("api/login")]
     [ApiController]
+    [AllowAnonymous]
+    [NeedPermission("user.login")]
     public class LoginController : Controller
     {
         private readonly IAuthenticateService _authService;
@@ -22,13 +26,12 @@ namespace Server.Controllers
             this._authService = authService;
         }
 
-        [AllowAnonymous]
         [HttpPost]
         public ActionResult Login([FromBody] LoginRequestModel requestModel)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid Request");
+                throw new InvalidArgumentException();
             }
 
             string token;
@@ -36,8 +39,8 @@ namespace Server.Controllers
             {
                 return Ok(new LoginResultModel(requestModel.Username, token));
             }
-
-            return BadRequest("Invalid Request");
+            
+            throw new AuthenticateFailedException("Password or Username is wrong.");
 
         }
     }

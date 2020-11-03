@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -61,27 +62,35 @@ namespace Server
             services.Configure<DatabaseManagementModel>(Configuration.GetSection("Database"));
             var databaseConfig = Configuration.GetSection("Database").Get<DatabaseManagementModel>();
 
-            // 配置数据库
+            // 配置腾讯云 Cos
             services.Configure<TencentCosManagementModel>(Configuration.GetSection("TencentCos"));
 
             // 容器注册
             services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddScoped<IUserService, UserService>();
+
+            IDatabaseService databaseService = null;
             switch (databaseConfig.Type.ToLower())
             {
                 case "postgresql":
                 case "pgsql":
-                    services.AddScoped<IDatabaseService, PostgreSqlDataBaseService>();
+                    services.AddDbContext<IDatabaseService, PostgreSqlDataBaseService>();
+                    databaseService = new PostgreSqlDataBaseService(databaseConfig);
                     break;
 
                 case "mariadb":
                 case "mysql":
-                    services.AddScoped<IDatabaseService, MySqlDataBaseService> ();
+                    services.AddDbContext<IDatabaseService, MySqlDataBaseService> ();
+                    databaseService = new MySqlDataBaseService(databaseConfig);
                     break;
 
                 default :
                     throw new InvalidArgumentException();
             }
+
+            // 数据库初始化
+            databaseService.Database.Migrate();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

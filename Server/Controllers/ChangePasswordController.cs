@@ -2,11 +2,14 @@ using Microsoft.AspNetCore.Mvc;
 using Server.Models.Entities;
 using Server.Services;
 using Server.Exceptions;
+using Server.Middlewares;
+using Server.Models.VO;
 
 namespace Server.Controllers
 {
     [Route("api/changepassword")]
     [ApiController]
+    [NeedPermission("user.profile.changepassword")]
     public class ChangePasswordController: Controller
     {
         private IDatabaseService _databaseService;
@@ -19,21 +22,20 @@ namespace Server.Controllers
         {
             _databaseService = databaseService;
         }
-        
+
         /// <summary>
         /// 修改密码
         /// </summary>
-        /// <param name="oldPassword"></param>
-        /// <param name="newPassword"></param>
+        /// <param name="changePasswordRequestModel"></param>
         /// <returns></returns>
         [HttpPut]
-        public ActionResult ChangePassword(string oldPassword,string newPassword)
+        public ActionResult ChangePassword(ChangePasswordRequestModel changePasswordRequestModel)
         {
             var user= HttpContext.Items["actor"] as User;
-            if (BCrypt.Net.BCrypt.Verify(oldPassword, user.Password))
+            if (BCrypt.Net.BCrypt.Verify(changePasswordRequestModel.OldPassword, user.Password))
             {
                 var user_db = _databaseService.Users.Find(user.Id);
-                user_db.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
+                user_db.Password = BCrypt.Net.BCrypt.HashPassword(changePasswordRequestModel.NewPassword);
                 _databaseService.SaveChanges();
             }
             else

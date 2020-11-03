@@ -1,26 +1,24 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Server.Models.VO;
-using Server.Models.Entities;
 
 namespace Server.Services.Implements
 {
-    public class PostgreSqlDataBaseService : DbContext, IDatabaseService
+    public class PostgreSqlDataBaseService : DataBaseService
     {
-        private DatabaseManagementModel _connectionInfo;
+        private readonly DatabaseManagementModel _connectionInfo;
 
         public PostgreSqlDataBaseService(IOptions<DatabaseManagementModel> databaseManagementModel)
         {
             _connectionInfo = databaseManagementModel.Value;
         }
-        
+
+        public PostgreSqlDataBaseService(DatabaseManagementModel databaseManagementModel)
+        {
+            _connectionInfo = databaseManagementModel;
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseNpgsql(_connectionInfo.ConnectionInformation);
-
-        public DbSet<File> Files { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Group> Groups { get; set; }
-        public DbSet<GroupToUser> GroupsToUsersRelation { get; set; }
-        public DbSet<GroupToPermission> GroupsToPermissionsRelation { get; set; }
     }
 }

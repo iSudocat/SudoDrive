@@ -1,26 +1,24 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Server.Models.VO;
-using Server.Models.Entities;
 
 namespace Server.Services.Implements
 {
-    public class MySqlDataBaseService : DbContext, IDatabaseService
+    public class MySqlDataBaseService : DataBaseService
     {
-        private DatabaseManagementModel _connectionInfo;
+        private readonly DatabaseManagementModel _connectionInfo;
 
         public MySqlDataBaseService(IOptions<DatabaseManagementModel> databaseManagementModel)
         {
             _connectionInfo = databaseManagementModel.Value;
         }
+
+        public MySqlDataBaseService(DatabaseManagementModel databaseManagementModel)
+        {
+            _connectionInfo = databaseManagementModel;
+        }
         
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseMySQL(_connectionInfo.ConnectionInformation);
-
-        public DbSet<File> Files { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Group> Groups { get; set; }
-        public DbSet<GroupToUser> GroupsToUsersRelation { get; set; }
-        public DbSet<GroupToPermission> GroupsToPermissionsRelation { get; set; }
     }
 }

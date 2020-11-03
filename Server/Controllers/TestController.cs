@@ -1,12 +1,15 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Server.Exceptions;
+using Server.Middlewares;
 using Server.Services;
+using Server.Services.Implements;
 
 namespace Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [NeedPermission("test")]
     public class TestController : Controller
     {
         private IDatabaseService _databaseService;
@@ -25,7 +28,6 @@ namespace Server.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Authorize]
         public IActionResult Index()
         {
             return Ok();
@@ -36,7 +38,6 @@ namespace Server.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpDelete]
-        [Authorize]
         public IActionResult Delete()
         {
             var e = new APIException(1, "test");
