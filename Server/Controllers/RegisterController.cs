@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Server.Middlewares;
+using Server.Exceptions;
 
 namespace Server.Controllers
 {
@@ -33,6 +34,10 @@ namespace Server.Controllers
         {
             User user = new User();
             user.Username = registerRequestModel.Username;
+            if (_databaseService.Users.Find(user.Username)==null)
+            {
+                throw new InvalidArgumentException("the username exsits already!");
+            }
             user.Password = BCrypt.Net.BCrypt.HashPassword(registerRequestModel.Password);
             _databaseService.Users.Add(user);
             _databaseService.SaveChanges();
