@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Server.Exceptions;
 using Server.Models.Entities;
+using Server.Services;
 
 namespace Server.Middlewares
 {
@@ -19,10 +22,18 @@ namespace Server.Middlewares
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             var user = context.HttpContext.Items["actor"] as User;
+            var databaseService = context.HttpContext.RequestServices.GetService(typeof(IDatabaseService)) as IDatabaseService;
+
+            List<Group> groups = new List<Group>();
 
             if (user == null)
             {
-                throw new UnauthenticatedException();
+                groups.Add(databaseService.Groups.Find(3));
+            }
+            else
+            {
+                var groupIds = user.GroupToUser;
+                groups.AddRange(groupIds.Select(groupToUser => groupToUser.Group));
             }
 
             // TODO 权限判定

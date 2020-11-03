@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Server.Middlewares;
 using Server.Models.DTO;
 using Server.Models.VO;
 using File = Server.Models.Entities.File;
@@ -12,6 +14,7 @@ namespace Server.Controllers
 {
     [Route("api/file/upload")]
     [ApiController]
+    [NeedPermission("file.upload")]
     public class UploadController : Controller
     {
         [HttpPost]

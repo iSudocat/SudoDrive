@@ -107,6 +107,8 @@ namespace Server.Migrations
 
                     b.HasKey("UserId", "GroupId");
 
+                    b.HasIndex("GroupId");
+
                     b.ToTable("GroupsToUsersRelation");
                 });
 
@@ -141,6 +143,30 @@ namespace Server.Migrations
                     b.HasOne("Server.Models.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("GroupId");
+                });
+
+            modelBuilder.Entity("Server.Models.Entities.GroupToPermission", b =>
+                {
+                    b.HasOne("Server.Models.Entities.Group", "Group")
+                        .WithMany("GroupToPermission")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Server.Models.Entities.GroupToUser", b =>
+                {
+                    b.HasOne("Server.Models.Entities.Group", "Group")
+                        .WithMany("GroupToUser")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Server.Models.Entities.User", "User")
+                        .WithMany("GroupToUser")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

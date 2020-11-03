@@ -20,8 +20,26 @@ namespace Server.Services.Implements
             modelBuilder.Entity<GroupToPermission>()
                 .HasKey(c => new { c.GroupId, c.Permission });
 
+            modelBuilder.Entity<GroupToPermission>()
+                .HasOne(s => s.Group)
+                .WithMany(s => s.GroupToPermission)
+                .HasForeignKey(sc => sc.GroupId);
+
+
             modelBuilder.Entity<GroupToUser>()
                 .HasKey(c => new { c.UserId, c.GroupId });
+
+            modelBuilder.Entity<GroupToUser>()
+                .HasOne(s => s.User)
+                .WithMany(s => s.GroupToUser)
+                .HasForeignKey(sc => sc.UserId);
+
+
+            modelBuilder.Entity<GroupToUser>()
+                .HasOne(s => s.Group)
+                .WithMany(s => s.GroupToUser)
+                .HasForeignKey(sc => sc.GroupId);
+
         }
 
         public override int SaveChanges()

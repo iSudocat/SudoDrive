@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Server.Services.Implements;
 
 namespace Server.Migrations.MySqlDataBaseServiceMigrations
 {
     [DbContext(typeof(MySqlDataBaseService))]
-    partial class MySqlDataBaseServiceModelSnapshot : ModelSnapshot
+    [Migration("20201103013350_CreateRelationships")]
+    partial class CreateRelationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

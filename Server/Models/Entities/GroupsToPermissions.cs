@@ -12,6 +12,8 @@ namespace Server.Models.Entities
         [Key]
         public long GroupId { get; set; }
 
+        public Group Group { get; set; }
+
         [Key]
         [MaxLength(255)]
         public string Permission { get; set; }

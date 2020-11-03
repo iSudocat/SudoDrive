@@ -19,7 +19,7 @@ namespace Server.Models.Entities
         public string FileType { get; set; }
 
         [Required]
-        public string FilePath{ get; set; }
+        public string FilePath { get; set; }
 
         /// <summary>
         /// 最后上传用户的UserId
@@ -27,8 +27,7 @@ namespace Server.Models.Entities
         [Required]
         public uint UserId { get; set; }
 
-        [ForeignKey("GroupId")]
-        public User User { get; set; }
+        [ForeignKey("GroupId")] public User User { get; set; }
 
         [Required]
         public string PermissionName { get; set; }

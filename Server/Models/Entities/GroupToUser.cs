@@ -9,13 +9,14 @@ namespace Server.Models.Entities
 {
     public class GroupToUser
     {
-
         [Key]
         public long GroupId { get; set; }
+
+        public Group Group { get; set; }
 
         [Key]
         public long UserId { get; set; }
 
-
+        public User User { get; set; }
     }
 }

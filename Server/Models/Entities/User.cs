@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Server.Models.Entities
@@ -13,6 +14,8 @@ namespace Server.Models.Entities
 
         [Required]
         public string Password { get; set; }
+
+        public IList<GroupToUser> GroupToUser { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
