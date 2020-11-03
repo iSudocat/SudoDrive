@@ -77,6 +77,29 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                     b.HasKey("Id");
 
                     b.ToTable("Groups");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            CreatedAt = new DateTime(2020, 11, 3, 12, 31, 55, 632, DateTimeKind.Local).AddTicks(2363),
+                            GroupName = "Admin",
+                            UpdatedAt = new DateTime(2020, 11, 3, 12, 31, 55, 632, DateTimeKind.Local).AddTicks(2363)
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            CreatedAt = new DateTime(2020, 11, 3, 12, 31, 55, 632, DateTimeKind.Local).AddTicks(2363),
+                            GroupName = "User",
+                            UpdatedAt = new DateTime(2020, 11, 3, 12, 31, 55, 632, DateTimeKind.Local).AddTicks(2363)
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            CreatedAt = new DateTime(2020, 11, 3, 12, 31, 55, 632, DateTimeKind.Local).AddTicks(2363),
+                            GroupName = "Guest",
+                            UpdatedAt = new DateTime(2020, 11, 3, 12, 31, 55, 632, DateTimeKind.Local).AddTicks(2363)
+                        });
                 });
 
             modelBuilder.Entity("Server.Models.Entities.GroupToPermission", b =>
@@ -91,6 +114,13 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                     b.HasKey("GroupId", "Permission");
 
                     b.ToTable("GroupsToPermissionsRelation");
+
+                    b.HasData(
+                        new
+                        {
+                            GroupId = 1L,
+                            Permission = "*"
+                        });
                 });
 
             modelBuilder.Entity("Server.Models.Entities.GroupToUser", b =>
@@ -106,6 +136,13 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                     b.HasIndex("GroupId");
 
                     b.ToTable("GroupsToUsersRelation");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1L,
+                            GroupId = 1L
+                        });
                 });
 
             modelBuilder.Entity("Server.Models.Entities.User", b =>
@@ -131,6 +168,16 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            CreatedAt = new DateTime(2020, 11, 3, 12, 31, 55, 632, DateTimeKind.Local).AddTicks(2363),
+                            Password = "$2a$11$nFXsPU.p6uUk3VHAPrttx.ad8XlYjOE2kU7.HcIZ7JTxoIqgJmcWe",
+                            UpdatedAt = new DateTime(2020, 11, 3, 12, 31, 55, 632, DateTimeKind.Local).AddTicks(2363),
+                            Username = "admin"
+                        });
                 });
 
             modelBuilder.Entity("Server.Models.Entities.File", b =>

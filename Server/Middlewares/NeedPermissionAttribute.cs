@@ -24,16 +24,28 @@ namespace Server.Middlewares
             var user = context.HttpContext.Items["actor"] as User;
             var databaseService = context.HttpContext.RequestServices.GetService(typeof(IDatabaseService)) as IDatabaseService;
 
-            List<Group> groups = new List<Group>();
+            if (databaseService == null) throw new UnexpectedException();
 
             if (user == null)
             {
-                groups.Add(databaseService.Groups.Find(3));
+                var group = databaseService.Groups.Find(Group.GroupID.GUEST);
+                if (group == null) throw new AuthenticateFailedException();
+
+                foreach (var s in _permission)
+                {
+                    var result = group.HasPermission(s);
+                    if (result == false) throw new AuthenticateFailedException();
+                }
+                
             }
             else
             {
-                var groupIds = user.GroupToUser;
-                groups.AddRange(groupIds.Select(groupToUser => groupToUser.Group));
+
+                foreach (var s in _permission)
+                {
+                    var result = user.HasPermission(s);
+                    if (result == false) throw new AuthenticateFailedException();
+                }
             }
 
             // TODO 权限判定

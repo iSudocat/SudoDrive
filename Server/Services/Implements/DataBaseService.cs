@@ -17,8 +17,9 @@ namespace Server.Services.Implements
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // 表结构
             modelBuilder.Entity<GroupToPermission>()
-                .HasKey(c => new { c.GroupId, c.Permission });
+                .HasKey(c => new {c.GroupId, c.Permission});
 
             modelBuilder.Entity<GroupToPermission>()
                 .HasOne(s => s.Group)
@@ -27,7 +28,7 @@ namespace Server.Services.Implements
 
 
             modelBuilder.Entity<GroupToUser>()
-                .HasKey(c => new { c.UserId, c.GroupId });
+                .HasKey(c => new {c.UserId, c.GroupId});
 
             modelBuilder.Entity<GroupToUser>()
                 .HasOne(s => s.User)
@@ -40,6 +41,30 @@ namespace Server.Services.Implements
                 .WithMany(s => s.GroupToUser)
                 .HasForeignKey(sc => sc.GroupId);
 
+            // 初始化数据
+            var now = DateTime.Now;
+
+            modelBuilder.Entity<Group>()
+                .HasData(
+                    new {Id = Group.GroupID.ADMIN, GroupName = "Admin", CreatedAt = now, UpdatedAt = now },
+                    new {Id = Group.GroupID.DEFAULT, GroupName = "User", CreatedAt = now, UpdatedAt = now },
+                    new {Id = Group.GroupID.GUEST, GroupName = "Guest", CreatedAt = now, UpdatedAt = now }
+                );
+
+            modelBuilder.Entity<User>()
+                .HasData(
+                    new {Id = 1L, Username = "admin", Password = BCrypt.Net.BCrypt.HashPassword("admin"), CreatedAt = now, UpdatedAt = now}
+                );
+
+            modelBuilder.Entity<GroupToUser>()
+                .HasData(
+                    new {UserId = 1L, GroupId = 1L}
+                );
+
+            modelBuilder.Entity<GroupToPermission>()
+                .HasData(
+                    new {GroupId = 1L, Permission = "*"}
+                );
         }
 
         public override int SaveChanges()
@@ -48,17 +73,15 @@ namespace Server.Services.Implements
 
             var newEntities = this.ChangeTracker.Entries()
                 .Where(
-                    x => x.State == EntityState.Added &&
-                         x.Entity != null &&
-                         x.Entity as ICreateTimeStampedModel != null
+                    x => x.State == EntityState.Added
+                         && x.Entity is ICreateTimeStampedModel
                 )
                 .Select(x => x.Entity as ICreateTimeStampedModel);
 
             var modifiedEntities = this.ChangeTracker.Entries()
                 .Where(
-                    x => (x.State == EntityState.Modified || x.State == EntityState.Added) &&
-                         x.Entity != null &&
-                         x.Entity as IUpdateTimeStampedModel != null
+                    x => (x.State == EntityState.Modified || x.State == EntityState.Added)
+                         && x.Entity is IUpdateTimeStampedModel
                 )
                 .Select(x => x.Entity as IUpdateTimeStampedModel);
 
@@ -77,6 +100,5 @@ namespace Server.Services.Implements
 
             return base.SaveChanges();
         }
-
     }
 }
