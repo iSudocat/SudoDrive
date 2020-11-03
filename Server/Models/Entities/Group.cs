@@ -40,6 +40,7 @@ namespace Server.Models.Entities
         {
             // 获取本用户组拥有的权限
             var permissions = this.GroupToPermission;
+            if (permissions == null) return null;
             List<string> hold = permissions.Select(groupToPermission => groupToPermission.Permission).ToList();
             hold.Sort();
 
