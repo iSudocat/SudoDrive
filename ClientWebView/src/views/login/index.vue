@@ -9,7 +9,7 @@
       label-position="left"
     >
       <div style="text-align:center;">
-        <img style="width: 25%;" src="https://avatars3.githubusercontent.com/u/42528067?s=400&u=375133832a4d631e7a1be26aa764b0ff91565f7f&v=4" alt="sudocat">
+        <img style="width: 25%;" :src="head_img" alt="sudocat">
       </div>
       <div class="title-container">
         <h3 class="title">登录到SudoDrive</h3>
@@ -88,6 +88,8 @@ export default {
       }
     }
     return {
+      // form头像地址
+      head_img: 'https://avatars3.githubusercontent.com/u/42528067?s=400&u=375133832a4d631e7a1be26aa764b0ff91565f7f&v=4',
       loginForm: {
         username: 'admin',
         password: '111111'
@@ -141,8 +143,6 @@ export default {
 </script>
 
 <style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
 $bg: #283443;
 $light_gray: #000000;
@@ -195,12 +195,12 @@ $bg: #A3E7FC;
 $dark_gray: #444444;
 $light_gray: #444444;
 $form_color: #ffffff;
+$back_url: "https://github.com/A-Salty-Fish/WindowHomework/blob/main/42528067.png?raw=true";
+
 .login-container {
   min-height: 100%;
   width: 100%;
-  //background-color: $bg;
-  //background-color: #ccc;
-  background-image: url("https://github.com/A-Salty-Fish/WindowHomework/blob/main/42528067.png?raw=true");
+  background-image: url($back_url);
   background-blend-mode: screen;
   backdrop-filter: blur(12px);
   background-repeat: no-repeat;
