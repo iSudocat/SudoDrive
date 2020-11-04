@@ -56,39 +56,32 @@ export const constantRoutes = [
   },
 
   {
-    path: '/example',
+    path: '/user',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        path: '/user',
+        name: 'User',
+        component: () => import('@/views/users/index'),
+        // hidden: true,
+        meta: { roles: ['admin'], title: '用户管理', icon: 'user' }
       }
     ]
   },
 
   {
-    path: '/form',
+    path: '/upload',
     component: Layout,
     children: [
       {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        path: '/upload',
+        name: 'Uploadfile',
+        component: () => import('@/views/uploadfile/index'),
+        meta: { roles: ['admin', 'editor'], title: '上传文件', icon: 'upload' }
       }
     ]
   },
+
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
