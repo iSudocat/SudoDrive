@@ -33,12 +33,13 @@ namespace Server.Controllers
         [HttpPost]
         public ActionResult<string> Register([FromBody] RegisterRequestModel registerRequestModel)
         {
+            if (_databaseService.Users.Where(t => t.Username == registerRequestModel.Username) == null)
+            {
+                throw new UsernameDuplicatedException("Username duplicated.");
+            }
+
             User user = new User();
             user.Username = registerRequestModel.Username;
-            if (_databaseService.Users.Where(t => t.Username == user.Username)==null)
-            {
-                throw new RegisterFailedException("the username exsits already!");
-            }
             user.Password = BCrypt.Net.BCrypt.HashPassword(registerRequestModel.Password);
             _databaseService.Users.Add(user);
             _databaseService.SaveChanges();

@@ -11,7 +11,7 @@ namespace Server.Controllers
     [Route("api/auth/updatepassword")]
     [ApiController]
     [NeedPermission(PermissionBank.UserAuthUpdatePassword)]
-    public class ChangePasswordController: Controller
+    public class UpdatePasswordController: Controller
     {
         private IDatabaseService _databaseService;
 
@@ -19,7 +19,7 @@ namespace Server.Controllers
         /// 构造函数
         /// </summary>
         /// <param name="databaseService">通过依赖注入获得数据库对象</param>
-        public ChangePasswordController(IDatabaseService databaseService)
+        public UpdatePasswordController(IDatabaseService databaseService)
         {
             _databaseService = databaseService;
         }
