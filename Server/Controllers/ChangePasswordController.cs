@@ -2,14 +2,15 @@ using Microsoft.AspNetCore.Mvc;
 using Server.Models.Entities;
 using Server.Services;
 using Server.Exceptions;
+using Server.Libraries;
 using Server.Middlewares;
 using Server.Models.VO;
 
 namespace Server.Controllers
 {
-    [Route("api/changepassword")]
+    [Route("api/auth/updatepassword")]
     [ApiController]
-    [NeedPermission("user.profile.changepassword")]
+    [NeedPermission(PermissionBank.UserAuthUpdatePassword)]
     public class ChangePasswordController: Controller
     {
         private IDatabaseService _databaseService;
@@ -28,7 +29,7 @@ namespace Server.Controllers
         /// </summary>
         /// <param name="changePasswordRequestModel"></param>
         /// <returns></returns>
-        [HttpPut]
+        [HttpPost]
         public ActionResult ChangePassword(ChangePasswordRequestModel changePasswordRequestModel)
         {
             var user= HttpContext.Items["actor"] as User;

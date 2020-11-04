@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Server.Libraries;
 using Server.Middlewares;
 
 namespace Server.Controllers
@@ -14,7 +15,7 @@ namespace Server.Controllers
     [Route("api/register")]
     [ApiController]
     [AllowAnonymous]
-    [NeedPermission("user.register")]
+    [NeedPermission(PermissionBank.UserAuthRegister)]
     public class RegisterController : Controller
     {
         private IDatabaseService _databaseService;
