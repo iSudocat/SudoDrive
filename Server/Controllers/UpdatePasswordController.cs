@@ -37,6 +37,10 @@ namespace Server.Controllers
             {
                 var user_db = _databaseService.Users.Find(user.Id);
                 user_db.Password = BCrypt.Net.BCrypt.HashPassword(changePasswordRequestModel.NewPassword);
+                if (!user_db.PasswordValid())
+                {
+                    throw new InvalidPasswordException("new Password Pattern Invalid when updating password.");
+                }
                 _databaseService.SaveChanges();
             }
             else

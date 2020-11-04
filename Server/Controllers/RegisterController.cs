@@ -41,6 +41,10 @@ namespace Server.Controllers
             User user = new User();
             user.Username = registerRequestModel.Username;
             user.Password = BCrypt.Net.BCrypt.HashPassword(registerRequestModel.Password);
+            if (!user.PasswordValid())
+            {
+                throw new InvalidPasswordException("Password Pattern Invalid when registering.");
+            }
             _databaseService.Users.Add(user);
             _databaseService.SaveChanges();
             return Ok();
