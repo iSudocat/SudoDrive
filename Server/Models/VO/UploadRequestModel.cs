@@ -17,7 +17,7 @@ namespace Server.Models.VO
 
         [Required]
         [JsonProperty("size")]
-        public ulong Size { get; set; }
+        public long Size { get; set; }
 
         [Required]
         [JsonProperty("md5")]

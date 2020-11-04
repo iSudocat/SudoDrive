@@ -33,7 +33,7 @@ namespace Server.Controllers
         [HttpPost]
         public ActionResult<string> Register([FromBody] RegisterRequestModel registerRequestModel)
         {
-            if (_databaseService.Users.Where(t => t.Username == registerRequestModel.Username) == null)
+            if (_databaseService.Users.FirstOrDefault(t => t.Username == registerRequestModel.Username) == null)
             {
                 throw new UsernameDuplicatedException("Username duplicated.");
             }
