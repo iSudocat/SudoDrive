@@ -46,7 +46,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <info-dialog :dialog-visible.sync="dialogVisible" :current-row.sync="currentRow" />
+    <info-dialog :dialog-visible="dialogVisible" :current-row="currentRow" @closeDialog="closeDialog" />
   </div>
 </template>
 
@@ -59,7 +59,11 @@ export default {
     return {
       uploadTableData: [],
       dialogVisible: false,
-      currentRow: null
+      currentRow: {
+        name: '',
+        size: 0,
+        date: '0'
+      }
     }
   },
   created() {
@@ -79,8 +83,13 @@ export default {
       console.log(index, row)
     },
     handleDblclick(row) {
+      console.log(row)
       this.dialogVisible = true
       this.currentRow = row
+    },
+    closeDialog(visible) {
+      console.log('closeDialog')
+      this.dialogVisible = visible
     }
   }
 }

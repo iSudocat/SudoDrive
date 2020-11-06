@@ -2,12 +2,15 @@
   <div>
     <el-dialog
       title="详细信息"
-      :visible.sync="dialogVisible"
-      width="30%"
+      :visible="dialogVisible"
+      :show-close="false"
+      width="50%"
     >
-      <span>{{ currentRow }}</span>
+      <span>文件名：{{ currentRow.name }}</span>
+      <span>文件大小：{{ currentRow.size }}</span>
+      <span>修改时间：{{ currentRow.date }}</span>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="handleExit()">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -25,11 +28,23 @@ export default {
     currentRow: {
       type: Object,
       required: true,
-      default: null
+      default: () => {
+        return {
+          name: '',
+          size: 0,
+          date: '0'
+        }
+      }
     }
   },
   data() {
     return {
+    }
+  },
+  methods: {
+    handleExit() {
+      console.log('handleExit')
+      this.$emit('closeDialog', false)
     }
   }
 }
