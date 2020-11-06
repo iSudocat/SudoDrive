@@ -5,7 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Server.Exceptions;
+using Server.Libraries;
 using Server.Middlewares;
 using Server.Models.DTO;
 using Server.Models.Entities;
@@ -15,30 +17,35 @@ using File = Server.Models.Entities.File;
 
 namespace Server.Controllers
 {
-    [Route("api/file/upload")]
+    [Route("api/storage/file")]
     [ApiController]
-    [NeedPermission("file.upload.basic")]
-    public class UploadController : Controller
+    [NeedPermission(PermissionBank.StorageFileUploadBasic)]
+    public class FileUploadController : Controller
     {
         private IDatabaseService _databaseService;
+        
+        private ITencentCos _tencentCos;
 
-        private readonly User _loginUser;
+        private readonly ILogger _logger;
 
-        public UploadController(IDatabaseService databaseService)
+
+        public FileUploadController(IDatabaseService databaseService, ITencentCos tencentCos, ILogger<GlobalExceptionFilter> logger)
         {
             _databaseService = databaseService;
-
-            _loginUser = HttpContext.Items["actor"] as User;
-            if (_loginUser == null)
-            {
-                throw new UnexpectedException();
-            }
+            _tencentCos = tencentCos;
+            _logger = logger;
         }
 
         
         [HttpPost]
-        public IActionResult RequestUpload([FromBody] UploadRequestModel requestModel)
+        public IActionResult RequestUpload([FromBody] FileUploadRequestModel requestModel)
         {
+            if (!(HttpContext.Items["actor"] is User loginUser))
+            {
+                throw new UnexpectedException();
+            }
+
+
             // 根据上传路径判断权限
             // /users/用户名/XXX => .HasPermission('file.upload.user.用户名')
             // /groups/组名/XXX => .HasPermission('file.upload.group.组名')
@@ -62,7 +69,7 @@ namespace Server.Controllers
 
                 file.Guid = ofile.Guid;
                 file.StorageName = ofile.StorageName;
-                file.User = _loginUser;
+                file.User = loginUser;
                 file.Status = Models.Entities.File.FileStatus.Pending;
                 file.Size = ofile.Size;
                 file.Md5 = ofile.Md5.ToLower();
@@ -75,16 +82,30 @@ namespace Server.Controllers
                 file.Name = Path.GetFileName(requestModel.Path) ?? "";
 
                 file.Guid = Guid.NewGuid().ToString();
-                file.StorageName = file.Guid[0] + file.Guid[1] + "/" + file.Guid[2] + file.Guid[3] + "/" + file.Guid;
-                file.User = _loginUser;
+                // TODO 检查 Guid 是否有重复
+                file.StorageName = $"{file.Guid[0]}{file.Guid[1]}/{file.Guid[2]}{file.Guid[3]}/{file.Guid}{Path.GetExtension(requestModel.Path)}";
+                file.User = loginUser;
                 file.Status = Models.Entities.File.FileStatus.Pending;
                 file.Size = requestModel.Size;
                 file.Md5 = requestModel.Md5.ToLower();
             }
-
+            
             _databaseService.Files.Add(file);
 
-            return Ok();
+            Dictionary<string, object> token;
+            try
+            {
+                token = _tencentCos.GetToken(file);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message, e.Data);
+                throw;
+            }
+
+            _databaseService.SaveChanges();
+
+            return Ok(new FileUploadRequestResultModel(file, token));
         }
 
 

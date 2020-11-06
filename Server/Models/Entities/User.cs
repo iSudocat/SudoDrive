@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
+using Server.Models.VO;
 
 namespace Server.Models.Entities
 {
@@ -52,5 +52,8 @@ namespace Server.Models.Entities
         {
             return this.HasPermission(permission.Split('.'));
         }
+
+        public UserModel ToVO()
+            => new UserModel(this);
     }
 }

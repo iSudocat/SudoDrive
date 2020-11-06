@@ -20,23 +20,20 @@ namespace Server.Controllers
     {
         private readonly IAuthenticateService _authService;
 
-        private readonly User _loginUser;
-
         public RefreshLoginToken(IAuthenticateService authService)
         {
             this._authService = authService;
-
-            _loginUser = HttpContext.Items["actor"] as User;
-            if (_loginUser == null)
-            {
-                throw new UnexpectedException();
-            }
         }
         
         public IActionResult GetNewToken()
         {
-            var token = _authService.GetNewToken(_loginUser);
-            return Ok(new LoginResultModel(_loginUser.Username, token));
+            if (!(HttpContext.Items["actor"] is User loginUser))
+            {
+                throw new UnexpectedException();
+            }
+
+            var token = _authService.GetNewToken(loginUser);
+            return Ok(new LoginResultModel(loginUser.Username, token));
         }
     }
 }

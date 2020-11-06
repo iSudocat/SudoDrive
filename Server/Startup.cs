@@ -64,6 +64,7 @@ namespace Server
 
             // 配置腾讯云 Cos
             services.Configure<TencentCosManagementModel>(Configuration.GetSection("TencentCos"));
+            services.AddScoped<ITencentCos, TencentCos>();
 
             // 容器注册
             services.AddScoped<IAuthenticateService, AuthenticateService>();

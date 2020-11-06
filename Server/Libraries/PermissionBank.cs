@@ -6,5 +6,7 @@ namespace Server.Libraries
         public const string UserAuthLogin = "user.auth.login";
         public const string UserAuthRefresh = "user.auth.refresh";
         public const string UserAuthUpdatePassword = "user.auth.updatepassword";
+
+        public const string StorageFileUploadBasic = "storage.file.upload.basic";
     }
 }
