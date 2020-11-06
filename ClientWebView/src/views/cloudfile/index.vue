@@ -2,10 +2,10 @@
   <div>
     <el-row>
       <el-col id="leftBox" :xs="{span:24}" :sm="{span:12}">
-        <upload></upload>
+        <upload />
       </el-col>
-      <el-col :xs="{span:24}" :sm="{span:12}">
-        <download></download>
+      <el-col id="rightBox" :xs="{span:24}" :sm="{span:12}">
+        <download />
       </el-col>
     </el-row>
   </div>
@@ -25,6 +25,8 @@ export default {
 @media screen and (min-width: 768px) {
   #leftBox {
     border-right: 1px solid rgb(235,238,235);
+  }
+  #rightBox {
   }
 }
 

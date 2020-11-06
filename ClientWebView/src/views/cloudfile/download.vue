@@ -46,22 +46,15 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog
-      title="提示"
-      :visible.sync="dialogVisible"
-      width="30%"
-    >
-      <span>{{ currentRow }}</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
-    </el-dialog>
+    <info-dialog :dialog-visible.sync="dialogVisible" :current-row.sync="currentRow" />
   </div>
 </template>
 
 <script>
+import InfoDialog from '@/views/cloudfile/infoDialog'
 export default {
   name: 'Download',
+  components: { InfoDialog },
   data() {
     return {
       uploadTableData: [],
@@ -88,7 +81,6 @@ export default {
     handleDblclick(row) {
       this.dialogVisible = true
       this.currentRow = row
-      console.log(row)
     }
   }
 }
