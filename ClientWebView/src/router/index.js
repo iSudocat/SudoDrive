@@ -77,7 +77,7 @@ export const constantRoutes = [
         path: '/cloudfile',
         name: 'cloudfile',
         component: () => import('@/views/cloudfile/index'),
-        meta: { roles: ['admin', 'editor'], title: '上传文件', icon: 'clouddisk' }
+        meta: { roles: ['admin', 'editor'], title: '网盘', icon: 'clouddisk' }
       }
     ]
   },

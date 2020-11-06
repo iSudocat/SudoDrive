@@ -24,7 +24,7 @@ export default {
 <style scoped>
 @media screen and (min-width: 768px) {
   #leftBox {
-  border-right-style:dashed;
+    border-right: 1px solid rgb(235,238,235);
   }
 }
 

@@ -3,6 +3,7 @@
     <el-table
       :data="uploadTableData"
       style="width: 100%"
+      @cell-dblclick="handleDblclick"
     >
       <el-table-column
         type="selection"
@@ -45,6 +46,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%"
+    >
+      <span>{{ currentRow }}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -53,7 +64,9 @@ export default {
   name: 'Download',
   data() {
     return {
-      uploadTableData: []
+      uploadTableData: [],
+      dialogVisible: false,
+      currentRow: null
     }
   },
   created() {
@@ -71,6 +84,11 @@ export default {
   methods: {
     handleUpload(index, row) {
       console.log(index, row)
+    },
+    handleDblclick(row) {
+      this.dialogVisible = true
+      this.currentRow = row
+      console.log(row)
     }
   }
 }
