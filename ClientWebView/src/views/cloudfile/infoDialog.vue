@@ -6,9 +6,9 @@
       :show-close="false"
       width="50%"
     >
-      <span>文件名：{{ currentRow.name }}</span>
-      <span>文件大小：{{ currentRow.size }}</span>
-      <span>修改时间：{{ currentRow.date }}</span>
+      <div>文件名：{{ currentRow.name }}</div>
+      <div>文件大小：{{ currentRow.size }}</div>
+      <div>修改时间：{{ currentRow.date }}</div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="handleExit()">确 定</el-button>
       </span>
