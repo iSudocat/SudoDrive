@@ -8,6 +8,34 @@ using Server.Models.VO;
 
 namespace Server.Models.Entities
 {
+    /// <summary>
+    /// 文件实体
+    ///
+    /// 对于文件：
+    /// Name: 文件名
+    /// Type: 对应的 MIME 类型
+    /// Folder: 该文件所在的文件夹
+    /// Path: 该文件的目录: Folder + Name
+    /// Guid: 随机生成的
+    /// StorageName: 存储名
+    /// User: 上传的用户
+    /// Status: 文件状态
+    /// Size: 文件大小
+    /// Md5: 文件哈希
+    /// 
+    /// 对于文件夹：
+    /// Name: 文件夹名
+    /// Type: "text/directory"
+    /// Folder: 上层目录名
+    /// Path: 该文件夹的路径: Folder + Name
+    /// Guid: [空]
+    /// StorageName: [空]
+    /// User: 创建的用户
+    /// Status: 已确认
+    /// Size: [空]
+    /// Md5: [空]
+    /// 
+    /// </summary>
     public class File : ICreateTimeStampedModel, IUpdateTimeStampedModel
     {
         /// <summary>
@@ -45,13 +73,11 @@ namespace Server.Models.Entities
         /// <summary>
         /// 随机编号
         /// </summary>
-        [Required]
         public string Guid { get; set; }
 
         /// <summary>
         /// 存储文件名
         /// </summary>
-        [Required]
         public string StorageName { get; set; }
 
         /// <summary>
@@ -69,13 +95,11 @@ namespace Server.Models.Entities
         /// <summary>
         /// 文件大小
         /// </summary>
-        [Required]
         public long Size { get; set; }
 
         /// <summary>
         /// 文件哈希值
         /// </summary>
-        [Required]
         public string Md5 { get; set; }
 
         public DateTime CreatedAt { get; set; }

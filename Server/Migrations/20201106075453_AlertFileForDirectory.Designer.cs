@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Server.Services.Implements;
@@ -9,9 +10,10 @@ using Server.Services.Implements;
 namespace Server.Migrations
 {
     [DbContext(typeof(PostgreSqlDataBaseService))]
-    partial class PostgreSqlDataBaseServiceModelSnapshot : ModelSnapshot
+    [Migration("20201106075453_AlertFileForDirectory")]
+    partial class AlertFileForDirectory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
