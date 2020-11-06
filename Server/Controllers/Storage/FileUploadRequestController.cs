@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Server.Controllers;
 using Server.Exceptions;
 using Server.Libraries;
 using Server.Middlewares;
@@ -15,12 +14,12 @@ using Server.Models.VO;
 using Server.Services;
 using File = Server.Models.Entities.File;
 
-namespace Server.Controllers
+namespace Server.Exceptions
 {
     [Route("api/storage/file")]
     [ApiController]
     [NeedPermission(PermissionBank.StorageFileUploadBasic)]
-    public class FileUploadController : Controller
+    public class FileUploadRequestController : AbstractController
     {
         private IDatabaseService _databaseService;
         
@@ -29,7 +28,7 @@ namespace Server.Controllers
         private readonly ILogger _logger;
 
 
-        public FileUploadController(IDatabaseService databaseService, ITencentCos tencentCos, ILogger<GlobalExceptionFilter> logger)
+        public FileUploadRequestController(IDatabaseService databaseService, ITencentCos tencentCos, ILogger<GlobalExceptionFilter> logger)
         {
             _databaseService = databaseService;
             _tencentCos = tencentCos;
@@ -57,8 +56,7 @@ namespace Server.Controllers
                         s.Size == requestModel.Size &&                          // 文件大小相等
                         s.Status == Models.Entities.File.FileStatus.Confirmed   // 文件已上传完
                 );
-
-
+            
             var file = new File();
             if (ofile != null)
             {
@@ -92,22 +90,33 @@ namespace Server.Controllers
             
             _databaseService.Files.Add(file);
 
+
             Dictionary<string, object> token;
-            try
+
+            if (file.Status == Models.Entities.File.FileStatus.Pending)
             {
-                token = _tencentCos.GetToken(file);
+                try
+                {
+                    token = _tencentCos.GetToken(file);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, e.Message, e.Data);
+                    throw new UnexpectedException();
+                }
+
+                SetApiResultStatus(ApiResultStatus.StorageUploadContinue);
             }
-            catch (Exception e)
+            else
             {
-                _logger.LogError(e, e.Message, e.Data);
-                throw;
+                token = null;
+
+                SetApiResultStatus(ApiResultStatus.StorageUploadSkip);
             }
 
             _databaseService.SaveChanges();
-
+            
             return Ok(new FileUploadRequestResultModel(file, token));
         }
-
-
     }
 }

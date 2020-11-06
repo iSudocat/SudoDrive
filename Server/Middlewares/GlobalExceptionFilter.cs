@@ -36,7 +36,9 @@ namespace Server.Middlewares
 
             message = context.Exception.Message;
 
-            _logger.LogError(context.Exception, message, data);
+            if (context.Exception is APIException && !(context.Exception is UnexpectedException)) { 
+                _logger.LogError(context.Exception, message, data);
+            }
 
             context.Result = new JsonResult(new ResultModel(status, message, data));
             context.HttpContext.Response.StatusCode = 500;
