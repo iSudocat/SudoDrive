@@ -74,7 +74,7 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: '/upload',
+        path: '/cloudfile',
         name: 'cloudfile',
         component: () => import('@/views/cloudfile/index'),
         meta: { roles: ['admin', 'editor'], title: '上传文件', icon: 'clouddisk' }
