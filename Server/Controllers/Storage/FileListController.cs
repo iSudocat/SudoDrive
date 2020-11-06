@@ -31,22 +31,23 @@ namespace Server.Controllers.Storage
 
         
         [HttpGet]
-        public IActionResult ListFile([FromQuery] FileListRequestModel requestRequestModel)
+        public IActionResult ListFile([FromQuery] FileListRequestModel requestModel)
         {
             if (!(HttpContext.Items["actor"] is User loginUser))
             {
                 throw new UnexpectedException();
             }
 
-            var result = _databaseService.Files.Where(s => s.Folder == requestRequestModel.Folder);
+            requestModel.Folder = requestModel.Folder.Replace("/", "\\");
+            var result = _databaseService.Files.Where(s => s.Folder == requestModel.Folder);
 
             // 添加其他的搜索条件
 
 
-            result = result.Skip(requestRequestModel.Offset);
-            result = result.Take(requestRequestModel.Amount);
+            result = result.Skip(requestModel.Offset);
+            result = result.Take(requestModel.Amount);
 
-            return Ok(new FileListResultModel(result, requestRequestModel.Amount, requestRequestModel.Offset));
+            return Ok(new FileListResultModel(result, requestModel.Amount, requestModel.Offset));
         }
     }
 }

@@ -44,6 +44,7 @@ namespace Server.Exceptions
                 throw new UnexpectedException();
             }
 
+            requestModel.Path = requestModel.Path.Replace("/", "\\");
 
             // 根据上传路径判断权限
             // /users/用户名/XXX => .HasPermission('file.upload.user.用户名')
