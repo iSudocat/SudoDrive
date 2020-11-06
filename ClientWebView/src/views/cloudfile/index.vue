@@ -24,7 +24,9 @@ export default {
 <style scoped>
 @media screen and (min-width: 768px) {
   #leftBox {
-    border-right: 1px solid rgb(235,238,235);
+    /*border-right: 1px solid rgb(235,238,235);*/
+    box-shadow: 4px -4px 2px 1px rgba(0, 0, 0, 0.2);
+    position: relative; z-index: 1;
   }
   #rightBox {
   }
