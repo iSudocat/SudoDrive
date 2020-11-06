@@ -70,14 +70,14 @@ export const constantRoutes = [
   },
 
   {
-    path: '/upload',
+    path: '/cloudfile',
     component: Layout,
     children: [
       {
         path: '/upload',
-        name: 'Uploadfile',
-        component: () => import('@/views/uploadfile/index'),
-        meta: { roles: ['admin', 'editor'], title: '上传文件', icon: 'upload' }
+        name: 'cloudfile',
+        component: () => import('@/views/cloudfile/index'),
+        meta: { roles: ['admin', 'editor'], title: '上传文件', icon: 'clouddisk' }
       }
     ]
   },
