@@ -98,23 +98,23 @@ namespace Server.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2020, 11, 6, 15, 54, 50, 929, DateTimeKind.Local).AddTicks(6764),
+                            CreatedAt = new DateTime(2020, 11, 6, 16, 29, 14, 437, DateTimeKind.Local).AddTicks(2339),
                             GroupName = "Admin",
-                            UpdatedAt = new DateTime(2020, 11, 6, 15, 54, 50, 929, DateTimeKind.Local).AddTicks(6764)
+                            UpdatedAt = new DateTime(2020, 11, 6, 16, 29, 14, 437, DateTimeKind.Local).AddTicks(2339)
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2020, 11, 6, 15, 54, 50, 929, DateTimeKind.Local).AddTicks(6764),
+                            CreatedAt = new DateTime(2020, 11, 6, 16, 29, 14, 437, DateTimeKind.Local).AddTicks(2339),
                             GroupName = "User",
-                            UpdatedAt = new DateTime(2020, 11, 6, 15, 54, 50, 929, DateTimeKind.Local).AddTicks(6764)
+                            UpdatedAt = new DateTime(2020, 11, 6, 16, 29, 14, 437, DateTimeKind.Local).AddTicks(2339)
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2020, 11, 6, 15, 54, 50, 929, DateTimeKind.Local).AddTicks(6764),
+                            CreatedAt = new DateTime(2020, 11, 6, 16, 29, 14, 437, DateTimeKind.Local).AddTicks(2339),
                             GroupName = "Guest",
-                            UpdatedAt = new DateTime(2020, 11, 6, 15, 54, 50, 929, DateTimeKind.Local).AddTicks(6764)
+                            UpdatedAt = new DateTime(2020, 11, 6, 16, 29, 14, 437, DateTimeKind.Local).AddTicks(2339)
                         });
                 });
 
@@ -146,6 +146,11 @@ namespace Server.Migrations
                         {
                             GroupId = 2L,
                             Permission = "user.auth.updatepassword"
+                        },
+                        new
+                        {
+                            GroupId = 2L,
+                            Permission = "storage.file.list.basic"
                         },
                         new
                         {
@@ -210,9 +215,9 @@ namespace Server.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2020, 11, 6, 15, 54, 50, 929, DateTimeKind.Local).AddTicks(6764),
-                            Password = "$2a$11$zWYr68EPVnTWOfjcuYI0EuqOL4gRTTm/IcdMTX7SpefmKq3swsrQi",
-                            UpdatedAt = new DateTime(2020, 11, 6, 15, 54, 50, 929, DateTimeKind.Local).AddTicks(6764),
+                            CreatedAt = new DateTime(2020, 11, 6, 16, 29, 14, 437, DateTimeKind.Local).AddTicks(2339),
+                            Password = "$2a$11$G3NOgeD1F7VbZcZiiwezN./2z..L4i6SC66PSiCFPRJFx/CueBKv2",
+                            UpdatedAt = new DateTime(2020, 11, 6, 16, 29, 14, 437, DateTimeKind.Local).AddTicks(2339),
                             Username = "admin"
                         });
                 });

@@ -70,10 +70,14 @@ namespace Server.Controllers.Storage
 
                 // a/b/c
                 var n = folderPath[i - 1];
-                
+
 
                 // 有待商榷
-                var t = _databaseService.Files.FirstOrDefault(t => t.Folder == s && t.Path == n);
+                var t = _databaseService.Files.FirstOrDefault(t =>
+                    t.Type == "text/directory" &&
+                    t.Folder == s &&
+                    t.Path == n
+                );
 
                 if (t == null)
                 {

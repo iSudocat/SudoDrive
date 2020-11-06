@@ -8,5 +8,6 @@ namespace Server.Libraries
         public const string UserAuthUpdatePassword = "user.auth.updatepassword";
 
         public const string StorageFileUploadBasic = "storage.file.upload.basic";
+        public const string StorageFileListBasic = "storage.file.list.basic";
     }
 }
