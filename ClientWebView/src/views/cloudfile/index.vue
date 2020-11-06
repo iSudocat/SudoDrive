@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col :xs="{span:24}" :sm="{span:12}">
+      <el-col id="leftBox" :xs="{span:24}" :sm="{span:12}">
         <upload></upload>
       </el-col>
       <el-col :xs="{span:24}" :sm="{span:12}">
@@ -22,5 +22,10 @@ export default {
 </script>
 
 <style scoped>
+@media screen and (min-width: 768px) {
+  #leftBox {
+  border-right-style:dashed;
+  }
+}
 
 </style>

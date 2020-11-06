@@ -7,6 +7,7 @@
       <el-table-column
         type="selection"
         width="55"
+        align="center"
       />
       <el-table-column
         label="文件名"
