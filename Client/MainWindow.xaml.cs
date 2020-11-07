@@ -79,7 +79,7 @@ namespace Client
 
 
 #if DEBUG
-            browser.Address = "http://localhost:8080/";
+            browser.Address = "http://localhost:9528/";
 #else
             browser.Address = "sudodrive://index.html";
 #endif

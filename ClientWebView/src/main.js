@@ -35,9 +35,50 @@ Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
 
-new Vue({
-  el: '#app',
-  router,
-  store,
-  render: h => h(App)
-})
+// eslint-disable-next-line no-empty
+if (typeof (CefSharp) === 'undefined') {
+  window.demoFunction = {}
+  window.demoFunction.add = async function(a, b) {
+    return a + b
+  }
+  new Vue({
+    el: '#app',
+    router,
+    store,
+    render: h => h(App)
+  })
+} else {
+  window.CefSharp.BindObjectAsync('demoFunction').then(
+    () => {
+      new Vue({
+        el: '#app',
+        router,
+        store,
+        render: h => h(App)
+      })
+    }
+  )
+  // const func_array = ['demoFunction']
+  // Promise.all(
+  //   func_array.map(
+  //     name => window.CefSharp.BindObjectAsync(name)))
+  //   .then(
+  //     funcs => funcs.forEach(
+  //       // eslint-disable-next-line no-return-assign
+  //       (func, index) => window[func_array[index]] = func))
+  //   .then(() => {
+  //     new Vue({
+  //       el: '#app',
+  //       router,
+  //       store,
+  //       render: h => h(App)
+  //     })
+  //   })
+}
+
+// new Vue({
+//   el: '#app',
+//   router,
+//   store,
+//   render: h => h(App)
+// })

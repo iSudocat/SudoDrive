@@ -1,18 +1,25 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+    <span>Result:{{result}}</span>
+    <el-button @click="testCs">Test</el-button>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   name: 'Dashboard',
-  computed: {
-    ...mapGetters([
-      'name'
-    ])
+  data() {
+    return {
+      result: 0
+    }
+  },
+  methods: {
+    async testCs() {
+      var that = this
+      window.demoFunction.add(Number(10), Number(12)).then(function(ret) {
+        that.result = ret
+      })
+    }
   }
 }
 </script>
