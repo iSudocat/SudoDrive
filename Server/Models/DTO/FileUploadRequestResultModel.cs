@@ -45,6 +45,12 @@ namespace Server.Models.DTO
         {
             this.File = file.ToVo();
 
+            if (token == null)
+            {
+                this.Token = null;
+                return;
+            }
+
             JObject resCredentials = token["Credentials"] as JObject;
             if (resCredentials == null)
             {
@@ -70,7 +76,7 @@ namespace Server.Models.DTO
                 throw new UnexpectedException();
             }
 
-            Token = new TokenType(credentials, expiredTime, expiration, requestId, startTime);
+            this.Token = new TokenType(credentials, expiredTime, expiration, requestId, startTime);
         }
 
     }

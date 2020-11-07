@@ -114,5 +114,30 @@ namespace Server.Models.Entities
 
         public FileModel ToVo()
             => new FileModel(this);
+
+        public static File CreateDirectoryRecord(string name, string folder, string path, User user)
+            => new File()
+            {
+                // Name: 文件夹名
+                Name = name,
+                // Type: "text/directory"
+                Type = "text/directory",
+                // Folder: 上层目录名
+                Folder = folder,
+                // Path: 该文件夹的路径: Folder + Name
+                Path = path,
+                // Guid: [空]
+                Guid = null,
+                // StorageName: [空]
+                StorageName = "",
+                // User: 创建的用户
+                User = user,
+                // Status: 已确认
+                Status = FileStatus.Confirmed,
+                // Size: [空]
+                Size = 0,
+                // Md5: [空]
+                Md5 = null
+            };
     }
 }

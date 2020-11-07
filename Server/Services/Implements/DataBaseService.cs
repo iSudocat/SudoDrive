@@ -42,6 +42,21 @@ namespace Server.Services.Implements
                 .WithMany(s => s.GroupToUser)
                 .HasForeignKey(sc => sc.GroupId);
 
+            modelBuilder.Entity<User>()
+                .HasIndex(s => new {s.Username});
+
+            modelBuilder.Entity<File>()
+                .HasIndex(s => new {s.Path});
+
+            modelBuilder.Entity<File>()
+                .HasIndex(s => new {s.Folder});
+
+            modelBuilder.Entity<File>()
+                .HasIndex(s => new {s.Guid});
+
+            modelBuilder.Entity<File>()
+                .HasIndex(s => new {s.Status});
+
             // 初始化数据
             var now = DateTime.Now;
 

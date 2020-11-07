@@ -36,7 +36,7 @@ namespace Server.Middlewares
 
             message = context.Exception.Message;
 
-            if (context.Exception is APIException && !(context.Exception is UnexpectedException)) { 
+            if (!(context.Exception is APIException) || (context.Exception is UnexpectedException)) { 
                 _logger.LogError(context.Exception, message, data);
             }
 

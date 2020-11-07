@@ -12,7 +12,7 @@ using Server.Models.DTO;
 using Server.Models.Entities;
 using Server.Models.VO;
 using Server.Services;
-using File = Server.Models.Entities.File;
+using EntityFile = Server.Models.Entities.File;
 
 namespace Server.Exceptions
 {
@@ -35,7 +35,7 @@ namespace Server.Exceptions
             _logger = logger;
         }
 
-        
+
         [HttpPost]
         public IActionResult RequestUpload([FromBody] FileUploadRequestModel requestModel)
         {
@@ -46,19 +46,94 @@ namespace Server.Exceptions
 
             requestModel.Path = requestModel.Path.Replace("/", "\\");
 
-            // 根据上传路径判断权限
+            // TODO 根据上传路径判断权限
             // /users/用户名/XXX => .HasPermission('file.upload.user.用户名')
             // /groups/组名/XXX => .HasPermission('file.upload.group.组名')
 
+            // 判断文件重复
+            var efile = _databaseService.Files.FirstOrDefault(t =>
+                t.Path == requestModel.Path &&
+                t.Status == EntityFile.FileStatus.Confirmed
+            );
+            if (efile != null)
+            {
+                throw new FileNameDuplicatedException();
+            }
 
+
+            if (requestModel.Type == "text/directory")
+            {
+                return RequestUploadFolder(requestModel, loginUser);
+            }
+
+            return RequestUploadFile(requestModel, loginUser);
+        }
+
+        private IActionResult RequestUploadFolder(FileUploadRequestModel requestModel, User loginUser)
+        {
+            // 建立文件夹
+            string folder = requestModel.Path;
+            List<string> folderPath = new List<string>();
+
+            folderPath.Add(folder);
+            while (folder != null && folder != "/" && folder != "\\")
+            {
+                var s = Path.GetDirectoryName(folder);
+                folderPath.Add(folder = s);
+            }
+
+            for (int i = folderPath.Count - 1; i > 0; i--)
+            {
+                // a/b
+                var s = folderPath[i];
+
+                // a/b/c
+                var n = folderPath[i - 1];
+
+                var t = _databaseService.Files.FirstOrDefault(t =>
+                    t.Path == n &&
+                    t.Status == EntityFile.FileStatus.Confirmed
+                );
+
+                if (t == null)
+                {
+                    var tmp = EntityFile.CreateDirectoryRecord(Path.GetFileName(n), s, n, loginUser);
+                    _databaseService.Files.Add(tmp);
+                }
+                else if (t.Type != "text/directory")
+                {
+                    throw new FileNameDuplicatedException();
+                }
+            }
+
+
+            _databaseService.SaveChanges();
+
+            var ret = _databaseService.Files.FirstOrDefault(t =>
+                t.Type == "text/directory" &&
+                t.Path == requestModel.Path
+            );
+
+            if (ret == null)
+            {
+                throw new UnexpectedException();
+            }
+
+            SetApiResultStatus(ApiResultStatus.StorageUploadSkip);
+            return Ok(new FileUploadRequestResultModel(ret, null));
+        }
+
+
+        private IActionResult RequestUploadFile(FileUploadRequestModel requestModel, User loginUser)
+        {
             var ofile = _databaseService.Files.
-                FirstOrDefault(s => 
+                FirstOrDefault(s =>
                         s.Md5 == requestModel.Md5.ToLower() &&                  // 哈希相等
                         s.Size == requestModel.Size &&                          // 文件大小相等
                         s.Status == Models.Entities.File.FileStatus.Confirmed   // 文件已上传完
                 );
-            
-            var file = new File();
+
+            var file = new EntityFile();
             if (ofile != null)
             {
                 file.Path = requestModel.Path;
@@ -69,7 +144,7 @@ namespace Server.Exceptions
                 file.Guid = ofile.Guid;
                 file.StorageName = ofile.StorageName;
                 file.User = loginUser;
-                file.Status = Models.Entities.File.FileStatus.Pending;
+                file.Status = Models.Entities.File.FileStatus.Confirmed;
                 file.Size = ofile.Size;
                 file.Md5 = ofile.Md5.ToLower();
             }
@@ -88,7 +163,7 @@ namespace Server.Exceptions
                 file.Size = requestModel.Size;
                 file.Md5 = requestModel.Md5.ToLower();
             }
-            
+
             _databaseService.Files.Add(file);
 
 
@@ -116,7 +191,7 @@ namespace Server.Exceptions
             }
 
             _databaseService.SaveChanges();
-            
+
             return Ok(new FileUploadRequestResultModel(file, token));
         }
     }
