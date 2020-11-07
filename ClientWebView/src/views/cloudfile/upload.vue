@@ -1,5 +1,6 @@
 <template>
   <div>
+    <el-button @click="changePath">切换目录</el-button>
     <el-table
       :data="uploadTableData"
       style="width: 100%"
@@ -14,6 +15,8 @@
         align="center"
       >
         <template slot-scope="scope">
+          <i class="el-icon-folder" v-if="!scope.row.isFile"></i>
+          <i class="el-icon-tickets" v-if="scope.row.isFile"></i>
           <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
@@ -22,7 +25,7 @@
         align="center"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.date }}</span>
+          <span>{{ scope.row.lastModifiedDate }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -53,7 +56,8 @@ export default {
   name: 'Upload',
   data() {
     return {
-      uploadTableData: []
+      uploadTableData: [],
+      dirHandle: null
     }
   },
   created() {
@@ -62,8 +66,9 @@ export default {
       table[i] = {
         name: '文件' + i,
         size: Math.floor(Math.random() * 1000000),
-        date: '2020-' + (Math.floor(Math.random() * 1000000) % 12 + 1) + '-' +
-          (Math.floor(Math.random() * 1000000) % 30 + 1)
+        lastModifiedDate: '2020-' + (Math.floor(Math.random() * 1000000) % 12 + 1) + '-' +
+          (Math.floor(Math.random() * 1000000) % 30 + 1),
+        isFile: true
       }
     }
     this.uploadTableData = table
@@ -71,6 +76,24 @@ export default {
   methods: {
     handleUpload(index, row) {
       console.log(index, row)
+    },
+    async changePath() {
+      var table = []
+      this.dirHandle = await window.showDirectoryPicker()
+      for await (const entry of this.dirHandle.values()) {
+        if (entry.kind === 'file') {
+          const file = await entry.getFile()
+          file['isFile'] = true
+          table.push(file)
+        } else {
+          entry['size'] = ''
+          entry['lastModifiedDate'] = ''
+          entry['isFile'] = false
+          table.push(entry)
+        }
+      }
+      this.uploadTableData = table
+      console.log(table)
     }
   }
 }
