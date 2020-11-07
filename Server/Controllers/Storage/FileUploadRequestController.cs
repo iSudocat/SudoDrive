@@ -5,7 +5,6 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Server.Controllers;
-using Server.Exceptions;
 using Server.Libraries;
 using Server.Middlewares;
 using Server.Models.DTO;
@@ -35,6 +34,57 @@ namespace Server.Exceptions
             _logger = logger;
         }
 
+        public void RequirePermission(string path, string uploadType, User loginUser, string operation)
+        {
+            string type;
+            string name;
+
+            var splitsPath = path.Split("/");
+
+            if ((uploadType == "text/directory" && splitsPath.Length >= 3) || (splitsPath.Length >= 4))
+            {
+                type = splitsPath[1];
+                name = splitsPath[2];
+
+                switch (type)
+                {
+                    case "users":
+                    case "groups":
+                        break;
+                    default:
+                        type = "root";
+                        break;
+                }
+            }
+            else
+            {
+                type = "root";
+                name = "";
+            }
+
+            var ret = loginUser.HasPermission(PermissionBank.StoragePermission(type, name, operation));
+            if (ret == null)
+            {
+                if (type == "user" && name == loginUser.Username)
+                {
+                    ret = true;
+                }
+                else if (type == "user")
+                {
+                    foreach (var groupToUser in loginUser.GroupToUser)
+                    {
+                        if (groupToUser.Group.GroupName == name) ret = true;
+                    }
+                }
+                else ret = false;
+            }
+
+            if (ret != true)
+            {
+                throw new AuthenticateFailedException();
+            }
+        }
+
 
         [HttpPost]
         public IActionResult RequestUpload([FromBody] FileUploadRequestModel requestModel)
@@ -45,10 +95,9 @@ namespace Server.Exceptions
             }
 
             requestModel.Path = requestModel.Path.Replace("\\", "/");
+            if (requestModel.Path[0] != '/') requestModel.Path = "/" + requestModel.Path;
 
-            // TODO 根据上传路径判断权限
-            // /users/用户名/XXX => .HasPermission('file.upload.user.用户名')
-            // /groups/组名/XXX => .HasPermission('file.upload.group.组名')
+            this.RequirePermission(requestModel.Path, requestModel.Type, loginUser, "upload");
 
             if (requestModel.Type == "text/directory")
             {
