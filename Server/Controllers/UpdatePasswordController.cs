@@ -5,6 +5,8 @@ using Server.Exceptions;
 using Server.Libraries;
 using Server.Middlewares;
 using Server.Models.VO;
+using FluentValidation.Results;
+using Server.Validators;
 
 namespace Server.Controllers
 {
@@ -32,6 +34,9 @@ namespace Server.Controllers
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordRequestModel changePasswordRequestModel)
         {
+            ChangePasswordRequestModelValidator validator = new ChangePasswordRequestModelValidator();
+            ValidationResult result = validator.Validate(changePasswordRequestModel);
+
             var user= HttpContext.Items["actor"] as User;
             if (BCrypt.Net.BCrypt.Verify(changePasswordRequestModel.OldPassword, user.Password))
             {

@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using Server.Libraries;
 using Server.Middlewares;
 using Server.Exceptions;
+using Server.Validators;
+using FluentValidation.Results;
 
 namespace Server.Controllers
 {
@@ -33,10 +35,8 @@ namespace Server.Controllers
         [HttpPost]
         public ActionResult<string> Register([FromBody] RegisterRequestModel registerRequestModel)
         {
-            if (_databaseService.Users.FirstOrDefault(t => t.Username == registerRequestModel.Username) == null)
-            {
-                throw new UsernameDuplicatedException("Username duplicated.");
-            }
+            RegisterRequestModelValidator validator = new RegisterRequestModelValidator();
+            ValidationResult result = validator.Validate(registerRequestModel);
 
             User user = new User();
             user.Username = registerRequestModel.Username;
