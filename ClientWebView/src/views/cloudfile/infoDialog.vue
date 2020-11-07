@@ -8,7 +8,7 @@
     >
       <div>文件名：{{ currentRow.name }}</div>
       <div>文件大小：{{ currentRow.size }}</div>
-      <div>修改时间：{{ currentRow.date }}</div>
+      <div>修改时间：{{ currentRow.lastModifiedDate }}</div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="handleExit()">确 定</el-button>
       </span>
