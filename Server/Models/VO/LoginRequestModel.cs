@@ -7,6 +7,7 @@ namespace Server.Models.VO
     {
         [Required]
         [JsonProperty("username")]
+        [RegularExpression(@"^[a-zA-Z0-9-_]{4,16}$")]
         public string Username { get; set; }
 
 

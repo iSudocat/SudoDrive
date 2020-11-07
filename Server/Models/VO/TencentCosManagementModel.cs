@@ -15,7 +15,7 @@ namespace Server.Models.VO
         public string Prefix { get; set; }
 
         [JsonProperty("SecretId")]
-        public string AllowPrefix { get; set; }
+        public string SecretId { get; set; }
 
         [JsonProperty("SecretKey")]
         public string SecretKey { get; set; }

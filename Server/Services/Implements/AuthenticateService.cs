@@ -24,12 +24,8 @@ namespace Server.Services.Implements
             _tokenManagementModel = tokenManagement.Value;
         }
 
-        public bool IsAuthenticated(LoginRequestModel requestModel, out string token)
+        public string GetNewToken(User loginUser)
         {
-            token = string.Empty;
-            User loginUser;
-            if (!_userService.IsValid(requestModel, out loginUser))
-                return false;
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, "" + loginUser.Username),
@@ -39,8 +35,18 @@ namespace Server.Services.Implements
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var jwtToken = new JwtSecurityToken(_tokenManagementModel.Issuer, _tokenManagementModel.Audience, claims, expires: DateTime.Now.AddMinutes(_tokenManagementModel.AccessExpiration), signingCredentials: credentials);
 
-            token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
+            var token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
+            return token;
+        }
 
+        public bool IsAuthenticated(LoginRequestModel requestModel, out string token)
+        {
+            token = string.Empty;
+            User loginUser;
+            if (!_userService.IsValid(requestModel, out loginUser))
+                return false;
+
+            token = GetNewToken(loginUser);
             return true;
 
         }

@@ -7,7 +7,10 @@ namespace Server.Exceptions
 {
     public class InvalidArgumentException : APIException
     {
-        public InvalidArgumentException(object data = null) : base(-100, "Argument Invalid.", data)
+        public static int ConstStatus = -100;
+        public static string ConstMessage = "Argument Invalid.";
+
+        public InvalidArgumentException(object data = null) : base(ConstStatus, ConstMessage, data)
         {
         }
     }

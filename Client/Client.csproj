@@ -91,11 +91,12 @@
     </ApplicationDefinition>
     <Compile Include="TencentCos\CosConfig.cs" />
     <Compile Include="TencentCos\CosService.cs" />
-    <Compile Include="TencentCos\File.cs" />
-    <Compile Include="TencentCos\FileTask.cs" />
+    <Compile Include="TencentCos\FileList.cs" />
     <Compile Include="TencentCos\FileService.cs" />
-    <Compile Include="TencentCos\OperationType.cs" />
-    <Compile Include="TencentCos\StatusType.cs" />
+    <Compile Include="TencentCos\TaskList\FCB.cs" />
+    <Compile Include="TencentCos\TaskList\FileTask.cs" />
+    <Compile Include="TencentCos\TaskList\OperationType.cs" />
+    <Compile Include="TencentCos\TaskList\StatusType.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

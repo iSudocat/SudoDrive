@@ -2,15 +2,16 @@ using Microsoft.AspNetCore.Mvc;
 using Server.Models.Entities;
 using Server.Services;
 using Server.Exceptions;
+using Server.Libraries;
 using Server.Middlewares;
 using Server.Models.VO;
 
 namespace Server.Controllers
 {
-    [Route("api/changepassword")]
+    [Route("api/auth/updatepassword")]
     [ApiController]
-    [NeedPermission("user.profile.changepassword")]
-    public class ChangePasswordController: Controller
+    [NeedPermission(PermissionBank.UserAuthUpdatePassword)]
+    public class UpdatePasswordController: Controller
     {
         private IDatabaseService _databaseService;
 
@@ -18,7 +19,7 @@ namespace Server.Controllers
         /// 构造函数
         /// </summary>
         /// <param name="databaseService">通过依赖注入获得数据库对象</param>
-        public ChangePasswordController(IDatabaseService databaseService)
+        public UpdatePasswordController(IDatabaseService databaseService)
         {
             _databaseService = databaseService;
         }
@@ -28,7 +29,7 @@ namespace Server.Controllers
         /// </summary>
         /// <param name="changePasswordRequestModel"></param>
         /// <returns></returns>
-        [HttpPut]
+        [HttpPost]
         public ActionResult ChangePassword(ChangePasswordRequestModel changePasswordRequestModel)
         {
             var user= HttpContext.Items["actor"] as User;

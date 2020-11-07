@@ -29,22 +29,34 @@ namespace Server.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("FileName")
+                    b.Property<string>("Folder")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("FilePath")
+                    b.Property<string>("Guid")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Md5")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("FileType")
+                    b.Property<string>("Path")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long?>("GroupId")
+                    b.Property<long>("Size")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("PermissionName")
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("StorageName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -56,7 +68,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Files");
                 });
@@ -86,23 +98,23 @@ namespace Server.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2020, 11, 3, 13, 2, 20, 385, DateTimeKind.Local).AddTicks(9386),
+                            CreatedAt = new DateTime(2020, 11, 6, 16, 29, 14, 437, DateTimeKind.Local).AddTicks(2339),
                             GroupName = "Admin",
-                            UpdatedAt = new DateTime(2020, 11, 3, 13, 2, 20, 385, DateTimeKind.Local).AddTicks(9386)
+                            UpdatedAt = new DateTime(2020, 11, 6, 16, 29, 14, 437, DateTimeKind.Local).AddTicks(2339)
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2020, 11, 3, 13, 2, 20, 385, DateTimeKind.Local).AddTicks(9386),
+                            CreatedAt = new DateTime(2020, 11, 6, 16, 29, 14, 437, DateTimeKind.Local).AddTicks(2339),
                             GroupName = "User",
-                            UpdatedAt = new DateTime(2020, 11, 3, 13, 2, 20, 385, DateTimeKind.Local).AddTicks(9386)
+                            UpdatedAt = new DateTime(2020, 11, 6, 16, 29, 14, 437, DateTimeKind.Local).AddTicks(2339)
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2020, 11, 3, 13, 2, 20, 385, DateTimeKind.Local).AddTicks(9386),
+                            CreatedAt = new DateTime(2020, 11, 6, 16, 29, 14, 437, DateTimeKind.Local).AddTicks(2339),
                             GroupName = "Guest",
-                            UpdatedAt = new DateTime(2020, 11, 3, 13, 2, 20, 385, DateTimeKind.Local).AddTicks(9386)
+                            UpdatedAt = new DateTime(2020, 11, 6, 16, 29, 14, 437, DateTimeKind.Local).AddTicks(2339)
                         });
                 });
 
@@ -128,17 +140,27 @@ namespace Server.Migrations
                         new
                         {
                             GroupId = 2L,
-                            Permission = "user.profile.changepassword"
+                            Permission = "user.auth.refresh"
+                        },
+                        new
+                        {
+                            GroupId = 2L,
+                            Permission = "user.auth.updatepassword"
+                        },
+                        new
+                        {
+                            GroupId = 2L,
+                            Permission = "storage.file.list.basic"
                         },
                         new
                         {
                             GroupId = 3L,
-                            Permission = "user.login"
+                            Permission = "user.auth.register"
                         },
                         new
                         {
                             GroupId = 3L,
-                            Permission = "user.register"
+                            Permission = "user.auth.login"
                         });
                 });
 
@@ -193,9 +215,9 @@ namespace Server.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2020, 11, 3, 13, 2, 20, 385, DateTimeKind.Local).AddTicks(9386),
-                            Password = "$2a$11$CS4gc8NG4.lGi.I2rjNk2uq3R3u7DtFANYGk/W5DpMrVRa949O8My",
-                            UpdatedAt = new DateTime(2020, 11, 3, 13, 2, 20, 385, DateTimeKind.Local).AddTicks(9386),
+                            CreatedAt = new DateTime(2020, 11, 6, 16, 29, 14, 437, DateTimeKind.Local).AddTicks(2339),
+                            Password = "$2a$11$G3NOgeD1F7VbZcZiiwezN./2z..L4i6SC66PSiCFPRJFx/CueBKv2",
+                            UpdatedAt = new DateTime(2020, 11, 6, 16, 29, 14, 437, DateTimeKind.Local).AddTicks(2339),
                             Username = "admin"
                         });
                 });
@@ -204,7 +226,9 @@ namespace Server.Migrations
                 {
                     b.HasOne("Server.Models.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("GroupId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Server.Models.Entities.GroupToPermission", b =>

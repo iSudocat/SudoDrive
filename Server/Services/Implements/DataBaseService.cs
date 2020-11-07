@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Server.Libraries;
 using Server.Models.VO;
 using Server.Models.Entities;
 
@@ -63,10 +64,12 @@ namespace Server.Services.Implements
 
             modelBuilder.Entity<GroupToPermission>()
                 .HasData(
-                    new {GroupId = Group.GroupID.ADMIN, Permission = "*"},
-                    new {GroupId = Group.GroupID.DEFAULT, Permission = "user.profile.changepassword" },
-                    new {GroupId = Group.GroupID.GUEST, Permission = "user.login" },
-                    new {GroupId = Group.GroupID.GUEST, Permission = "user.register" }
+                    new { GroupId = Group.GroupID.ADMIN, Permission = "*" },
+                    new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.UserAuthRefresh },
+                    new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.UserAuthUpdatePassword },
+                    new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.StorageFileListBasic },
+                    new { GroupId = Group.GroupID.GUEST, Permission = PermissionBank.UserAuthRegister },
+                    new { GroupId = Group.GroupID.GUEST, Permission = PermissionBank.UserAuthLogin }
                 );
         }
 

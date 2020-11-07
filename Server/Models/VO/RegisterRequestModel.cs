@@ -11,11 +11,13 @@ namespace Server.Models.VO
     {
         [Required]
         [JsonProperty("username")]
+        [RegularExpression(@"^[a-zA-Z0-9-_]{4,16}$")]
         public string Username { get; set; }
 
 
         [Required]
         [JsonProperty("password")]
+        [RegularExpression(@"^[.?]{8,}$")]
         public string Password { get; set; }
     }
 }

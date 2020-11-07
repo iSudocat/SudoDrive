@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Server.Exceptions;
+using Server.Libraries;
 using Server.Middlewares;
 using Server.Models;
 using Server.Models.DTO;
@@ -17,7 +18,7 @@ namespace Server.Controllers
     [Route("api/login")]
     [ApiController]
     [AllowAnonymous]
-    [NeedPermission("user.login")]
+    [NeedPermission(PermissionBank.UserAuthLogin)]
     public class LoginController : Controller
     {
         private readonly IAuthenticateService _authService;
