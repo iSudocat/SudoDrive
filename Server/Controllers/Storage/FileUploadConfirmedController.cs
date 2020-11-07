@@ -80,10 +80,10 @@ namespace Server.Controllers.Storage
             for (int i = folderPath.Count - 1; i > 0; i--)
             {
                 // a/b
-                var s = folderPath[i];
+                var s = folderPath[i].Replace("\\", "/");
 
                 // a/b/c
-                var n = folderPath[i - 1];
+                var n = folderPath[i - 1].Replace("\\", "/");
 
                 var t = _databaseService.Files.FirstOrDefault(t =>
                     t.Path == n &&

@@ -44,14 +44,14 @@ namespace Server.Controllers.Storage
             // 按文件夹查找
             if (!string.IsNullOrEmpty(requestModel.Folder))
             {
-                requestModel.Folder = requestModel.Folder.Replace("/", "\\");
+                requestModel.Folder = requestModel.Folder.Replace("\\", "/");
                 result = result.Where(s => s.Folder == requestModel.Folder);
             }
 
             // 按路径前缀查找
             if (!string.IsNullOrEmpty(requestModel.PathPrefix))
             {
-                requestModel.PathPrefix = requestModel.PathPrefix.Replace("/", "\\");
+                requestModel.PathPrefix = requestModel.PathPrefix.Replace("\\", "/");
                 result = result.Where(s => s.Folder.StartsWith(requestModel.PathPrefix));
             }
 
@@ -93,7 +93,7 @@ namespace Server.Controllers.Storage
             foreach (var s in directorys)
             {
                 var p = s.Path;
-                p = Path.EndsInDirectorySeparator(p) ? p : p + "\\";
+                p = Path.EndsInDirectorySeparator(p) ? p : p + "/";
                 var delete = _databaseService.Files.Where(s => s.Path.StartsWith(p));
                 count += delete.Count();
                 _databaseService.Files.RemoveRange(delete);

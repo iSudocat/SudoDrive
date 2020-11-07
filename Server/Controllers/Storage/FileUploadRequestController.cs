@@ -44,7 +44,7 @@ namespace Server.Exceptions
                 throw new UnexpectedException();
             }
 
-            requestModel.Path = requestModel.Path.Replace("/", "\\");
+            requestModel.Path = requestModel.Path.Replace("\\", "/");
 
             // TODO 根据上传路径判断权限
             // /users/用户名/XXX => .HasPermission('file.upload.user.用户名')
@@ -83,10 +83,10 @@ namespace Server.Exceptions
             for (int i = folderPath.Count - 1; i > 0; i--)
             {
                 // a/b
-                var s = folderPath[i];
+                var s = folderPath[i].Replace("\\", "/");
 
                 // a/b/c
-                var n = folderPath[i - 1];
+                var n = folderPath[i - 1].Replace("\\", "/");
 
                 var t = _databaseService.Files.FirstOrDefault(t =>
                     t.Path == n &&
