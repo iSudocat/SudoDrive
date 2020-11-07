@@ -43,6 +43,7 @@ namespace Server.Exceptions
 
             if ((uploadType == "text/directory" && splitsPath.Length >= 3) || (splitsPath.Length >= 4))
             {
+                // 获取上传路径的第一季第二级目录名
                 type = splitsPath[1];
                 name = splitsPath[2];
 
@@ -58,13 +59,16 @@ namespace Server.Exceptions
             }
             else
             {
+                // 如果是非 root 的状态
                 type = "root";
                 name = "";
             }
 
+            // 检查用户权限
             var ret = loginUser.HasPermission(PermissionBank.StoragePermission(type, name, operation));
             if (ret == null)
             {
+                // 检查用户默认
                 if (type == "user" && name == loginUser.Username)
                 {
                     ret = true;
