@@ -83,6 +83,8 @@ namespace Server.Services.Implements
                     new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.UserAuthRefresh },
                     new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.UserAuthUpdatePassword },
                     new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.StorageFileListBasic },
+                    new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.StorageFileUploadBasic },
+                    new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.StorageFileDeleteBase },
                     new { GroupId = Group.GroupID.GUEST, Permission = PermissionBank.UserAuthRegister },
                     new { GroupId = Group.GroupID.GUEST, Permission = PermissionBank.UserAuthLogin }
                 );

@@ -50,6 +50,11 @@ namespace Server.Exceptions
             // /users/用户名/XXX => .HasPermission('file.upload.user.用户名')
             // /groups/组名/XXX => .HasPermission('file.upload.group.组名')
 
+            if (requestModel.Type == "text/directory")
+            {
+                return RequestUploadFolder(requestModel, loginUser);
+            }
+
             // 判断文件重复
             var efile = _databaseService.Files.FirstOrDefault(t =>
                 t.Path == requestModel.Path &&
@@ -59,13 +64,6 @@ namespace Server.Exceptions
             {
                 throw new FileNameDuplicatedException();
             }
-
-
-            if (requestModel.Type == "text/directory")
-            {
-                return RequestUploadFolder(requestModel, loginUser);
-            }
-
             return RequestUploadFile(requestModel, loginUser);
         }
 
