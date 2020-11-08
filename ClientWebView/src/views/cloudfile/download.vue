@@ -1,5 +1,13 @@
 <template>
   <div>
+    <el-row>
+      <el-col span="21">
+        <el-button>返回</el-button>
+      </el-col>
+      <el-col span="3">
+        <el-button>下载</el-button>
+      </el-col>
+    </el-row>
     <el-table
       :data="uploadTableData"
       style="width: 100%"
@@ -67,8 +75,8 @@ export default {
     }
   },
   created() {
-    var table = []
-    for (var i = 0; i < 5; i++) {
+    const table = []
+    for (let i = 0; i < 5; i++) {
       table[i] = {
         name: '文件' + i,
         size: Math.floor(Math.random() * 1000000),

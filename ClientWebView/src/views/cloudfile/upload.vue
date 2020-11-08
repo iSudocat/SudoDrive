@@ -1,8 +1,16 @@
 <template>
   <div>
-    <el-button @click="changePath">切换目录</el-button>
+    <el-row>
+      <el-col span="21">
+        <el-button @click="parentPath">返回</el-button>
+      </el-col>
+      <el-col span="3">
+        <el-button>上传</el-button>
+      </el-col>
+    </el-row>
     <el-table
       id="leftBox"
+      highlight-current-row
       :data="uploadTableData"
       style="width: 100%"
       @cell-dblclick="handleDblclick"
@@ -27,7 +35,7 @@
         align="center"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.lastModifiedDate }}</span>
+          <span>{{ scope.row.lastModified }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -63,54 +71,105 @@ export default {
   data() {
     return {
       dialogVisible: false,
+      currentPath: '',
       currentRow: {
         name: '',
         size: 0,
-        lastModifiedDate: ''
+        lastModified: ''
       },
       uploadTableData: [],
       dirHandle: null
     }
   },
   created() {
-    var table = []
-    for (var i = 0; i < 10; i++) {
-      table[i] = {
-        name: '文件' + i,
-        size: Math.floor(Math.random() * 1000000),
-        lastModifiedDate: '2020-' + (Math.floor(Math.random() * 1000000) % 12 + 1) + '-' +
-          (Math.floor(Math.random() * 1000000) % 30 + 1),
-        isFile: true
+    if (typeof (CefSharp) === 'undefined') {
+      const table = []
+      for (let i = 0; i < 10; i++) {
+        table[i] = {
+          name: '文件' + i,
+          size: Math.floor(Math.random() * 1000000),
+          lastModified: '2020-' + (Math.floor(Math.random() * 1000000) % 12 + 1) + '-' +
+            (Math.floor(Math.random() * 1000000) % 30 + 1),
+          isFile: true
+        }
       }
+      this.uploadTableData = table
+    } else {
+      this.InitPath()
     }
-    this.uploadTableData = table
   },
   methods: {
     handleUpload(index, row) {
       console.log(index, row)
     },
-    async changePath() {
-      var table = []
-      this.dirHandle = await window.showDirectoryPicker()
-      for await (const entry of this.dirHandle.values()) {
-        if (entry.kind === 'file') {
-          const file = await entry.getFile()
-          file['isFile'] = true
-          table.push(file)
-        } else {
-          entry['size'] = ''
-          entry['lastModifiedDate'] = ''
-          entry['isFile'] = false
-          table.push(entry)
-        }
+    handleTableReturn(table, ret) {
+      const retObject = JSON.parse(ret)
+      this.currentPath = retObject.currentPath
+      const fileTable = retObject.files
+      const directoryTable = retObject.directories
+      for (let j = 0; j < directoryTable.length; j++) {
+        directoryTable[j]['isFile'] = false
+        table.push(directoryTable[j])
       }
-      this.uploadTableData = table
-      console.log(table)
+      for (let i = 0; i < fileTable.length; i++) {
+        fileTable[i]['isFile'] = true
+        table.push(fileTable[i])
+      }
+    },
+    async InitPath() {
+      const that = this
+      const table = []
+      if (typeof (CefSharp) === 'undefined') {
+        this.dirHandle = await window.showDirectoryPicker()
+        for await (const entry of this.dirHandle.values()) {
+          if (entry.kind === 'file') {
+            const file = await entry.getFile()
+            file['isFile'] = true
+            table.push(file)
+          } else {
+            entry['lastModified'] = ''
+            entry['isFile'] = false
+            table.push(entry)
+          }
+        }
+        this.uploadTableData = table
+        console.log(table)
+      } else {
+        window.fileFunction.showAllInfo().then(function(ret) {
+          that.handleTableReturn(table, ret)
+          that.uploadTableData = table
+        })
+      }
+    },
+    parentPath() {
+      const that = this
+      const table = []
+      if (typeof (CefSharp) === 'undefined') {
+        return
+      } else {
+        window.fileFunction.toParent().then(function(ret) {
+          that.handleTableReturn(table, ret)
+          that.uploadTableData = table
+        })
+      }
     },
     handleDblclick(row) {
       console.log(row)
-      this.dialogVisible = true
-      this.currentRow = row
+      const that = this
+      const table = []
+      if (typeof (CefSharp) === 'undefined') {
+        return
+      } else {
+        if (row.isFile) {
+          this.dialogVisible = true
+          this.currentRow = row
+        } else {
+          window.fileFunction.toChild(String(row.name)).then(function(ret) {
+            that.handleTableReturn(table, ret)
+            that.uploadTableData = table
+          })
+        }
+      }
     },
     closeDialog(visible) {
       console.log('closeDialog')
