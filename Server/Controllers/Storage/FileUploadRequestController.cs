@@ -206,7 +206,7 @@ namespace Server.Exceptions
                 file.Folder = Path.GetDirectoryName(requestModel.Path) ?? "";
                 file.Name = Path.GetFileName(requestModel.Path) ?? "";
 
-                file.Guid = Guid.NewGuid().ToString();
+                file.Guid = Guid.NewGuid().ToString().ToLower();
                 // TODO 检查 Guid 是否有重复
                 file.StorageName = $"{file.Guid[0]}{file.Guid[1]}/{file.Guid[2]}{file.Guid[3]}/{file.Guid}{Path.GetExtension(requestModel.Path)}";
                 file.User = loginUser;

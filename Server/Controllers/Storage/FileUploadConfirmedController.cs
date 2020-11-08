@@ -39,7 +39,9 @@ namespace Server.Controllers.Storage
                 throw new UnexpectedException();
             }
 
-            // 检查被确认文件是否存在
+            requestModel.Guid = requestModel.Guid.ToLower();
+
+            // 检查被确认文件是否存在0
             var file = _databaseService.Files.FirstOrDefault(s => 
                 s.Id == requestModel.Id && 
                 s.Guid == requestModel.Guid &&
