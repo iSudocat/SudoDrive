@@ -22,6 +22,7 @@ namespace Server.Models.Entities
     /// Status: 文件状态
     /// Size: 文件大小
     /// Md5: 文件哈希
+    /// permission: 权限
     /// 
     /// 对于文件夹：
     /// Name: 文件夹名
@@ -34,6 +35,7 @@ namespace Server.Models.Entities
     /// Status: 已确认
     /// Size: [空]
     /// Md5: [空]
+    /// permission: 权限
     /// 
     /// </summary>
     public class File : ICreateTimeStampedModel, IUpdateTimeStampedModel
@@ -101,6 +103,56 @@ namespace Server.Models.Entities
         /// 文件哈希值
         /// </summary>
         public string Md5 { get; set; }
+        
+        /// <summary>
+        /// 权限
+        /// everyone
+        /// users.{USERNAME}
+        /// groups.{GROUPNAME}
+        /// root
+        /// </summary>
+        public string Permission { get; set; }
+
+        public string GetPermission()
+        {
+            if (!string.IsNullOrEmpty(Permission)) return Permission;
+            if (string.IsNullOrEmpty(Path)) return "";
+            if (Path == "/users") return Permission = "everyone";
+            if (Path == "/groups") return Permission = "everyone";
+
+            string type;
+            string name;
+
+            var splitsPath = Path.Split("/");
+
+            if ((Type == "text/directory" && splitsPath.Length >= 3) || (splitsPath.Length >= 4))
+            {
+                // 获取上传路径的第一季第二级目录名
+                type = splitsPath[1];
+                name = splitsPath[2];
+
+                switch (type)
+                {
+                    case "users":
+                    case "groups":
+                        break;
+                    default:
+                        type = "root";
+                        break;
+                }
+            }
+            else
+            {
+                // 如果是非 root 的状态
+                type = "root";
+                name = "";
+            }
+
+            if (type == "root")
+                return Permission = "root";
+
+            return Permission = $"{type}.{name}";
+        }
 
         public DateTime CreatedAt { get; set; }
 
@@ -116,7 +168,8 @@ namespace Server.Models.Entities
             => new FileModel(this);
 
         public static File CreateDirectoryRecord(string name, string folder, string path, User user)
-            => new File()
+        {
+            var ret = new File()
             {
                 // Name: 文件夹名
                 Name = name,
@@ -139,5 +192,8 @@ namespace Server.Models.Entities
                 // Md5: [空]
                 Md5 = null
             };
+            ret.GetPermission();
+            return ret;
+        }
     }
 }
