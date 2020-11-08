@@ -1,8 +1,10 @@
 using CefSharp.Web;
+using Client.CefUtils.VO;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -32,7 +34,10 @@ namespace Client.CefUtils.Function
             string path = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             DirectoryInfo root = new DirectoryInfo(path);
             FileInfo[] files = root.GetFiles();
-            return JsonConvert.SerializeObject(files);
+            StringBuilder results = new StringBuilder("");
+            foreach (var fileInfo in files)
+                results.Append(new StringBuilder(JsonConvert.SerializeObject(new FileInfoVO(fileInfo))));
+            return results.ToString();
         }
         public string showFolderInfo()
         {
