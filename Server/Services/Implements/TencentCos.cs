@@ -23,7 +23,7 @@ namespace Server.Services.Implements
         {
             string bucket = _tencentCosManagement.Bucket;
             string region = _tencentCosManagement.Region;
-            string allowPrefix = Path.Join(_tencentCosManagement.Prefix, file.StorageName);
+            string allowPrefix = file.StorageName;
             string[] allowActions = new string[] {
                 "name/cos:PutObject",
                 "name/cos:PostObject",

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Server.Models.Entities;
 using Server.Models.VO;
+using Server.Services;
 
 namespace Server.Models.DTO
 {
@@ -13,7 +14,11 @@ namespace Server.Models.DTO
 
         public int Offset { get; private set; }
 
-        public FileListResultModel(IEnumerable<File> files, int amount, int offset)
+        public TencentCosModel TencentCos { get; private set; }
+
+
+
+        public FileListResultModel(IEnumerable<File> files, int amount, int offset, TencentCosManagementModel tencentCos)
         {
             List<FileModel> ret = new List<FileModel>();
 
@@ -25,6 +30,8 @@ namespace Server.Models.DTO
             this.Files = ret;
             this.Amount = ret.Count;
             this.Offset = offset;
+
+            this.TencentCos = new TencentCosModel(tencentCos);
         }
     }
 }

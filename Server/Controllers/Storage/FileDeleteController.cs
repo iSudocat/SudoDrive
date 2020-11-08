@@ -41,6 +41,61 @@ namespace Server.Controllers.Storage
 
             var result = _databaseService.Files.AsQueryable();
 
+            // 注入用户权限
+            if (loginUser.HasPermission(PermissionBank.StoragePermission("root", "root", "delete")) != true)
+            {
+                List<string> filter = new List<string>();
+                filter.Add("everyone");
+
+                if (loginUser.HasPermission(PermissionBank.StoragePermission("users", loginUser.Username, "delete")) != false)
+                {
+                    filter.Add($"users.{loginUser.Username}");
+                }
+                foreach (var groupToUser in loginUser.GroupToUser)
+                {
+                    var groupName = groupToUser.Group.GroupName;
+                    if (loginUser.HasPermission(PermissionBank.StoragePermission("groups", groupName, "delete")) != false)
+                    {
+                        filter.Add($"groups.{groupName}");
+                    }
+                }
+
+                var groups = loginUser.GroupToUser;
+                foreach (var groupToUser in groups)
+                {
+                    var group = groupToUser.Group;
+                    var permissions = group.GroupToPermission;
+                    foreach (var groupToPermission in permissions)
+                    {
+                        var permission = groupToPermission.Permission;
+
+                        var permissionNode = permission.Split(".");
+
+                        // storage.file.{type}.{name}.{operation}
+
+                        if ((permissionNode.Length == 5) && (permissionNode[0] == "storage") && (permissionNode[1] == "file"))
+                        {
+                            var type = permissionNode[2];
+                            var name = permissionNode[3];
+                            var operation = permissionNode[4];
+                            if (operation != "list") continue;
+
+                            switch (type)
+                            {
+                                case "users":
+                                    filter.Add($"users.{name}");
+                                    break;
+                                case "groups":
+                                    filter.Add($"groups.{name}");
+                                    break;
+                            }
+                        }
+                    }
+                }
+
+                result = result.Where(s => filter.Contains(s.Permission));
+            }
+
             // 按文件夹查找
             if (!string.IsNullOrEmpty(requestModel.Folder))
             {

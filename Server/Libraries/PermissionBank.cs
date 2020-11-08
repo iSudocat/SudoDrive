@@ -14,7 +14,7 @@ namespace Server.Libraries
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="type">user / group / root</param>
+        /// <param name="type">users / groups / root</param>
         /// <param name="name">username / groupname</param>
         /// <param name="operation">upload / delete / list</param>
         /// <returns></returns>
