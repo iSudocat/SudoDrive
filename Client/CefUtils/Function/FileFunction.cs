@@ -13,7 +13,7 @@ namespace Client.CefUtils.Function
 {
     class FileFunction
     {
-        private string path = @"E:\SudoDrive\ClientWebView";
+        private string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         public string toParent()
         {
             DirectoryInfo root = new DirectoryInfo(path);

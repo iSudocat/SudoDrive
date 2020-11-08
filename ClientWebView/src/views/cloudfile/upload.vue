@@ -1,9 +1,16 @@
 <template>
   <div>
-    <el-button @click="changePath">切换目录</el-button>
-    <el-button @click="parentPath">返回</el-button>
+    <el-row>
+      <el-col span="21">
+        <el-button @click="parentPath">返回</el-button>
+      </el-col>
+      <el-col span="3">
+        <el-button>上传</el-button>
+      </el-col>
+    </el-row>
     <el-table
       id="leftBox"
+      highlight-current-row
       :data="uploadTableData"
       style="width: 100%"
       @cell-dblclick="handleDblclick"
@@ -75,17 +82,21 @@ export default {
     }
   },
   created() {
-    const table = []
-    for (let i = 0; i < 10; i++) {
-      table[i] = {
-        name: '文件' + i,
-        size: Math.floor(Math.random() * 1000000),
-        lastModified: '2020-' + (Math.floor(Math.random() * 1000000) % 12 + 1) + '-' +
-          (Math.floor(Math.random() * 1000000) % 30 + 1),
-        isFile: true
+    if (typeof (CefSharp) === 'undefined') {
+      const table = []
+      for (let i = 0; i < 10; i++) {
+        table[i] = {
+          name: '文件' + i,
+          size: Math.floor(Math.random() * 1000000),
+          lastModified: '2020-' + (Math.floor(Math.random() * 1000000) % 12 + 1) + '-' +
+            (Math.floor(Math.random() * 1000000) % 30 + 1),
+          isFile: true
+        }
       }
+      this.uploadTableData = table
+    } else {
+      this.InitPath()
     }
-    this.uploadTableData = table
   },
   methods: {
     handleUpload(index, row) {
@@ -105,7 +116,7 @@ export default {
         table.push(fileTable[i])
       }
     },
-    async changePath() {
+    async InitPath() {
       const that = this
       const table = []
       if (typeof (CefSharp) === 'undefined') {

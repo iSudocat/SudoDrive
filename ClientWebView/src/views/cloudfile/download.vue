@@ -1,6 +1,13 @@
 <template>
   <div>
-    <el-button>下载</el-button>
+    <el-row>
+      <el-col span="21">
+        <el-button>返回</el-button>
+      </el-col>
+      <el-col span="3">
+        <el-button>下载</el-button>
+      </el-col>
+    </el-row>
     <el-table
       :data="uploadTableData"
       style="width: 100%"
