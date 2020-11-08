@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-row>
-      <el-col span="21">
+      <el-col :span="21">
         <el-button @click="parentPath">返回</el-button>
       </el-col>
-      <el-col span="3">
+      <el-col :span="3">
         <el-button>上传</el-button>
       </el-col>
     </el-row>

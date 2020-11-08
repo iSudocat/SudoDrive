@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-row>
-      <el-col span="21">
+      <el-col :span="21">
         <el-button>返回</el-button>
       </el-col>
-      <el-col span="3">
+      <el-col :span="3">
         <el-button>下载</el-button>
       </el-col>
     </el-row>
