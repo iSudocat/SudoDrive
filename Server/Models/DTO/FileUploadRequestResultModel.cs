@@ -14,10 +14,14 @@ namespace Server.Models.DTO
         public class CredentialsType
         {
             public string Token { get; private set; }
+            public string TmpSecretId { get; private set; }
+            public string TmpSecretKey { get; private set; }
 
-            public CredentialsType(string token)
+            public CredentialsType(string token, string tmpSecretId, string tmpSecretKey)
             {
                 this.Token = token;
+                this.TmpSecretId = tmpSecretId;
+                this.TmpSecretKey = tmpSecretKey;
             }
         }
 
@@ -47,6 +51,7 @@ namespace Server.Models.DTO
         public FileUploadRequestResultModel(File file, Dictionary<string, object> token, TencentCosManagementModel tencentCos)
         {
             this.File = file.ToVo();
+            this.TencentCos = new TencentCosModel(tencentCos);
 
             if (token == null)
             {
@@ -60,7 +65,7 @@ namespace Server.Models.DTO
                 // TODO 不知道这里会不会出错
                 throw new UnexpectedException();
             }
-            CredentialsType credentials =new  CredentialsType(resCredentials["Token"].ToString());
+            CredentialsType credentials = new CredentialsType(resCredentials["Token"].ToString(), resCredentials["TmpSecretId"].ToString(), resCredentials["TmpSecretKey"].ToString());
 
             long expiredTime;
             DateTime expiration;
@@ -80,8 +85,6 @@ namespace Server.Models.DTO
             }
 
             this.Token = new TokenType(credentials, expiredTime, expiration, requestId, startTime);
-
-            this.TencentCos = new TencentCosModel(tencentCos);
         }
 
     }
