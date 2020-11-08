@@ -5,6 +5,7 @@
       style="width: 100%"
       @cell-dblclick="handleDblclick"
     >
+      <el-button @click="changePath">下载</el-button>
       <el-table-column
         type="selection"
         width="55"
