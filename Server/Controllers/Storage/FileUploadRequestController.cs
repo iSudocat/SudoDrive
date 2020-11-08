@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Server.Controllers;
 using Server.Libraries;
 using Server.Middlewares;
@@ -26,11 +27,13 @@ namespace Server.Exceptions
 
         private readonly ILogger _logger;
 
+        private readonly TencentCosManagementModel _tencentCosManagement;
 
-        public FileUploadRequestController(IDatabaseService databaseService, ITencentCos tencentCos, ILogger<GlobalExceptionFilter> logger)
+        public FileUploadRequestController(IDatabaseService databaseService, ITencentCos tencentCos, IOptions<TencentCosManagementModel> TencentCosManagement, ILogger<GlobalExceptionFilter> logger)
         {
             _databaseService = databaseService;
             _tencentCos = tencentCos;
+            _tencentCosManagement = TencentCosManagement.Value;
             _logger = logger;
         }
 
@@ -171,7 +174,7 @@ namespace Server.Exceptions
             }
 
             SetApiResultStatus(ApiResultStatus.StorageUploadSkip);
-            return Ok(new FileUploadRequestResultModel(ret, null));
+            return Ok(new FileUploadRequestResultModel(ret, null, _tencentCosManagement));
         }
 
 
@@ -246,7 +249,7 @@ namespace Server.Exceptions
 
             _databaseService.SaveChanges();
 
-            return Ok(new FileUploadRequestResultModel(file, token));
+            return Ok(new FileUploadRequestResultModel(file, token, _tencentCosManagement));
         }
     }
 }
