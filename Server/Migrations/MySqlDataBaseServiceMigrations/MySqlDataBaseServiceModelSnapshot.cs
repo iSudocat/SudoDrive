@@ -14,8 +14,8 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.9")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .HasAnnotation("ProductVersion", "5.0.0-rc.2.20475.6");
 
             modelBuilder.Entity("Server.Models.Entities.File", b =>
                 {
@@ -24,25 +24,28 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Folder")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<string>("Guid")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<string>("Md5")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Path")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Permission")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<long>("Size")
                         .HasColumnType("bigint");
@@ -51,19 +54,27 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                         .HasColumnType("int");
 
                     b.Property<string>("StorageName")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
-                    b.Property<long>("UserId")
+                    b.Property<long?>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Folder");
+
+                    b.HasIndex("Guid");
+
+                    b.HasIndex("Path");
+
+                    b.HasIndex("Status");
 
                     b.HasIndex("UserId");
 
@@ -77,14 +88,14 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("GroupName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -94,23 +105,23 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2020, 11, 6, 16, 31, 12, 190, DateTimeKind.Local).AddTicks(3489),
+                            CreatedAt = new DateTime(2020, 11, 8, 16, 30, 0, 508, DateTimeKind.Local).AddTicks(6828),
                             GroupName = "Admin",
-                            UpdatedAt = new DateTime(2020, 11, 6, 16, 31, 12, 190, DateTimeKind.Local).AddTicks(3489)
+                            UpdatedAt = new DateTime(2020, 11, 8, 16, 30, 0, 508, DateTimeKind.Local).AddTicks(6828)
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2020, 11, 6, 16, 31, 12, 190, DateTimeKind.Local).AddTicks(3489),
+                            CreatedAt = new DateTime(2020, 11, 8, 16, 30, 0, 508, DateTimeKind.Local).AddTicks(6828),
                             GroupName = "User",
-                            UpdatedAt = new DateTime(2020, 11, 6, 16, 31, 12, 190, DateTimeKind.Local).AddTicks(3489)
+                            UpdatedAt = new DateTime(2020, 11, 8, 16, 30, 0, 508, DateTimeKind.Local).AddTicks(6828)
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2020, 11, 6, 16, 31, 12, 190, DateTimeKind.Local).AddTicks(3489),
+                            CreatedAt = new DateTime(2020, 11, 8, 16, 30, 0, 508, DateTimeKind.Local).AddTicks(6828),
                             GroupName = "Guest",
-                            UpdatedAt = new DateTime(2020, 11, 6, 16, 31, 12, 190, DateTimeKind.Local).AddTicks(3489)
+                            UpdatedAt = new DateTime(2020, 11, 8, 16, 30, 0, 508, DateTimeKind.Local).AddTicks(6828)
                         });
                 });
 
@@ -120,8 +131,8 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Permission")
-                        .HasColumnType("varchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.HasKey("GroupId", "Permission");
 
@@ -147,6 +158,16 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                         {
                             GroupId = 2L,
                             Permission = "storage.file.list.basic"
+                        },
+                        new
+                        {
+                            GroupId = 2L,
+                            Permission = "storage.file.upload.basic"
+                        },
+                        new
+                        {
+                            GroupId = 2L,
+                            Permission = "storage.file.delete.basic"
                         },
                         new
                         {
@@ -189,20 +210,22 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Username");
 
                     b.ToTable("Users");
 
@@ -210,9 +233,9 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2020, 11, 6, 16, 31, 12, 190, DateTimeKind.Local).AddTicks(3489),
-                            Password = "$2a$11$bDwvEHssmMBXwAKFzbqhsOn2ECN18DhhPNFMfrKZW57pJDTtw7XV.",
-                            UpdatedAt = new DateTime(2020, 11, 6, 16, 31, 12, 190, DateTimeKind.Local).AddTicks(3489),
+                            CreatedAt = new DateTime(2020, 11, 8, 16, 30, 0, 508, DateTimeKind.Local).AddTicks(6828),
+                            Password = "$2a$11$H7BFaQnS7GvhFtr0wLJsQ.Wejp0nbqohJZ3FxaV9Z2TXHWqq/sJMC",
+                            UpdatedAt = new DateTime(2020, 11, 8, 16, 30, 0, 508, DateTimeKind.Local).AddTicks(6828),
                             Username = "admin"
                         });
                 });
@@ -221,9 +244,9 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                 {
                     b.HasOne("Server.Models.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Server.Models.Entities.GroupToPermission", b =>
@@ -233,6 +256,8 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("Server.Models.Entities.GroupToUser", b =>
@@ -248,6 +273,22 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Group");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Server.Models.Entities.Group", b =>
+                {
+                    b.Navigation("GroupToPermission");
+
+                    b.Navigation("GroupToUser");
+                });
+
+            modelBuilder.Entity("Server.Models.Entities.User", b =>
+                {
+                    b.Navigation("GroupToUser");
                 });
 #pragma warning restore 612, 618
         }

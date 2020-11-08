@@ -19,6 +19,6 @@ namespace Server.Services.Implements
         }
         
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseMySQL(_connectionInfo.ConnectionInformation);
+            => options.UseMySql(_connectionInfo.ConnectionInformation);
     }
 }
