@@ -10,5 +10,8 @@ namespace Server.Libraries
         public const string StorageFileUploadBasic = "storage.file.upload.basic";
         public const string StorageFileDeleteBase = "storage.file.delete.basic";
         public const string StorageFileListBasic = "storage.file.list.basic";
+
+        public const string GroupmanageAddgroup = "groupmanage.addgroup";
+        public const string GroupmanageDeletegroup = "groupmanage.deletegroup";
     }
 }
