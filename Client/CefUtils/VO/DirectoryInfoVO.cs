@@ -13,11 +13,11 @@ namespace Client.CefUtils.VO
         [JsonProperty("name")]
         public string name;
         [JsonProperty("lastModified")]
-        public DateTime lastModified;
+        public string lastModified;
         public DirectoryInfoVO(DirectoryInfo directoryInfo)
         {
             name = directoryInfo.Name;
-            lastModified = directoryInfo.LastWriteTime;
+            lastModified = directoryInfo.LastWriteTime.ToString("G");
         }
     }
 }

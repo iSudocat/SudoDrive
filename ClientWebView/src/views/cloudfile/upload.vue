@@ -28,7 +28,7 @@
         align="center"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.lastModifiedDate }}</span>
+          <span>{{ scope.row.lastModified }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -68,7 +68,7 @@ export default {
       currentRow: {
         name: '',
         size: 0,
-        lastModifiedDate: ''
+        lastModified: ''
       },
       uploadTableData: [],
       dirHandle: null
@@ -80,7 +80,7 @@ export default {
       table[i] = {
         name: '文件' + i,
         size: Math.floor(Math.random() * 1000000),
-        lastModifiedDate: '2020-' + (Math.floor(Math.random() * 1000000) % 12 + 1) + '-' +
+        lastModified: '2020-' + (Math.floor(Math.random() * 1000000) % 12 + 1) + '-' +
           (Math.floor(Math.random() * 1000000) % 30 + 1),
         isFile: true
       }
@@ -116,7 +116,7 @@ export default {
             file['isFile'] = true
             table.push(file)
           } else {
-            entry['lastModifiedDate'] = ''
+            entry['lastModified'] = ''
             entry['isFile'] = false
             table.push(entry)
           }
@@ -144,8 +144,12 @@ export default {
     },
     handleDblclick(row) {
       console.log(row)
-      this.dialogVisible = true
-      this.currentRow = row
+      if (row.isFile) {
+        this.dialogVisible = true
+        this.currentRow = row
+      } else {
+        return
+      }
     },
     closeDialog(visible) {
       console.log('closeDialog')

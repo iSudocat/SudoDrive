@@ -15,12 +15,12 @@ namespace Client.CefUtils.VO
         [JsonProperty("size")]
         public long size;
         [JsonProperty("lastModified")]
-        public DateTime lastModified;
+        public string lastModified;
         public FileInfoVO(FileInfo fileInfo)
         {
             name = fileInfo.Name;
             size = fileInfo.Length;
-            lastModified = fileInfo.LastWriteTime;
+            lastModified = fileInfo.LastWriteTime.ToString("G");
         }
     }
 }

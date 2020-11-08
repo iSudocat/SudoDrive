@@ -13,10 +13,10 @@ namespace Client.CefUtils.VO
     {
         [JsonProperty("currentPath")]
         public string currentPath;
-        [JsonProperty("files")]
-        public FileInfoVO[] files;
         [JsonProperty("directories")]
         public DirectoryInfoVO[] directories;
+        [JsonProperty("files")]
+        public FileInfoVO[] files;
         public AllInfoVO(string currentPath, FileInfo[] fileInfo, DirectoryInfo[] directoryInfo)
         {
             this.currentPath = currentPath;
