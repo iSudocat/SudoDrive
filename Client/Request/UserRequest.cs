@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Client.Request.Response.refreshToken;
 using Client.TencentCos;
 using Newtonsoft.Json;
 using RestSharp;
 
 namespace Client.Request
 {
-    public class UserService
+    public class UserRequest
     {
 
         public LoginResponse Login(string username, string password)
@@ -25,6 +26,17 @@ namespace Client.Request
             UserInfo.UserName = res.data.username;
             UserInfo.Token = res.data.token;
             return res;
+        }
+
+        public int refreshToken()
+        {
+            var client = new RestClient(ServerAddress.Address + "/api/profile/refreshlogintoken");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Authorization", "Bearer " + UserInfo.Token);
+            IRestResponse response = client.Execute(request);
+            Console.WriteLine(response.Content);
+            refreshTokenResponse res = JsonConvert.DeserializeObject<refreshTokenResponse>(response.Content);
+            return res.status;
         }
 
     }

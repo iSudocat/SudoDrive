@@ -18,6 +18,7 @@ using CefSharp;
 using CefSharp.Wpf;
 using Client.CefUtils.Function;
 using Client.CefUtils.Scheme;
+using Client.Request;
 using Client.TencentCos;
 
 namespace Client
@@ -92,5 +93,20 @@ namespace Client
             fileListThread.Abort();
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            UserRequest userService = new UserRequest();
+            var res = userService.Login("sudodog", "ssss11111");
+
+
+
+            FileTask.Add(new FCB
+            {
+                Operation = OperationType.Upload,
+                FileName = "dzynb.docx",
+                LocalPath = @"C:\Users\i\Desktop\dzynb.docx",
+                Status = 0
+            });
+        }
     }
 }

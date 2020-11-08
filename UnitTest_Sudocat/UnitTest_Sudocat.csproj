@@ -71,7 +71,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\FileServiceTests.cs" />
-    <Compile Include="User\UserServiceTests.cs" />
+    <Compile Include="Request\UserServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

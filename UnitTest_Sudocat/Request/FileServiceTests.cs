@@ -10,9 +10,9 @@ namespace Client.Request.Tests
         [TestMethod()]
         public void UploadTest()
         {
-            UserService userService = new UserService();
+            UserRequest userService = new UserRequest();
             userService.Login("sudodog", "ssss11111");
-            FileService fileService = new FileService();
+            FileRequest fileService = new FileRequest();
             var res = fileService.Upload(@"C:\Users\i\Desktop\dzynb.docx");
             Assert.AreEqual(res.status, 100);
         }

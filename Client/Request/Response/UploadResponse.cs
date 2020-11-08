@@ -17,6 +17,7 @@ namespace Client.Request.Response
     {
         public File file { get; set; }
         public Token token { get; set; }
+        public TencentCos tencentCos { get; set; }
     }
 
     public class File
@@ -47,10 +48,10 @@ namespace Client.Request.Response
     public class Token
     {
         public Credentials credentials { get; set; }
-        public long expiredTime { get; private set; }
-        public string expiration { get; private set; }
-        public string requestId { get; private set; }
-        public long startTime { get; private set; }
+        public long expiredTime { get; set; }
+        public string expiration { get; set; }
+        public string requestId { get; set; }
+        public long startTime { get; set; }
     }
 
     public class Credentials
@@ -58,5 +59,11 @@ namespace Client.Request.Response
         public string token { get; set; }
         public string tmpSecretId { get; set; }
         public string tmpSecretKey { get; set; }
+    }
+
+    public class TencentCos
+    {
+        public string region { get; set; }
+        public string bucket { get; set; }
     }
 }

@@ -101,7 +101,8 @@
     <Compile Include="CefUtils\VO\AllInfoVO.cs" />
     <Compile Include="CefUtils\VO\FileInfoVO.cs" />
     <Compile Include="CefUtils\VO\DirectoryInfoVO.cs" />
-    <Compile Include="Request\FileService.cs" />
+    <Compile Include="Request\FileRequest.cs" />
+    <Compile Include="Request\Response\refreshTokenResponse.cs" />
     <Compile Include="Request\ServerAddress.cs" />
     <Compile Include="Request\UserInfo.cs" />
     <Compile Include="TencentCos\CosConfig.cs" />
@@ -114,7 +115,7 @@
     <Compile Include="TencentCos\TaskList\StatusType.cs" />
     <Compile Include="Request\Response\LoginResponse.cs" />
     <Compile Include="Request\Response\UploadResponse.cs" />
-    <Compile Include="Request\UserService.cs" />
+    <Compile Include="Request\UserRequest.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -41,7 +41,7 @@ namespace Client.TencentCos
         {
             String bucket = CosConfig.Bucket;   //存储桶，格式：BucketName-APPID
             
-            String srcPath = file.LocalPath + "\\" + file.FileName;    //本地文件绝对路径
+            String srcPath = file.LocalPath;    //本地文件绝对路径
 
             FileRequest fileRequest = new FileRequest();
             var res = fileRequest.Upload(srcPath);
@@ -91,8 +91,9 @@ namespace Client.TencentCos
             };
             uploadTask.successCallback = delegate (CosResult cosResult)
             {
+                
                 COSXMLUploadTask.UploadTaskResult result = cosResult as COSXMLUploadTask.UploadTaskResult;
-                Console.WriteLine(result.GetResultInfo());
+                Console.WriteLine("successCallback " + result.GetResultInfo());
                 string eTag = result.eTag;
                 FileTask.Remove(file.Key);
             };
@@ -112,6 +113,17 @@ namespace Client.TencentCos
 
         public void Download()
         {
+            /*
+            FileRequest fileRequest = new FileRequest();
+            var res = fileRequest.Download();
+
+            CosService cosService = new CosService();
+            CosXml cosXml = cosService.getCosXml(
+                res.data.token.credentials.tmpSecretId,
+                res.data.token.credentials.tmpSecretKey,
+                res.data.token.credentials.token,
+                res.data.token.expiredTime);
+
             // 初始化 TransferConfig
             TransferConfig transferConfig = new TransferConfig();
 
@@ -168,10 +180,12 @@ namespace Client.TencentCos
                 }
             };
             transferManager.Download(downloadTask);
+            */
         }
 
         public void Delete()
         {
+            /*
             try
             {
                 string bucket = CosConfig.Bucket; //存储桶，格式：BucketName-APPID
@@ -192,6 +206,7 @@ namespace Client.TencentCos
                 //请求失败
                 Console.WriteLine("CosServerException: " + serverEx.GetInfo());
             }
+            */
         }
     }
 }

@@ -1,4 +1,5 @@
 using Client.Request.Response;
+using Client.TencentCos;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
@@ -12,7 +13,7 @@ using System.Web;
 
 namespace Client.Request
 {
-    public class FileService
+    public class FileRequest
     {
         public UploadResponse Upload(string filePath)
         {
@@ -29,6 +30,28 @@ namespace Client.Request
             IRestResponse response = client.Execute(request);
             Console.WriteLine(response.Content);
             UploadResponse res = JsonConvert.DeserializeObject<UploadResponse>(response.Content);
+
+            CosConfig.Bucket = res.data.tencentCos.bucket;
+            CosConfig.Region = res.data.tencentCos.region;
+
+            return res;
+        }
+
+        public int ConfirmUpload(long id, string guid)
+        {
+            var client = new RestClient(ServerAddress.Address + "/api/storage/file");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Authorization", "Bearer " + UserInfo.Token);
+            request.AddHeader("Content-Type", "application/json");
+            var requestBody = new { id, guid };
+            request.AddParameter("application/json", JsonConvert.SerializeObject(requestBody), ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            Console.WriteLine(response.Content);
+            UploadResponse res = JsonConvert.DeserializeObject<UploadResponse>(response.Content);
+
+            CosConfig.Bucket = res.data.tencentCos.bucket;
+            CosConfig.Region = res.data.tencentCos.region;
+
             return res;
         }
 
