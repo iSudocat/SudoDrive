@@ -47,6 +47,19 @@ namespace Server.Controllers.Storage
                 List<string> filter = new List<string>();
                 filter.Add("everyone");
 
+                if (loginUser.HasPermission(PermissionBank.StoragePermission("users", loginUser.Username, "list")) != false)
+                {
+                    filter.Add($"users.{loginUser.Username}");
+                }
+                foreach (var groupToUser in loginUser.GroupToUser)
+                {
+                    var groupName = groupToUser.Group.GroupName;
+                    if (loginUser.HasPermission(PermissionBank.StoragePermission("groups", groupName, "list")) != false)
+                    {
+                        filter.Add($"groups.{groupName}");
+                    }
+                }
+
                 var groups = loginUser.GroupToUser;
                 foreach (var groupToUser in groups)
                 {

@@ -69,11 +69,11 @@ namespace Server.Exceptions
             if (ret == null)
             {
                 // 检查用户默认
-                if (type == "user" && name == loginUser.Username)
+                if (type == "users" && name == loginUser.Username)
                 {
                     ret = true;
                 }
-                else if (type == "user")
+                else if (type == "groups")
                 {
                     foreach (var groupToUser in loginUser.GroupToUser)
                     {
