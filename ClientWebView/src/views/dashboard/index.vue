@@ -1,18 +1,35 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+    <el-button @click="testFolder">Folder</el-button>
+    <el-button @click="testFolderInfo">FolderInfo</el-button>
+    <el-button @click="testFileInfo">FileInfo</el-button>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   name: 'Dashboard',
-  computed: {
-    ...mapGetters([
-      'name'
-    ])
+  data() {
+    return {
+      result: 0
+    }
+  },
+  methods: {
+    async testFolder() {
+      window.fileFunction.showAllInfo().then(function(ret) {
+        console.log(ret)
+      })
+    },
+    async testFolderInfo() {
+      window.fileFunction.showFolderInfo().then(function(ret) {
+        console.log(ret)
+      })
+    },
+    async testFileInfo() {
+      window.fileFunction.showFileInfo().then(function(ret) {
+        console.log(ret)
+      })
+    }
   }
 }
 </script>
