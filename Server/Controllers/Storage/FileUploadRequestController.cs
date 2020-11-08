@@ -215,6 +215,8 @@ namespace Server.Exceptions
                 file.Md5 = requestModel.Md5.ToLower();
             }
 
+            // file.Path = file.Folder.Replace("\\", "/");
+            file.Folder = file.Folder.Replace("\\", "/");
             file.GetPermission();
             _databaseService.Files.Add(file);
 
