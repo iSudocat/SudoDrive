@@ -13,11 +13,16 @@ namespace Client.CefUtils.Function
 {
     class FileFunction
     {
-        private string path = @"E:\SudoDrive\ClientWebView\";
+        private string path = @"E:\SudoDrive\ClientWebView";
         public string toParent()
         {
             DirectoryInfo root = new DirectoryInfo(path);
             path = root.Parent.FullName;
+            return showAllInfo();
+        }
+        public string toChild(string childName)
+        {
+            path += @"\" + childName;
             return showAllInfo();
         }
         public string showAllInfo()

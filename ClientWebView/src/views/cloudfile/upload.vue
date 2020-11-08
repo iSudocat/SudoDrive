@@ -144,11 +144,20 @@ export default {
     },
     handleDblclick(row) {
       console.log(row)
-      if (row.isFile) {
-        this.dialogVisible = true
-        this.currentRow = row
-      } else {
+      const that = this
+      const table = []
+      if (typeof (CefSharp) === 'undefined') {
         return
+      } else {
+        if (row.isFile) {
+          this.dialogVisible = true
+          this.currentRow = row
+        } else {
+          window.fileFunction.toChild(String(row.name)).then(function(ret) {
+            that.handleTableReturn(table, ret)
+            that.uploadTableData = table
+          })
+        }
       }
     },
     closeDialog(visible) {
