@@ -13,17 +13,23 @@ namespace Client.CefUtils.Function
 {
     class FileFunction
     {
+        private string path = @"E:\SudoDrive\ClientWebView\";
+        public string toParent()
+        {
+            DirectoryInfo root = new DirectoryInfo(path);
+            path = root.Parent.FullName;
+            return showAllInfo();
+        }
         public string showAllInfo()
         {
             //string path = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            string path = @"E:\SudoDrive\";
             DirectoryInfo root = new DirectoryInfo(path);
             FileInfo[] files = root.GetFiles();
             DirectoryInfo[] dics = root.GetDirectories();
-            AllInfoVO allInfoVO = new AllInfoVO(files, dics);
+            AllInfoVO allInfoVO = new AllInfoVO(path, files, dics);
             return allInfoVO.ToString();
         }
-        public string showFileInfo(string path)
+        public string showFileInfo()
         {
             DirectoryInfo root = new DirectoryInfo(path);
             FileInfo[] files = root.GetFiles();
@@ -32,7 +38,7 @@ namespace Client.CefUtils.Function
                 results.Append(new StringBuilder(JsonConvert.SerializeObject(new FileInfoVO(fileInfo))));
             return results.ToString();
         }
-        public string showFolderInfo(string path)
+        public string showFolderInfo()
         {
             DirectoryInfo root = new DirectoryInfo(path);
             DirectoryInfo[] dics = root.GetDirectories();

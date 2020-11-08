@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-button @click="changePath">切换目录</el-button>
+    <el-button @click="parentPath">返回</el-button>
     <el-table
       id="leftBox"
       :data="uploadTableData"
@@ -63,6 +64,7 @@ export default {
   data() {
     return {
       dialogVisible: false,
+      currentPath: '',
       currentRow: {
         name: '',
         size: 0,
@@ -89,6 +91,20 @@ export default {
     handleUpload(index, row) {
       console.log(index, row)
     },
+    handleTableReturn(table, ret) {
+      const retObject = JSON.parse(ret)
+      this.currentPath = retObject.currentPath
+      const fileTable = retObject.files
+      const directoryTable = retObject.directories
+      for (let j = 0; j < directoryTable.length; j++) {
+        directoryTable[j]['isFile'] = false
+        table.push(directoryTable[j])
+      }
+      for (let i = 0; i < fileTable.length; i++) {
+        fileTable[i]['isFile'] = true
+        table.push(fileTable[i])
+      }
+    },
     async changePath() {
       const that = this
       const table = []
@@ -109,17 +125,19 @@ export default {
         console.log(table)
       } else {
         window.fileFunction.showAllInfo().then(function(ret) {
-          const retObject = JSON.parse(ret)
-          const fileTable = retObject.files
-          const directoryTable = retObject.directories
-          for (let j = 0; j < directoryTable.length; j++) {
-            directoryTable[j]['isFile'] = false
-            table.push(directoryTable[j])
-          }
-          for (let i = 0; i < fileTable.length; i++) {
-            fileTable[i]['isFile'] = true
-            table.push(fileTable[i])
-          }
+          that.handleTableReturn(table, ret)
+          that.uploadTableData = table
+        })
+      }
+    },
+    parentPath() {
+      const that = this
+      const table = []
+      if (typeof (CefSharp) === 'undefined') {
+        return
+      } else {
+        window.fileFunction.toParent().then(function(ret) {
+          that.handleTableReturn(table, ret)
           that.uploadTableData = table
         })
       }

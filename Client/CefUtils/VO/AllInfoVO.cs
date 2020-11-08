@@ -11,12 +11,15 @@ namespace Client.CefUtils.VO
 {
     class AllInfoVO
     {
+        [JsonProperty("currentPath")]
+        public string currentPath;
         [JsonProperty("files")]
         public FileInfoVO[] files;
         [JsonProperty("directories")]
         public DirectoryInfoVO[] directories;
-        public AllInfoVO(FileInfo[] fileInfo, DirectoryInfo[] directoryInfo)
+        public AllInfoVO(string currentPath, FileInfo[] fileInfo, DirectoryInfo[] directoryInfo)
         {
+            this.currentPath = currentPath;
             files = new FileInfoVO[fileInfo.Length];
             directories = new DirectoryInfoVO[directoryInfo.Length];
             for(int i=0;i<fileInfo.Length;i++)
