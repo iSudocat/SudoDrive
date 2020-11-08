@@ -90,22 +90,39 @@ export default {
       console.log(index, row)
     },
     async changePath() {
+      var that = this
       var table = []
-      this.dirHandle = await window.showDirectoryPicker()
-      for await (const entry of this.dirHandle.values()) {
-        if (entry.kind === 'file') {
-          const file = await entry.getFile()
-          file['isFile'] = true
-          table.push(file)
-        } else {
-          entry['size'] = ''
-          entry['lastModifiedDate'] = ''
-          entry['isFile'] = false
-          table.push(entry)
+      if (typeof (CefSharp) === 'undefined') {
+        this.dirHandle = await window.showDirectoryPicker()
+        for await (const entry of this.dirHandle.values()) {
+          if (entry.kind === 'file') {
+            const file = await entry.getFile()
+            file['isFile'] = true
+            table.push(file)
+          } else {
+            entry['lastModifiedDate'] = ''
+            entry['isFile'] = false
+            table.push(entry)
+          }
         }
+        this.uploadTableData = table
+        console.log(table)
+      } else {
+        window.fileFunction.showAllInfo().then(function(ret) {
+          var retObject = JSON.parse(ret)
+          var fileTable = retObject.files
+          var directoryTable = retObject.directories
+          for (var j = 0; j < directoryTable.length; j++) {
+            directoryTable[j]['isFile'] = false
+            table.push(directoryTable[j])
+          }
+          for (var i = 0; i < fileTable.length; i++) {
+            fileTable[i]['isFile'] = true
+            table.push(fileTable[i])
+          }
+          that.uploadTableData = table
+        })
       }
-      this.uploadTableData = table
-      console.log(table)
     },
     handleDblclick(row) {
       console.log(row)

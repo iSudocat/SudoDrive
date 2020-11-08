@@ -11,9 +11,9 @@ namespace Client.CefUtils.VO
 {
     class AllInfoVO
     {
-        [JsonProperty("file")]
+        [JsonProperty("files")]
         public FileInfoVO[] files;
-        [JsonProperty("directory")]
+        [JsonProperty("directories")]
         public DirectoryInfoVO[] directories;
         public AllInfoVO(FileInfo[] fileInfo, DirectoryInfo[] directoryInfo)
         {
