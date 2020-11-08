@@ -1,7 +1,5 @@
 <template>
   <div class="dashboard-container">
-    <span>Result:{{result}}</span>
-    <el-button @click="testCs">Test</el-button>
     <el-button @click="testFolder">Folder</el-button>
     <el-button @click="testFolderInfo">FolderInfo</el-button>
     <el-button @click="testFileInfo">FileInfo</el-button>
@@ -17,24 +15,18 @@ export default {
     }
   },
   methods: {
-    async testCs() {
-      var that = this
-      window.demoFunction.add(Number(10), Number(12)).then(function(ret) {
-        that.result = ret
-      })
-    },
     async testFolder() {
-      window.demoFunction.selectFolder().then(function(ret) {
+      window.fileFunction.showAllInfo().then(function(ret) {
         console.log(ret)
       })
     },
     async testFolderInfo() {
-      window.demoFunction.showFolderInfo().then(function(ret) {
+      window.fileFunction.showFolderInfo().then(function(ret) {
         console.log(ret)
       })
     },
     async testFileInfo() {
-      window.demoFunction.showFileInfo().then(function(ret) {
+      window.fileFunction.showFileInfo().then(function(ret) {
         console.log(ret)
       })
     }

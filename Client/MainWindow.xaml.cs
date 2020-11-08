@@ -67,13 +67,13 @@ namespace Client
             browser.JavascriptObjectRepository.ResolveObject += (sender, e) =>
             {
                 var repo = e.ObjectRepository;
-                if (e.ObjectName == "demoFunction")
+                if (e.ObjectName == "fileFunction")
                 {
                     //Binding options is an optional param, defaults to null
                     BindingOptions bindingOptions = null;
                     //Use the default binder to serialize values into complex objects, CamelCaseJavascriptNames = true is the default
                     bindingOptions = BindingOptions.DefaultBinder;
-                    repo.Register("demoFunction", new DemoFunction(), isAsync: true, options: bindingOptions);
+                    repo.Register("fileFunction", new FileFunction(), isAsync: true, options: bindingOptions);
                 }
             };
 

@@ -93,7 +93,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CefUtils\Function\FileFunction.cs" />
+    <Compile Include="CefUtils\VO\AllInfoVO.cs" />
     <Compile Include="CefUtils\VO\FileInfoVO.cs" />
+    <Compile Include="CefUtils\VO\DirectoryInfoVO.cs" />
     <Compile Include="TencentCos\CosConfig.cs" />
     <Compile Include="TencentCos\CosService.cs" />
     <Compile Include="TencentCos\FileList.cs" />

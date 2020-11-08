@@ -48,7 +48,7 @@ if (typeof (CefSharp) === 'undefined') {
     render: h => h(App)
   })
 } else {
-  window.CefSharp.BindObjectAsync('demoFunction').then(
+  window.CefSharp.BindObjectAsync('fileFunction').then(
     () => {
       new Vue({
         el: '#app',
