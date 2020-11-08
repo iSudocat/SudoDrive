@@ -31,7 +31,7 @@ namespace Server.Models.Entities
         {
             var groupToUser = this.GroupToUser;
            
-            var ret = false;
+            bool? ret = null;
 
             foreach (var group in groupToUser)
             {

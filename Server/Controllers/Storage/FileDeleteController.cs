@@ -42,10 +42,23 @@ namespace Server.Controllers.Storage
             var result = _databaseService.Files.AsQueryable();
 
             // 注入用户权限
-            if (loginUser.HasPermission(PermissionBank.StoragePermission("root", "root", "list")) != true)
+            if (loginUser.HasPermission(PermissionBank.StoragePermission("root", "root", "delete")) != true)
             {
                 List<string> filter = new List<string>();
                 filter.Add("everyone");
+
+                if (loginUser.HasPermission(PermissionBank.StoragePermission("users", loginUser.Username, "delete")) != false)
+                {
+                    filter.Add($"users.{loginUser.Username}");
+                }
+                foreach (var groupToUser in loginUser.GroupToUser)
+                {
+                    var groupName = groupToUser.Group.GroupName;
+                    if (loginUser.HasPermission(PermissionBank.StoragePermission("groups", groupName, "delete")) != false)
+                    {
+                        filter.Add($"groups.{groupName}");
+                    }
+                }
 
                 var groups = loginUser.GroupToUser;
                 foreach (var groupToUser in groups)
