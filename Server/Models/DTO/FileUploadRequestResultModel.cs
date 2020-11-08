@@ -41,7 +41,10 @@ namespace Server.Models.DTO
 
         public TokenType Token {get; private set;}
 
-        public FileUploadRequestResultModel(File file, Dictionary<string, object> token)
+        public TencentCosModel TencentCos { get; private set; }
+
+
+        public FileUploadRequestResultModel(File file, Dictionary<string, object> token, TencentCosManagementModel tencentCos)
         {
             this.File = file.ToVo();
 
@@ -77,6 +80,8 @@ namespace Server.Models.DTO
             }
 
             this.Token = new TokenType(credentials, expiredTime, expiration, requestId, startTime);
+
+            this.TencentCos = new TencentCosModel(tencentCos);
         }
 
     }

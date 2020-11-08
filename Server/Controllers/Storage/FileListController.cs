@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Server.Exceptions;
 using Server.Libraries;
 using Server.Middlewares;
@@ -21,12 +22,16 @@ namespace Server.Controllers.Storage
     public class FileListController : AbstractController
     {
         private IDatabaseService _databaseService;
-        
+
+        private readonly TencentCosManagementModel _tencentCosManagement;
+
         private readonly ILogger _logger;
-        
-        public FileListController(IDatabaseService databaseService, ILogger<GlobalExceptionFilter> logger)
+
+
+        public FileListController(IDatabaseService databaseService, ILogger<GlobalExceptionFilter> logger, IOptions<TencentCosManagementModel> TencentCosManagement)
         {
             _databaseService = databaseService;
+            _tencentCosManagement = TencentCosManagement.Value;
             _logger = logger;
         }
 
@@ -137,7 +142,7 @@ namespace Server.Controllers.Storage
             result = result.Skip(requestModel.Offset);
             result = result.Take(requestModel.Amount);
 
-            return Ok(new FileListResultModel(result, requestModel.Amount, requestModel.Offset));
+            return Ok(new FileListResultModel(result, requestModel.Amount, requestModel.Offset, _tencentCosManagement));
         }
     }
 }

@@ -100,15 +100,7 @@ namespace Client.TencentCos
                     {
                         case StatusType.Waiting:
                             {
-                                //TODO 从后端获取密钥
-                                string tmpSecretId = "";
-                                string tmpSecretKey = "";
-                                string tmpToken = "";
-                                long tmpExpireTime = 0;
-
-                                CosService cosService = new CosService();
-                                CosXml cosXml = cosService.getCosXml(tmpSecretId, tmpSecretKey, tmpToken, tmpExpireTime);
-                                FileService fileService = new FileService(file, cosXml);
+                                FileService fileService = new FileService(file);
 
                                 switch (file.Operation)
                                 {

@@ -1,3 +1,4 @@
+using Client.Request;
 using COSXML;
 using COSXML.CosException;
 using COSXML.Model;
@@ -18,12 +19,10 @@ namespace Client.TencentCos
     public class FileService
     {
         private FCB file;
-        private CosXml cosXml;
 
-        public FileService(FCB file, CosXml cosXml)
+        public FileService(FCB file)
         {
             this.file = file;
-            this.cosXml = cosXml;
         }
 
         public void Test()
@@ -40,15 +39,27 @@ namespace Client.TencentCos
 
         public void Upload()
         {
+            String bucket = CosConfig.Bucket;   //存储桶，格式：BucketName-APPID
+            
+            String srcPath = file.LocalPath + "\\" + file.FileName;    //本地文件绝对路径
+
+            FileRequest fileRequest = new FileRequest();
+            var res = fileRequest.Upload(srcPath);
+
+            CosService cosService = new CosService();
+            CosXml cosXml = cosService.getCosXml(
+                res.data.token.credentials.tmpSecretId,
+                res.data.token.credentials.tmpSecretKey,
+                res.data.token.credentials.token,
+                res.data.token.expiredTime);
+
+            String cosPath = res.data.file.storageName;   //TODO 对象在存储桶中的位置标识符，即称对象键
+
             // 初始化 TransferConfig
             TransferConfig transferConfig = new TransferConfig();
 
             // 初始化 TransferManager
             TransferManager transferManager = new TransferManager(cosXml, transferConfig);
-
-            String bucket = CosConfig.Bucket;   //存储桶，格式：BucketName-APPID
-            String cosPath = file.RemotePath + "\\" + file.FileName;   //TODO 对象在存储桶中的位置标识符，即称对象键
-            String srcPath = file.LocalPath + "\\" + file.FileName;    //本地文件绝对路径
 
             //上传对象
             COSXMLUploadTask uploadTask = new COSXMLUploadTask(bucket, cosPath);
@@ -76,7 +87,7 @@ namespace Client.TencentCos
                     default:
                         break;
                 }
-                
+
             };
             uploadTask.successCallback = delegate (CosResult cosResult)
             {
