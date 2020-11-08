@@ -1,6 +1,7 @@
 using Client.Request.Response;
 using Client.TencentCos;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,7 @@ namespace Client.Request
         public int ConfirmUpload(long id, string guid)
         {
             var client = new RestClient(ServerAddress.Address + "/api/storage/file");
-            var request = new RestRequest(Method.POST);
+            var request = new RestRequest(Method.PATCH);
             request.AddHeader("Authorization", "Bearer " + UserInfo.Token);
             request.AddHeader("Content-Type", "application/json");
             var requestBody = new { id, guid };
@@ -48,11 +49,8 @@ namespace Client.Request
             IRestResponse response = client.Execute(request);
             Console.WriteLine(response.Content);
             UploadResponse res = JsonConvert.DeserializeObject<UploadResponse>(response.Content);
-
-            CosConfig.Bucket = res.data.tencentCos.bucket;
-            CosConfig.Region = res.data.tencentCos.region;
-
-            return res;
+            var jObj = JObject.Parse(response.Content);
+            return (int)jObj.SelectToken("$.status");
         }
 
         public static string GetFileMD5(string filePath)

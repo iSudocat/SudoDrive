@@ -91,7 +91,7 @@ namespace Client.TencentCos
             };
             uploadTask.successCallback = delegate (CosResult cosResult)
             {
-                
+                fileRequest.ConfirmUpload(res.data.file.id, res.data.file.guid);
                 COSXMLUploadTask.UploadTaskResult result = cosResult as COSXMLUploadTask.UploadTaskResult;
                 Console.WriteLine("successCallback " + result.GetResultInfo());
                 string eTag = result.eTag;

@@ -103,8 +103,8 @@ namespace Client
             FileTask.Add(new FCB
             {
                 Operation = OperationType.Upload,
-                FileName = "dzynb.docx",
-                LocalPath = @"C:\Users\i\Desktop\dzynb.docx",
+                FileName = "David Hoffner - Positive Outlook.mp3",
+                LocalPath = @"F:\CloudMusic\David Hoffner - Positive Outlook.mp3",
                 Status = 0
             });
         }
