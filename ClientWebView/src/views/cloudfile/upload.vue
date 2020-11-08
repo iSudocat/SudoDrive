@@ -73,8 +73,8 @@ export default {
     }
   },
   created() {
-    var table = []
-    for (var i = 0; i < 10; i++) {
+    const table = []
+    for (let i = 0; i < 10; i++) {
       table[i] = {
         name: '文件' + i,
         size: Math.floor(Math.random() * 1000000),
@@ -90,8 +90,8 @@ export default {
       console.log(index, row)
     },
     async changePath() {
-      var that = this
-      var table = []
+      const that = this
+      const table = []
       if (typeof (CefSharp) === 'undefined') {
         this.dirHandle = await window.showDirectoryPicker()
         for await (const entry of this.dirHandle.values()) {
@@ -109,14 +109,14 @@ export default {
         console.log(table)
       } else {
         window.fileFunction.showAllInfo().then(function(ret) {
-          var retObject = JSON.parse(ret)
-          var fileTable = retObject.files
-          var directoryTable = retObject.directories
-          for (var j = 0; j < directoryTable.length; j++) {
+          const retObject = JSON.parse(ret)
+          const fileTable = retObject.files
+          const directoryTable = retObject.directories
+          for (let j = 0; j < directoryTable.length; j++) {
             directoryTable[j]['isFile'] = false
             table.push(directoryTable[j])
           }
-          for (var i = 0; i < fileTable.length; i++) {
+          for (let i = 0; i < fileTable.length; i++) {
             fileTable[i]['isFile'] = true
             table.push(fileTable[i])
           }
