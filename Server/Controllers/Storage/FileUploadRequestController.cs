@@ -211,7 +211,10 @@ namespace Server.Exceptions
 
                 file.Guid = Guid.NewGuid().ToString().ToLower();
                 // TODO 检查 Guid 是否有重复
+
                 file.StorageName = $"{file.Guid[0]}{file.Guid[1]}/{file.Guid[2]}{file.Guid[3]}/{file.Guid}{Path.GetExtension(requestModel.Path)}";
+                file.StorageName = Path.Join(_tencentCosManagement.Prefix, file.StorageName).Replace("\\", "/");
+
                 file.User = loginUser;
                 file.Status = Models.Entities.File.FileStatus.Pending;
                 file.Size = requestModel.Size;
