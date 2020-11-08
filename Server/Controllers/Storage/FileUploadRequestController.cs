@@ -215,6 +215,7 @@ namespace Server.Exceptions
                 file.Md5 = requestModel.Md5.ToLower();
             }
 
+            file.GetPermission();
             _databaseService.Files.Add(file);
 
 

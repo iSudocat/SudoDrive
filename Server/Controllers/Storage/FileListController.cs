@@ -44,6 +44,9 @@ namespace Server.Controllers.Storage
             // 注入用户权限
             if (loginUser.HasPermission(PermissionBank.StoragePermission("root", "root", "list")) != true)
             {
+                List<string> filter = new List<string>();
+                filter.Add("everyone");
+
                 var groups = loginUser.GroupToUser;
                 foreach (var groupToUser in groups)
                 {
@@ -67,15 +70,17 @@ namespace Server.Controllers.Storage
                             switch (type)
                             {
                                 case "users":
-                                    result = result.Where(s => s.Path == $"/users/{name}" || s.Path.StartsWith($"/users/{name}/"));
+                                    filter.Add($"users.{name}");
                                     break;
                                 case "groups":
-                                    result = result.Where(s => s.Path == $"/groups/{name}" || s.Path.StartsWith($"/groups/{name}/"));
+                                    filter.Add($"groups.{name}");
                                     break;
                             }
                         }
                     }
                 }
+
+                result = result.Where(s => filter.Contains(s.Permission));
             }
 
             // 按文件夹查找
