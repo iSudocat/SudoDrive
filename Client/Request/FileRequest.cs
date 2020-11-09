@@ -16,17 +16,17 @@ namespace Client.Request
 {
     public class FileRequest
     {
-        public UploadResponse Upload(string filePath)
+        public UploadResponse Upload(string localPath, string remotePath)
         {
-            string type = MimeMapping.GetMimeMapping(filePath);
-            long size = new FileInfo(filePath).Length;
-            string md5 = GetFileMD5(filePath);
+            string type = MimeMapping.GetMimeMapping(localPath);
+            long size = new FileInfo(localPath).Length;
+            string md5 = GetFileMD5(localPath);
 
             var client = new RestClient(ServerAddress.Address + "/api/storage/file");
             var request = new RestRequest(Method.POST);
             request.AddHeader("Authorization", "Bearer " + UserInfo.Token);
             request.AddHeader("Content-Type", "application/json");
-            var requestBody = new { type, path = filePath, size, md5 };
+            var requestBody = new { type, path = remotePath, size, md5 };
             request.AddParameter("application/json", JsonConvert.SerializeObject(requestBody), ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             Console.WriteLine(response.Content);
@@ -53,7 +53,20 @@ namespace Client.Request
             return (int)jObj.SelectToken("$.status");
         }
 
-        public static string GetFileMD5(string filePath)
+        public FileListResponse GetFileList()
+        {
+            var client = new RestClient(ServerAddress.Address + "/api/storage/file");
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("Authorization", "Bearer " + UserInfo.Token);
+            request.AddHeader("Content-Type", "application/json");
+            IRestResponse response = client.Execute(request);
+            Console.WriteLine(response.Content);
+            FileListResponse res = JsonConvert.DeserializeObject<FileListResponse>(response.Content);
+            return res;
+        }
+
+
+        private static string GetFileMD5(string filePath)
         {
             FileStream file = new FileStream(filePath, FileMode.Open);
             System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();

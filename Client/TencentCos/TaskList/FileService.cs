@@ -40,11 +40,11 @@ namespace Client.TencentCos
         public void Upload()
         {
             String bucket = CosConfig.Bucket;   //存储桶，格式：BucketName-APPID
-            
-            String srcPath = file.LocalPath;    //本地文件绝对路径
+
+            string srcPath = file.LocalPath;    //本地文件绝对路径
 
             FileRequest fileRequest = new FileRequest();
-            var res = fileRequest.Upload(srcPath);
+            var res = fileRequest.Upload(srcPath, file.RemotePath);
 
             CosService cosService = new CosService();
             CosXml cosXml = cosService.getCosXml(
@@ -53,7 +53,7 @@ namespace Client.TencentCos
                 res.data.token.credentials.token,
                 res.data.token.expiredTime);
 
-            String cosPath = res.data.file.storageName;   //TODO 对象在存储桶中的位置标识符，即称对象键
+            string cosPath = res.data.file.storageName;   //TODO 对象在存储桶中的位置标识符，即称对象键
 
             // 初始化 TransferConfig
             TransferConfig transferConfig = new TransferConfig();
@@ -61,8 +61,10 @@ namespace Client.TencentCos
             // 初始化 TransferManager
             TransferManager transferManager = new TransferManager(cosXml, transferConfig);
 
+            PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, cosPath, srcPath);
+
             //上传对象
-            COSXMLUploadTask uploadTask = new COSXMLUploadTask(bucket, cosPath);
+            COSXMLUploadTask uploadTask = new COSXMLUploadTask(putObjectRequest);
 
             uploadTask.SetSrcPath(srcPath);
 

@@ -99,12 +99,12 @@ namespace Client
             var res = userService.Login("sudodog", "ssss11111");
 
 
-
             FileTask.Add(new FCB
             {
                 Operation = OperationType.Upload,
-                FileName = "David Hoffner - Positive Outlook.mp3",
-                LocalPath = @"F:\CloudMusic\David Hoffner - Positive Outlook.mp3",
+                FileName = "王玥昊,郑国周 - 午后柠檬树下的阳光.mp3",
+                LocalPath = @"F:\CloudMusic\王玥昊,郑国周 - 午后柠檬树下的阳光.mp3",
+                RemotePath = @"users\sudodog\CloudMusic\王玥昊,郑国周 - 午后柠檬树下的阳光.mp3",
                 Status = 0
             });
         }
