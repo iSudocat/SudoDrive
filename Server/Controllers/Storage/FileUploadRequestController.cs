@@ -208,6 +208,10 @@ namespace Server.Exceptions
                 file.Type = requestModel.Type;
                 file.Folder = Path.GetDirectoryName(requestModel.Path) ?? "";
                 file.Name = Path.GetFileName(requestModel.Path) ?? "";
+                if (string.IsNullOrEmpty(file.Name))
+                {
+                    throw new FileNameIsEmptyException("The file name is empty.");
+                }
 
                 file.Guid = Guid.NewGuid().ToString().ToLower();
                 // TODO 检查 Guid 是否有重复
