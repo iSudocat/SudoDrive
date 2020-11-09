@@ -1,13 +1,14 @@
 <template>
   <div>
-    <el-row style="margin: 5px 5px 5px 5px">
+    <el-row style="margin: 15px 10px 15px 20px;">
       <el-col :span="21">
-        <el-page-header @back="parentPath" title="返回上一级"></el-page-header>
+        <el-page-header style="color:#00abff" title="返回上一级"></el-page-header>
       </el-col>
       <el-col :span="3">
-        <el-button size="small">下载</el-button>
+        <el-button size="small" type="primary" style="height: 24px; line-height: 4px;">下载</el-button>
       </el-col>
     </el-row>
+    <hr style="border:0; background-color: #f1f1f1; height: 1px">
     <el-table
       :data="uploadTableData"
       style="width: 100%"

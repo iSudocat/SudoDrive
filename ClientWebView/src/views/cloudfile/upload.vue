@@ -1,13 +1,15 @@
 <template>
   <div id="leftBox">
-    <el-row style="margin: 5px 5px 5px 5px">
+    <el-row style="margin: 15px 10px 15px 20px;">
       <el-col :span="21">
-        <el-page-header @back="parentPath" title="返回上一级"></el-page-header>
+        <el-page-header style="color:#00abff" @back="parentPath" title="返回上一级"></el-page-header>
       </el-col>
       <el-col :span="3">
-        <el-button size="small">上传</el-button>
+        <el-button size="small" type="primary" style="height: 24px; line-height: 4px;">上传</el-button>
       </el-col>
     </el-row>
+    <hr style="border:0; background-color: #f1f1f1; height: 1px">
+
     <el-table
       highlight-current-row
       :data="uploadTableData"
@@ -21,6 +23,7 @@
       />
       <el-table-column
         label="文件名"
+        align="center"
       >
         <template slot-scope="scope">
           <i v-if="!scope.row.isFile" class="el-icon-folder" />
@@ -181,7 +184,7 @@ export default {
 @media screen and (min-width: 768px) {
   #leftBox {
     /*border-right: 1px solid rgb(235,238,235);*/
-    box-shadow: 4px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    /*box-shadow: 4px 2px 2px 1px rgba(0, 0, 0, 0.2);*/
     position: relative; z-index: 1;
   }
   #xxx {
