@@ -67,7 +67,6 @@
       id="TableTop"
       :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       style="width: 100%"
-      @sort-change="SortById"
     >
       <el-table-column type="expand">
         <template slot-scope="props">
@@ -144,7 +143,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 
 export default {
   name: 'Users',
@@ -194,145 +192,13 @@ export default {
       }
       that.allData = table
       that.tableData = table
-      // axios.get(this.$store.state.userHeadUrl + 'GetAllUser').then(function(response) {
-      //   that.allData = response.data
-      //   that.tableData = response.data
-      //   console.log(that.allData)
-      // }).catch(function(error) {
-      //   console.log(error)
-      // })
-    },
-    deleteUserById(id) {
-      axios.delete(this.$store.state.userHeadUrl + 'DeleteUserById/' + id).then(function(response) {
-        console.log(response.data)
-      }).catch(function(error) {
-        console.log(error)
-      })
-    },
-    addUser() {
-      var that = this
-      axios({
-        method: 'post',
-        url: this.$store.state.userHeadUrl + 'AddUser',
-        data: {
-          'id': that.addData.id,
-          'name': that.addData.name,
-          'headimg_url': that.addData.headimg_url,
-          'faculty': that.addData.faculty,
-          'school_num': that.addData.school_num,
-          'author_level': that.addData.author_level
-        },
-        transformRequest: [
-          function(data) {
-            let ret = ''
-            for (const it in data) {
-              ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-            }
-            ret = ret.substring(0, ret.lastIndexOf('&'))
-            return ret
-          }
-        ],
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }).then(function(response) {
-        that.getAllUser()
-      })
-    },
-    updateUser() {
-      var that = this
-      axios({
-        method: 'post',
-        url: this.$store.state.userHeadUrl + 'UpdateUser',
-        data: {
-          'id': that.upDateData.id,
-          'name': that.upDateData.name,
-          'headimg_url': that.upDateData.headimg_url,
-          'faculty': that.upDateData.faculty,
-          'school_num': that.upDateData.school_num,
-          'author_level': that.upDateData.author_level
-        },
-        transformRequest: [
-          function(data) {
-            let ret = ''
-            for (const it in data) {
-              ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-            }
-            ret = ret.substring(0, ret.lastIndexOf('&'))
-            return ret
-          }
-        ],
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }).then(function(response) {
-        that.getAllUser()
-      })
     },
     handleSizeChange(val) {
       this.pageSize = val
     },
     handleCurrentChange(currentPage) {
       this.currentPage = currentPage
-      location.href = '#TableTop'
-    },
-    IndexOfId(id) {
-      var index = -1
-      for (var i = 0; i < this.tableData.length; i++) {
-        if (this.tableData[i].id === id) {
-          index = i
-        }
-      }
-      return index
-    },
-    handleDelete(id, row) {
-      var index = this.IndexOfId(id)
-      console.log('index:' + index)
-      this.tableData.splice(index, 1)
-      if (this.tableData.length % this.pageSize === 0) {
-        this.currentPage--
-      }
-      console.log('id:' + id)
-      this.deleteUserById(id)
-    },
-    handleEdit(id, row) {
-      this.UpdatedialogVisible = true
-      var index = this.IndexOfId(id)
-      this.upDateData = JSON.parse(JSON.stringify(this.tableData[index]))
-    },
-    commitEdit() {
-      this.updateUser()
-      this.UpdatedialogVisible = false
-    },
-    AddUser() {
-      var that = this
-      if (that.addData.name === '' ||
-        that.addData.author_level === '') {
-        that.InvalidInputDialogVisible = true
-        return
-      }
-      console.log(that.addData)
-      that.addUser()
-    },
-    Search() {
-      var that = this
-      that.currentPage = 1
-      that.tableData = that.allData.filter(item => {
-        return item.name.includes(that.addData.name) &&
-          (item.author_level === that.addData.author_level || that.addData.author_level === that.author_levels[0]) &&
-          item.faculty.includes(that.addData.faculty) &&
-          item.school_num.includes(that.addData.school_num)
-      })
-      console.log(that.tableData)
-    },
-    SortById() {
-      this.sortState = (this.sortState + 1) % 3
-      if (this.sortState === 1) {
-        this.tableData.reverse()
-      } else if (this.sortState === 2) {
-        this.tableData.reverse()
-      }
-      console.log(this.sortState)
+      // location.href = '#TableTop'
     }
   }
 }
