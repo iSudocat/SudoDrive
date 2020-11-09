@@ -41,6 +41,9 @@ namespace Server.Controllers.Storage
 
             var result = _databaseService.Files.AsQueryable();
 
+            // 过滤掉未确认的文件
+            result = result.Where(s => s.Status == EntityFile.FileStatus.Confirmed);
+
             // 注入用户权限
             if (loginUser.HasPermission(PermissionBank.StoragePermission("root", "root", "delete")) != true)
             {
