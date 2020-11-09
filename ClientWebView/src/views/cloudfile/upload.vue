@@ -1,15 +1,22 @@
 <template>
-  <div>
-    <el-row>
-      <el-col :span="21">
-        <el-button @click="parentPath">返回</el-button>
-      </el-col>
+  <div id="leftBox">
+    <el-row style="margin: 15px 10px 15px 20px;">
+      <el-col :span="21" />
       <el-col :span="3">
-        <el-button>上传</el-button>
+        <el-button size="small" type="primary" style="height: 24px; line-height: 4px;">上传</el-button>
       </el-col>
     </el-row>
+    <el-breadcrumb separator="/" style="margin: 15px 10px 15px 20px;">
+      <el-breadcrumb-item
+        v-for="(item,i) in (currentPath.split('\\'))"
+        :key="i"
+      >
+        <el-button type="text" size="mini" @click="handleJump(i)">{{ item }}</el-button>
+      </el-breadcrumb-item>
+    </el-breadcrumb>
+    <hr style="border:0; background-color: #f1f1f1; height: 1px">
+
     <el-table
-      id="leftBox"
       highlight-current-row
       :data="uploadTableData"
       style="width: 100%"
@@ -27,7 +34,7 @@
         <template slot-scope="scope">
           <i v-if="!scope.row.isFile" class="el-icon-folder" />
           <i v-if="scope.row.isFile" class="el-icon-tickets" />
-          <span>{{ scope.row.name }}</span>
+          <span>&nbsp;{{ scope.row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -71,7 +78,7 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      currentPath: '',
+      currentPath: 'C:\\hel\\llo\\iii',
       currentRow: {
         name: '',
         size: 0,
@@ -153,6 +160,17 @@ export default {
         })
       }
     },
+    handleJump(num) {
+      var that = this
+      const splits = that.currentPath.split('\\')
+      if (num === splits.length - 1) {
+        return
+      } else {
+        for (let i = 0; i < splits.length - 1 - num; i++) {
+          that.parentPath()
+        }
+      }
+    },
     handleDblclick(row) {
       console.log(row)
       const that = this
@@ -183,6 +201,10 @@ export default {
 @media screen and (min-width: 768px) {
   #leftBox {
     /*border-right: 1px solid rgb(235,238,235);*/
+    /*box-shadow: 4px 2px 2px 1px rgba(0, 0, 0, 0.2);*/
+    position: relative; z-index: 1;
+  }
+  #xxx {
     box-shadow: 4px 2px 2px 1px rgba(0, 0, 0, 0.2);
     position: relative; z-index: 1;
   }

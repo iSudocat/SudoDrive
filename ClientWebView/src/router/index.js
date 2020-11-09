@@ -100,4 +100,17 @@ export function resetRouter() {
   router.matcher = newRouter.matcher // reset router
 }
 
+router.beforeEach((to, from, next) => {
+  if (to.meta.roles === undefined) {
+    next()
+  } else {
+    if (to.meta.roles.includes(router.app.$options.store.state.role)) {
+      next()
+    } else {
+      console.log(router.app.$options.store.state.role)
+      alert('没有该权限')
+    }
+  }
+})
+
 export default router
