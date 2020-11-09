@@ -7,10 +7,14 @@ using System.Threading.Tasks;
 
 namespace Server.Models.VO
 {
-    public class DeleteGroupRequestModel
+    public class AddGroupMemberRequestModel
     {
         [Required]
         [JsonProperty("groupname")]
-        public string GroupName { get;private set; }
+        public string GroupName { get; private set; }
+
+        [Required]
+        [JsonProperty("username")]
+        public string UserName { get;private set; }
     }
 }

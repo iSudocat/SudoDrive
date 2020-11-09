@@ -7,10 +7,10 @@ namespace Server.Models.DTO
 {
     public class DeleteGroupResultModel
     {
-        public string _GroupName { get; private set; }
-        public DeleteGroupResultModel(string groupname)
+        public long GroupId { get; private set; }
+        public DeleteGroupResultModel(long groupid)
         {
-            _GroupName = groupname;
+            GroupId = groupid;
         }
     }
 }

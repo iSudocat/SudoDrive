@@ -7,10 +7,12 @@ namespace Server.Models.DTO
 {
     public class QuitGroupResultModel
     {
-        public string _GroupName { get; set; }
-        public QuitGroupResultModel(string groupName)
+        public long GroupId { get;private set; }
+        public long UserId { get;private set; }
+        public QuitGroupResultModel(long groupid, long userid)
         {
-            _GroupName = groupName;
+            GroupId = groupid;
+            UserId = userid;
         }
     }
 }

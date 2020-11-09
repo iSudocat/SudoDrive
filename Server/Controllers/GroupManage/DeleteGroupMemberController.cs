@@ -26,7 +26,17 @@ namespace Server.Controllers.GroupManage
         [HttpDelete]
         public IActionResult DeleteGroupMember([FromBody] DeleteGroupMemberRequestModel deleteGroupMemberRequestModel)
         {
-            var grouptouser = _databaseService.GroupsToUsersRelation.FirstOrDefault(t => t.Group.GroupName == deleteGroupMemberRequestModel.GroupName && t.User.Username==deleteGroupMemberRequestModel.UserName);
+            var group = _databaseService.Groups.FirstOrDefault(t => t.GroupName == deleteGroupMemberRequestModel.GroupName);
+            if (group == null)
+            {
+                throw new GroupNotExistException("the groupname you enter does not exsit actually when trying to delete a grouptouser.");
+            }
+            var user = _databaseService.Users.FirstOrDefault(t => t.Username == deleteGroupMemberRequestModel.UserName);
+            if (user == null)
+            {
+                throw new UserNotExistException("the username you enter does not exist actually  when trying to delete a grouptouser");
+            }
+            var grouptouser = _databaseService.GroupsToUsersRelation.FirstOrDefault(t => t.Group.GroupName == group.GroupName && t.User.Username==user.Username);
             if (grouptouser == null)
             {
                 throw new GroupToUserNotExistException("the user is not in the group at present when deleting by another user.");
@@ -34,7 +44,7 @@ namespace Server.Controllers.GroupManage
             _databaseService.GroupsToUsersRelation.Remove(grouptouser);
             _databaseService.SaveChanges();
 
-            return Ok(new DeleteGroupMemberResultModel(deleteGroupMemberRequestModel.GroupName,deleteGroupMemberRequestModel.UserName));
+            return Ok(new DeleteGroupMemberResultModel(group.Id,user.Id));
         }
     }
 }

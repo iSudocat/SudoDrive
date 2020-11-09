@@ -3,6 +3,7 @@ using Server.Exceptions;
 using Server.Libraries;
 using Server.Middlewares;
 using Server.Models.DTO;
+using Server.Models.Entities;
 using Server.Models.VO;
 using Server.Services;
 using System;
@@ -28,7 +29,13 @@ namespace Server.Controllers.GroupManage
         [HttpPut]
         public IActionResult QuitGroup([FromBody] QuitGroupRequestModel quitGroupRequestModel)
         {
-            var grouptouser = _databaseService.GroupsToUsersRelation.FirstOrDefault(t => t.Group.GroupName == quitGroupRequestModel.GroupName);
+            var group = _databaseService.Groups.FirstOrDefault(t => t.GroupName == quitGroupRequestModel.GroupName);
+            if (group == null)
+            {
+                throw new GroupNotExistException("the groupname you enter does not exsit actually when trying to quit.");
+            }
+            var user = HttpContext.Items["actor"] as User;
+            var grouptouser = _databaseService.GroupsToUsersRelation.FirstOrDefault(t => t.Group.GroupName == quitGroupRequestModel.GroupName&&t.UserId==user.Id);
             if (grouptouser==null)
             {
                 throw new GroupToUserNotExistException("the user is not in the group at present.");
@@ -36,7 +43,7 @@ namespace Server.Controllers.GroupManage
             _databaseService.GroupsToUsersRelation.Remove(grouptouser);
             _databaseService.SaveChanges();
 
-            return Ok(new QuitGroupResultModel(quitGroupRequestModel.GroupName));
+            return Ok(new QuitGroupResultModel(group.Id,user.Id));
         }
     }
 }

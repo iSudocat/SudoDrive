@@ -11,10 +11,10 @@ namespace Server.Models.VO
     {
         [Required]
         [JsonProperty("groupname")]
-        public string GroupName { get; set; }
+        public string GroupName { get;private set; }
 
         [Required]
         [JsonProperty("username")]
-        public string UserName { get; set; }
+        public string UserName { get;private set; }
     }
 }

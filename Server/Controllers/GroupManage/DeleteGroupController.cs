@@ -28,21 +28,21 @@ namespace Server.Controllers.GroupManage
         public IActionResult DeleteGroup([FromBody] DeleteGroupRequestModel deleteGroupRequestModel)
         {
             //use groupname to identify group,because the id is invisible to user
-            var group_db = _databaseService.Groups.FirstOrDefault(t => t.GroupName == deleteGroupRequestModel.GroupName);
-            if (group_db == null)
+            var group = _databaseService.Groups.FirstOrDefault(t => t.GroupName == deleteGroupRequestModel.GroupName);
+            if (group == null)
             {
-                throw new GroupnameNotExistException("Groupname Does Not Exist when trying to delete group.");
+                throw new GroupNotExistException("Groupname Does Not Exist when trying to delete group.");
             }
            
-            var grouptouser_db = _databaseService.GroupsToUsersRelation.Where(t => t.Group.GroupName == group_db.GroupName);
+            var grouptouser_db = _databaseService.GroupsToUsersRelation.Where(t => t.Group.GroupName == group.GroupName);
             //try to update the updatetime of all the users which belongs to this group, but failed as below
             //var user_db = _databaseService.Users.Where(t => grouptouser_db.Contains(t.GroupToUser));
-            var grouptopermission_db = _databaseService.GroupsToPermissionsRelation.Where(t => t.Group.GroupName == group_db.GroupName);
+            var grouptopermission_db = _databaseService.GroupsToPermissionsRelation.Where(t => t.Group.GroupName == group.GroupName);
             _databaseService.GroupsToPermissionsRelation.RemoveRange(grouptopermission_db);
             _databaseService.GroupsToUsersRelation.RemoveRange(grouptouser_db);
-            _databaseService.Groups.Remove(group_db);
+            _databaseService.Groups.Remove(group);
             _databaseService.SaveChanges();
-            return Ok(new DeleteGroupResultModel(group_db.GroupName));
+            return Ok(new DeleteGroupResultModel(group.Id));
         }
     }
 }

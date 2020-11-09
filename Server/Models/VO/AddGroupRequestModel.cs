@@ -11,7 +11,7 @@ namespace Server.Models.VO
     {
         [Required]
         [JsonProperty("groupname")]
-        public string GroupName { get; set; }
+        public string GroupName { get; private set; }
 
     }
 }
