@@ -112,11 +112,10 @@
     <Compile Include="Request\Response\refreshTokenResponse.cs" />
     <Compile Include="Request\ServerAddress.cs" />
     <Compile Include="Request\UserInfo.cs" />
-    <Compile Include="TencentCos\CosConfig.cs" />
     <Compile Include="TencentCos\CosService.cs" />
     <Compile Include="TencentCos\Task\Operation\Delete.cs" />
     <Compile Include="TencentCos\Task\Operation\Download.cs" />
-    <Compile Include="TencentCos\Task\FCB.cs" />
+    <Compile Include="TencentCos\Task\FileControlBlock.cs" />
     <Compile Include="TencentCos\Task\TaskList.cs" />
     <Compile Include="TencentCos\Task\OperationType.cs" />
     <Compile Include="TencentCos\Task\StatusType.cs" />

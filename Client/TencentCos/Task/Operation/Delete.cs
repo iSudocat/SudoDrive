@@ -16,9 +16,9 @@ namespace Client.TencentCos.Task.Operation
 {
     public class Delete
     {
-        private FCB File;
+        private FileControlBlock File;
 
-        public Delete(FCB file)
+        public Delete(FileControlBlock file)
         {
             this.File = file;
         }

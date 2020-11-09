@@ -32,9 +32,6 @@ namespace Client.Request
             Console.WriteLine(response.Content);
             UploadResponse res = JsonConvert.DeserializeObject<UploadResponse>(response.Content);
 
-            CosConfig.Bucket = res.data.tencentCos.bucket;
-            CosConfig.Region = res.data.tencentCos.region;
-
             return res;
         }
 

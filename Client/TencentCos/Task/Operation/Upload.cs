@@ -16,12 +16,12 @@ namespace Client.TencentCos.Task.Operation
 {
     public class Upload
     {
-        private FCB File;
+        private FileControlBlock File;
         private Thread TaskStatusDetectionThread;
         
         private COSXMLUploadTask uploadTask;
 
-        public Upload(FCB file)
+        public Upload(FileControlBlock file)
         {
             this.File = file;
             TaskStatusDetectionThread = new Thread(TaskStatusDetection);
@@ -35,9 +35,11 @@ namespace Client.TencentCos.Task.Operation
             FileRequest fileRequest = new FileRequest();
             var res = fileRequest.Upload(srcPath, File.RemotePath);
 
-            string bucket = CosConfig.Bucket;   //存储桶，格式：BucketName-APPID
+            string bucket = res.data.tencentCos.bucket;   //存储桶，格式：BucketName-APPID
 
-            CosService cosService = new CosService();
+
+
+            CosService cosService = new CosService(res.data.tencentCos.region);
             CosXml cosXml = cosService.getCosXml(
                 res.data.token.credentials.tmpSecretId,
                 res.data.token.credentials.tmpSecretKey,
@@ -64,9 +66,7 @@ namespace Client.TencentCos.Task.Operation
                 COSXMLUploadTask.UploadTaskResult result = cosResult as COSXMLUploadTask.UploadTaskResult;
                 Console.WriteLine("successCallback: " + result.GetResultInfo());
                 string eTag = result.eTag;
-
-                TaskList.Remove(File.Key);
-
+                TaskList.SetSuccess(File.Key);
                 TaskStatusDetectionThread.Abort();
             };
             uploadTask.failCallback = delegate (CosClientException clientEx, CosServerException serverEx)
@@ -79,7 +79,10 @@ namespace Client.TencentCos.Task.Operation
                 {
                     Console.WriteLine("CosServerException: " + serverEx.GetInfo());
                 }
+
+                TaskList.SetFailure(File.Key);
             };
+
             transferManager.Upload(uploadTask);
         }
 

@@ -16,12 +16,12 @@ namespace Client.TencentCos.Task.Operation
 {
     public class Download
     {
-        private FCB File;
+        private FileControlBlock File;
         private Thread TaskStatusDetectionThread;
 
         private COSXMLDownloadTask downloadTask;
 
-        public Download(FCB file)
+        public Download(FileControlBlock file)
         {
             this.File = file;
             TaskStatusDetectionThread = new Thread(TaskStatusDetection);

@@ -96,12 +96,12 @@ namespace Client
             UserRequest userService = new UserRequest();
             var res = userService.Login("sudodog", "ssss11111");
 
-            TaskList.Add(new FCB
+            TaskList.Add(new FileControlBlock
             {
                 Operation = OperationType.Upload,
-                FileName = "C++ Primer Plus.pdf",
-                LocalPath = @"D:\书\C++ Primer Plus.pdf",
-                RemotePath = @"users\sudodog\书\C++ Primer Plus.pdf",
+                FileName = "臭豚.png",
+                LocalPath = @"D:\表情包\臭豚.png",
+                RemotePath = @"users\sudodog\表情包.png",
                 Status = StatusType.Waiting
             });
 

@@ -13,10 +13,10 @@ namespace Client.TencentCos.Task
 {
     public static class TaskList
     {
-        private static SortedList<long, FCB> waitingList = new SortedList<long, FCB>();
-        private static SortedList<long, FCB> runningList = new SortedList<long, FCB>();
-        private static SortedList<long, FCB> successList = new SortedList<long, FCB>();
-        private static SortedList<long, FCB> failureList = new SortedList<long, FCB>();
+        private static SortedList<long, FileControlBlock> waitingList = new SortedList<long, FileControlBlock>();
+        private static SortedList<long, FileControlBlock> runningList = new SortedList<long, FileControlBlock>();
+        private static SortedList<long, FileControlBlock> successList = new SortedList<long, FileControlBlock>();
+        private static SortedList<long, FileControlBlock> failureList = new SortedList<long, FileControlBlock>();
 
         private static long key = 0;
 
@@ -27,7 +27,7 @@ namespace Client.TencentCos.Task
         private static Mutex successlistMutex = new Mutex();
         private static Mutex failurelistMutex = new Mutex();
 
-        public static void Add(FCB file)
+        public static void Add(FileControlBlock file)
         {
             waitinglistMutex.WaitOne();
             file.Key = key;
@@ -88,22 +88,22 @@ namespace Client.TencentCos.Task
             runninglistMutex.ReleaseMutex();
         }
 
-        public static SortedList<long, FCB> GetWaitingList()
+        public static SortedList<long, FileControlBlock> GetWaitingList()
         {
             return waitingList;
         }
 
-        public static SortedList<long, FCB> GetRunningList()
+        public static SortedList<long, FileControlBlock> GetRunningList()
         {
             return runningList;
         }
 
-        public static SortedList<long, FCB> GetSuccessList()
+        public static SortedList<long, FileControlBlock> GetSuccessList()
         {
             return successList;
         }
 
-        public static SortedList<long, FCB> GetFailureList()
+        public static SortedList<long, FileControlBlock> GetFailureList()
         {
             return failureList;
         }
@@ -121,7 +121,7 @@ namespace Client.TencentCos.Task
                 if (waitingList.Count != 0)
                 {
                     IList<long> waitingListkeys = waitingList.Keys;
-                    IList<FCB> waitingListValues = waitingList.Values;
+                    IList<FileControlBlock> waitingListValues = waitingList.Values;
 
                     int difference = runningLimit - runningList.Count;
                     for (int i = 0; i < difference; i--)
@@ -141,7 +141,7 @@ namespace Client.TencentCos.Task
                 }
 
                 runninglistMutex.WaitOne();
-                foreach (FCB file in runningList.Values)
+                foreach (FileControlBlock file in runningList.Values)
                 {
                     switch (file.Status)
                     {
