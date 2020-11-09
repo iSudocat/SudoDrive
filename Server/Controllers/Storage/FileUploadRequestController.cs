@@ -237,7 +237,7 @@ namespace Server.Exceptions
             {
                 try
                 {
-                    token = _tencentCos.GetToken(file);
+                    token = _tencentCos.GetUploadToken(file);
                 }
                 catch (Exception e)
                 {

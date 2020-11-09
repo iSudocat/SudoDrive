@@ -23,19 +23,21 @@ namespace Server.Controllers.Storage
     {
         private IDatabaseService _databaseService;
 
-        private readonly TencentCosManagementModel _tencentCosManagement;
+        private ITencentCos _tencentCos;
 
         private readonly ILogger _logger;
 
+        private readonly TencentCosManagementModel _tencentCosManagement;
 
-        public FileListController(IDatabaseService databaseService, ILogger<GlobalExceptionFilter> logger, IOptions<TencentCosManagementModel> TencentCosManagement)
+        public FileListController(IDatabaseService databaseService, ITencentCos tencentCos, IOptions<TencentCosManagementModel> TencentCosManagement, ILogger<GlobalExceptionFilter> logger)
         {
             _databaseService = databaseService;
+            _tencentCos = tencentCos;
             _tencentCosManagement = TencentCosManagement.Value;
             _logger = logger;
         }
 
-        
+
         [HttpGet]
         public IActionResult ListFile([FromQuery] FileListRequestModel requestModel)
         {
@@ -145,7 +147,16 @@ namespace Server.Controllers.Storage
             result = result.Skip(requestModel.Offset);
             result = result.Take(requestModel.Amount);
 
-            return Ok(new FileListResultModel(result, requestModel.Amount, requestModel.Offset, _tencentCosManagement));
+            List<string> resourcesList = new List<string>();
+            foreach (var file in result)
+            {
+                if (file.Type != "text/directory") {
+                    resourcesList.Add(file.StorageName);
+                }
+            }
+            var token = _tencentCos.GetDownloadToken(resourcesList);
+
+            return Ok(new FileListResultModel(result, requestModel.Amount, requestModel.Offset, token, _tencentCosManagement));
         }
     }
 }
