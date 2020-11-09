@@ -8,16 +8,25 @@
         <download />
       </el-col>
     </el-row>
+    <RightPanel>
+      <FileState />
+    </RightPanel>
   </div>
 </template>
 
 <script>
 import upload from '@/views/cloudfile/upload'
 import Download from '@/views/cloudfile/download'
+import RightPanel from '@/views/cloudfile/RightPanel'
+import FileState from '@/views/cloudfile/FileState'
 
 export default {
   name: 'Cloudfile',
-  components: { Download, upload }
+  components: { FileState, RightPanel, Download, upload },
+  data() {
+    return {
+    }
+  }
 }
 </script>
 
