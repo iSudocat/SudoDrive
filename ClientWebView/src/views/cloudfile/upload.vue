@@ -161,7 +161,15 @@ export default {
       }
     },
     handleJump(num) {
-      console.log(num)
+      var that = this
+      const splits = that.currentPath.split('\\')
+      if (num === splits.length - 1) {
+        return
+      } else {
+        for (let i = 0; i < splits.length - 1 - num; i++) {
+          that.parentPath()
+        }
+      }
     },
     handleDblclick(row) {
       console.log(row)
