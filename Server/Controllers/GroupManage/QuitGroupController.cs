@@ -25,7 +25,7 @@ namespace Server.Controllers.GroupManage
         }
 
         //it is called id here, but it is groupname actually
-        [HttpPut("{id}")]
+        [HttpPut]
         public IActionResult QuitGroup([FromBody] QuitGroupRequestModel quitGroupRequestModel)
         {
             var grouptouser = _databaseService.GroupsToUsersRelation.FirstOrDefault(t => t.Group.GroupName == quitGroupRequestModel.GroupName);

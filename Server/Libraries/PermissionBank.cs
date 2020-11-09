@@ -14,5 +14,6 @@ namespace Server.Libraries
         public const string GroupmanageAddgroup = "groupmanage.addgroup";
         public const string GroupmanageDeletegroup = "groupmanage.deletegroup";
         public const string GroupmanageQuitgroup = "groupmanage.quitgroup";
+        public const string GroupmanageDeletegroupmember = "groupmanage.deletegroupmember";
     }
 }
