@@ -1,17 +1,14 @@
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Server.Exceptions;
+using Server.Libraries;
+using Server.Middlewares;
 using Server.Models.Entities;
 using Server.Models.VO;
 using Server.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Server.Libraries;
-using Server.Middlewares;
-using Server.Exceptions;
 
-namespace Server.Controllers
+namespace Server.Controllers.UserProfile
 {
     [Route("api/register")]
     [ApiController]
