@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.GroupManage
 {
-    [Route("api/groupmanage/byanotheruser")]
+    [Route("api/group/member")]
     [ApiController]
     [NeedPermission(PermissionBank.GroupmanageDeletegroupmember)]
     public class DeleteGroupMemberController : AbstractController
@@ -29,17 +29,17 @@ namespace Server.Controllers.GroupManage
             var group = _databaseService.Groups.FirstOrDefault(t => t.GroupName == deleteGroupMemberRequestModel.GroupName);
             if (group == null)
             {
-                throw new GroupNotExistException("the groupname you enter does not exsit actually when trying to delete a grouptouser.");
+                throw new GroupNotExistException("The groupname you enter does not exsit actually when trying to delete a grouptouser.");
             }
             var user = _databaseService.Users.FirstOrDefault(t => t.Username == deleteGroupMemberRequestModel.UserName);
             if (user == null)
             {
-                throw new UserNotExistException("the username you enter does not exist actually  when trying to delete a grouptouser");
+                throw new UserNotExistException("The username you enter does not exist actually  when trying to delete a grouptouser");
             }
             var grouptouser = _databaseService.GroupsToUsersRelation.FirstOrDefault(t => t.Group.GroupName == group.GroupName && t.User.Username==user.Username);
             if (grouptouser == null)
             {
-                throw new GroupToUserNotExistException("the user is not in the group at present when deleting by another user.");
+                throw new GroupToUserNotExistException("The user is not in the group at present when deleting by another user.");
             }
             _databaseService.GroupsToUsersRelation.Remove(grouptouser);
             _databaseService.SaveChanges();

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.GroupManage
 {
-    [Route("api/groupmanage/byanotheruser")]
+    [Route("api/group/member")]
     [ApiController]
     [NeedPermission(PermissionBank.GroupmanageAddgroupmember)]
     public class AddGroupMemberController : AbstractController
@@ -25,23 +25,24 @@ namespace Server.Controllers.GroupManage
         }
 
         [HttpPost]
-        public IActionResult AddGroupMember([FromBody] AddGroupMemberRequestModel addGroupMemberRequestModel) 
+        public IActionResult AddGroupMember([FromBody] AddGroupMemberRequestModel addGroupMemberRequestModel)
         {
             var group = _databaseService.Groups.FirstOrDefault(t => t.GroupName == addGroupMemberRequestModel.GroupName);
             if (group == null)
             {
-                throw new GroupNotExistException("the groupname you enter does not exsit actually when trying to add a grouptouser.");
+                throw new GroupNotExistException("The groupname you enter does not exsit actually when trying to add a grouptouser.");
             }
             var user = _databaseService.Users.FirstOrDefault(t => t.Username == addGroupMemberRequestModel.UserName);
             if (user == null)
             {
-                throw new UserNotExistException("the username you enter does not exist actually  when trying to add a grouptouser");
+                throw new UserNotExistException("The username you enter does not exist actually  when trying to add a grouptouser");
             }
             var grouptouser = _databaseService.GroupsToUsersRelation.FirstOrDefault(t => t.Group.GroupName == group.GroupName && t.User.Username == user.Username);
-            if (grouptouser !=null)
+            if (grouptouser != null)
             {
-                throw new GroupToUserAlreadyExistException("grouptouser already exists when trying to add a grouptouser");
+                throw new GroupToUserAlreadyExistException("Grouptouser already exists when trying to add a grouptouser");
             }
+
             grouptouser = new GroupToUser();
             grouptouser.Group = group;
             grouptouser.GroupId = group.Id;
@@ -50,7 +51,7 @@ namespace Server.Controllers.GroupManage
             _databaseService.GroupsToUsersRelation.Add(grouptouser);
             _databaseService.SaveChanges();
 
-            return Ok(new AddGroupMemberResultModel(grouptouser.GroupId,grouptouser.UserId));
+            return Ok(new AddGroupMemberResultModel(grouptouser.GroupId, grouptouser.UserId));
         }
     }
 }

@@ -9,10 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Server.Models.DTO;
 
 namespace Server.Controllers.GroupManage
 {
-    [Route("api/groupmanage")]
+    [Route("api/group")]
     [ApiController]
     [NeedPermission(PermissionBank.GroupmanageAddgroup)]
     public class AddGroupController : AbstractController
@@ -34,8 +35,6 @@ namespace Server.Controllers.GroupManage
             //initialize new group and save it to database
             Group group = new Group();
             group.GroupName = addGroupRequestModel.GroupName;
-            group.CreatedAt = DateTime.Now;
-            group.UpdatedAt = group.CreatedAt;
             _databaseService.Groups.Add(group);
             //obtain the user
             var user = HttpContext.Items["actor"] as User;

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.GroupManage
 {
-    [Route("api/groupmanage")]
+    [Route("api/group")]
     [ApiController]
     [NeedPermission(PermissionBank.GroupmanageDeletegroup)]
     public class DeleteGroupController : AbstractController
