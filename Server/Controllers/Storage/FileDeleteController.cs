@@ -74,13 +74,13 @@ namespace Server.Controllers.Storage
 
                         var permissionNode = permission.Split(".");
 
-                        // storage.file.{type}.{name}.{operation}
+                        // storage.file.operation.{type}.{name}.{operation}
 
-                        if ((permissionNode.Length == 5) && (permissionNode[0] == "storage") && (permissionNode[1] == "file"))
+                        if ((permissionNode.Length == 6) && (permissionNode[0] == "storage") && (permissionNode[1] == "file") && (permissionNode[2] == "operation"))
                         {
-                            var type = permissionNode[2];
-                            var name = permissionNode[3];
-                            var operation = permissionNode[4];
+                            var type = permissionNode[3];
+                            var name = permissionNode[4];
+                            var operation = permissionNode[5];
                             if (operation != "list") continue;
 
                             switch (type)

@@ -15,7 +15,7 @@ namespace Server.Controllers.GroupManage
 {
     [Route("api/group")]
     [ApiController]
-    [NeedPermission(PermissionBank.GroupmanageAddgroup)]
+    [NeedPermission(PermissionBank.GroupManageGroupAdd)]
     public class AddGroupController : AbstractController
     {
         private IDatabaseService _databaseService;

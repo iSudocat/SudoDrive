@@ -16,7 +16,7 @@ namespace Server.Controllers.GroupManage
 {
     [Route("api/group/quit")]
     [ApiController]
-    [NeedPermission(PermissionBank.GroupmanageQuitgroup)]
+    [NeedPermission(PermissionBank.GroupManageGroupQuit)]
     public class QuitGroupController : AbstractController
     {
         private IDatabaseService _databaseService;

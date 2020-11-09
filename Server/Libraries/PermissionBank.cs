@@ -11,23 +11,35 @@ namespace Server.Libraries
         public const string StorageFileDeleteBase = "storage.file.delete.basic";
         public const string StorageFileListBasic = "storage.file.list.basic";
 
-        public const string GroupmanageAddgroup = "groupmanage.addgroup";
-        public const string GroupmanageDeletegroup = "groupmanage.deletegroup";
-        public const string GroupmanageQuitgroup = "groupmanage.quitgroup";
-        public const string GroupmanageDeletegroupmember = "groupmanage.deletegroupmember";
-        public const string GroupmanageAddgroupmember = "groupmanage.addgroupmember";
+        public const string GroupManageGroupAdd = "groupmanager.group.add.basic";
+        public const string GroupManageGroupDelete = "groupmanager.group.delete.basic";
+        public const string GroupManageGroupQuit = "groupmanager.group.quit.basic";
+        public const string GroupManageGroupMemberAdd = "groupmanager.group.member.add.basic";
+        public const string GroupManageGroupMemberDelete = "groupmanager.group.member.delete.basic";
 
         /// <summary>
-        /// 
+        /// 生成文件访问权限
         /// </summary>
-        /// <param name="type">users / groups / root</param>
-        /// <param name="name">username / groupname</param>
-        /// <param name="operation">upload / delete / list</param>
+        /// <param name="type">权限类型：users / groups / root</param>
+        /// <param name="name">权限类型对应的用户/组名：username / groupname</param>
+        /// <param name="operation">操作：upload / delete / list</param>
         /// <returns></returns>
         public static string StoragePermission(string type, string name, string operation)
         {
-            if (type == "root") return $"storage.file.root.{operation}";
-            return $"storage.file.{type}.{name}.{operation}";
+            if (type == "root") return $"storage.file.operation.root.{operation}";
+            return $"storage.file.operation.{type}.{name}.{operation}";
+        }
+
+        /// <summary>
+        /// 生成组访问权限
+        /// </summary>
+        /// <param name="groupName">组名</param>
+        /// <param name="type">生成类型：member</param>
+        /// <param name="operation">操作：add / delete</param>
+        /// <returns></returns>
+        public static string GroupOperationPermission(string groupName, string type, string operation)
+        {
+            return $"groupmanager.group.operation.{groupName}.{type}.{operation}";
         }
     }
 }
