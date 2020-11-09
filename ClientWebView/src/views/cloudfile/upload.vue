@@ -1,13 +1,19 @@
 <template>
   <div id="leftBox">
     <el-row style="margin: 15px 10px 15px 20px;">
-      <el-col :span="21">
-        <el-page-header style="color:#00abff" @back="parentPath" title="返回上一级"></el-page-header>
-      </el-col>
+      <el-col :span="21" />
       <el-col :span="3">
         <el-button size="small" type="primary" style="height: 24px; line-height: 4px;">上传</el-button>
       </el-col>
     </el-row>
+    <el-breadcrumb separator="/" style="margin: 15px 10px 15px 20px;">
+      <el-breadcrumb-item
+        v-for="(item,i) in (currentPath.split('\\'))"
+        :key="i"
+      >
+        <el-button type="text" size="mini" @click="handleJump(i)">{{ item }}</el-button>
+      </el-breadcrumb-item>
+    </el-breadcrumb>
     <hr style="border:0; background-color: #f1f1f1; height: 1px">
 
     <el-table
@@ -72,7 +78,7 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      currentPath: '',
+      currentPath: 'C:\\hel\\llo\\iii',
       currentRow: {
         name: '',
         size: 0,
@@ -153,6 +159,9 @@ export default {
           that.uploadTableData = table
         })
       }
+    },
+    handleJump(num) {
+      console.log(num)
     },
     handleDblclick(row) {
       console.log(row)

@@ -1,13 +1,19 @@
 <template>
   <div>
     <el-row style="margin: 15px 10px 15px 20px;">
-      <el-col :span="21">
-        <el-page-header style="color:#00abff" title="返回上一级"></el-page-header>
-      </el-col>
+      <el-col :span="21" />
       <el-col :span="3">
         <el-button size="small" type="primary" style="height: 24px; line-height: 4px;">下载</el-button>
       </el-col>
     </el-row>
+    <el-breadcrumb separator="/" style="margin: 15px 10px 15px 20px;">
+      <el-breadcrumb-item
+        v-for="(item,i) in (currentPath.split('\\'))"
+        :key="i"
+      >
+        <el-button type="text" size="mini" @click="handleJump(i)">{{ item }}</el-button>
+      </el-breadcrumb-item>
+    </el-breadcrumb>
     <hr style="border:0; background-color: #f1f1f1; height: 1px">
     <el-table
       :data="uploadTableData"
@@ -68,6 +74,7 @@ export default {
     return {
       uploadTableData: [],
       dialogVisible: false,
+      currentPath: '.\\xxx\\xxxxx\\xxxxxxx',
       currentRow: {
         name: '',
         size: 0,
@@ -99,6 +106,9 @@ export default {
     closeDialog(visible) {
       console.log('closeDialog')
       this.dialogVisible = visible
+    },
+    handleJump(num) {
+      console.log(num)
     }
   }
 }
