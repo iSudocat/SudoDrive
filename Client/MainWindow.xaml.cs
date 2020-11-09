@@ -20,6 +20,7 @@ using Client.CefUtils.Function;
 using Client.CefUtils.Scheme;
 using Client.Request;
 using Client.TencentCos;
+using Client.TencentCos.Task;
 
 namespace Client
 {
@@ -31,12 +32,9 @@ namespace Client
         Thread fileListThread;
         public MainWindow()
         {
-            #region 临时测试用
-            CosConfig.Bucket = "sudodrive-1251910132";
-            CosConfig.Region = "ap-chengdu";
-            #endregion
 
-            fileListThread = new Thread(FileTask.run);
+            // 启动任务队列进程
+            fileListThread = new Thread(TaskList.run);
             fileListThread.Start();
             
 
@@ -98,12 +96,12 @@ namespace Client
             UserRequest userService = new UserRequest();
             var res = userService.Login("sudodog", "ssss11111");
 
-            FileTask.Add(new FCB
+            TaskList.Add(new FCB
             {
                 Operation = OperationType.Upload,
-                FileName = "MMA_12.1.0_Win_ChineseVersion.7z",
-                LocalPath = @"F:\软件合集\MMA_12.1.0_Win_ChineseVersion.7z",
-                RemotePath = @"users\sudodog\软件合集\MMA_12.1.0_Win_ChineseVersion.7z",
+                FileName = "C++ Primer Plus.pdf",
+                LocalPath = @"D:\书\C++ Primer Plus.pdf",
+                RemotePath = @"users\sudodog\书\C++ Primer Plus.pdf",
                 Status = StatusType.Waiting
             });
 
@@ -140,12 +138,12 @@ namespace Client
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             //Convert.ToInt64(tbkey.Text)
-            FileTask.SetStatus(0, StatusType.RequestPause);
+            TaskList.SetStatus(0, StatusType.RequestPause);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            FileTask.SetStatus(0, StatusType.RequestRusume);
+            TaskList.SetStatus(0, StatusType.RequestRusume);
         }
     }
 }

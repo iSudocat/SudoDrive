@@ -27,7 +27,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
@@ -38,7 +38,7 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
@@ -49,7 +49,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
@@ -60,10 +60,16 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="COSXML, Version=5.4.14.0, Culture=neutral, processorArchitecture=MSIL">
@@ -108,15 +114,16 @@
     <Compile Include="Request\UserInfo.cs" />
     <Compile Include="TencentCos\CosConfig.cs" />
     <Compile Include="TencentCos\CosService.cs" />
-    <Compile Include="TencentCos\FileList.cs" />
-    <Compile Include="TencentCos\TaskList\FileService.cs" />
-    <Compile Include="TencentCos\TaskList\FCB.cs" />
-    <Compile Include="TencentCos\TaskList\FileTask.cs" />
-    <Compile Include="TencentCos\TaskList\OperationType.cs" />
-    <Compile Include="TencentCos\TaskList\StatusType.cs" />
+    <Compile Include="TencentCos\Task\Operation\Delete.cs" />
+    <Compile Include="TencentCos\Task\Operation\Download.cs" />
+    <Compile Include="TencentCos\Task\FCB.cs" />
+    <Compile Include="TencentCos\Task\TaskList.cs" />
+    <Compile Include="TencentCos\Task\OperationType.cs" />
+    <Compile Include="TencentCos\Task\StatusType.cs" />
     <Compile Include="Request\Response\LoginResponse.cs" />
     <Compile Include="Request\Response\UploadResponse.cs" />
     <Compile Include="Request\UserRequest.cs" />
+    <Compile Include="TencentCos\Task\Operation\Upload.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

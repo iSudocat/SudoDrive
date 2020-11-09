@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Client.TencentCos
+namespace Client.TencentCos.Task
 {
     /// <summary>
     /// 任务队列的文件控制块
@@ -56,7 +56,6 @@ namespace Client.TencentCos
         /// 任务状态 0：未开始，1：进行中，2：请求暂停，3：已暂停，4：请求开始，5：请求停止
         /// </summary>
         public StatusType Status { get; set; }
-
 
     }
 

@@ -1,3 +1,4 @@
+using Client.TencentCos.Task.Operation;
 using COSXML;
 using System;
 using System.Collections.Concurrent;
@@ -8,11 +9,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Client.TencentCos
+namespace Client.TencentCos.Task
 {
-    public static class FileTask
+    public static class TaskList
     {
-
         private static SortedList<long, FCB> waitingList = new SortedList<long, FCB>();
         private static SortedList<long, FCB> runningList = new SortedList<long, FCB>();
         private static SortedList<long, FCB> successList = new SortedList<long, FCB>();
@@ -140,8 +140,6 @@ namespace Client.TencentCos
                     }
                 }
 
-                //Console.WriteLine("FileTask is running...");
-
                 runninglistMutex.WaitOne();
                 foreach (FCB file in runningList.Values)
                 {
@@ -149,24 +147,21 @@ namespace Client.TencentCos
                     {
                         case StatusType.Waiting:
                             {
-                                FileService fileService = new FileService(file);
-
                                 switch (file.Operation)
                                 {
-                                    case 0:
-                                        new Thread(fileService.Test).Start();
-                                        file.Status = StatusType.Running;
-                                        break;
                                     case OperationType.Upload:
-                                        new Thread(fileService.Upload).Start();
+                                        Upload upload = new Upload(file);
+                                        new Thread(upload.Run).Start();
                                         file.Status = StatusType.Running;
                                         break;
                                     case OperationType.Download:
-                                        new Thread(fileService.Download).Start();
+                                        Download download = new Download(file);
+                                        new Thread(download.Run).Start();
                                         file.Status = StatusType.Running;
                                         break;
                                     case OperationType.Delete:
-                                        new Thread(fileService.Delete).Start();
+                                        Delete delete = new Delete(file);
+                                        new Thread(delete.Run).Start();
                                         file.Status = StatusType.Running;
                                         break;
                                     default:
