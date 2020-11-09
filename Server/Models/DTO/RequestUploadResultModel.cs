@@ -2,8 +2,6 @@ namespace Server.Models.DTO
 {
     public class RequestUploadResultModel
     {
-        
-
         public string Path { get; private set; }
 
         public string Guid { get; private set; }

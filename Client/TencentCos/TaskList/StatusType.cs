@@ -39,6 +39,16 @@ namespace Client.TencentCos
         /// <summary>
         /// 请求停止
         /// </summary>
-        RequestCancel = 5
+        RequestCancel = 5,
+
+        /// <summary>
+        /// 成功
+        /// </summary>
+        Success = 6,
+
+        /// <summary>
+        /// 失败
+        /// </summary>
+        Failure = 7,
     }
 }

@@ -15,6 +15,8 @@ namespace Client.TencentCos
 
         private static SortedList<long, FCB> waitingList = new SortedList<long, FCB>();
         private static SortedList<long, FCB> runningList = new SortedList<long, FCB>();
+        private static SortedList<long, FCB> successList = new SortedList<long, FCB>();
+        private static SortedList<long, FCB> failureList = new SortedList<long, FCB>();
 
         private static long key = 0;
 
@@ -22,6 +24,8 @@ namespace Client.TencentCos
 
         private static Mutex waitinglistMutex = new Mutex();
         private static Mutex runninglistMutex = new Mutex();
+        private static Mutex successlistMutex = new Mutex();
+        private static Mutex failurelistMutex = new Mutex();
 
         public static void Add(FCB file)
         {
@@ -47,6 +51,28 @@ namespace Client.TencentCos
             runninglistMutex.ReleaseMutex();
         }
 
+        public static void SetSuccess(long key)
+        {
+            runninglistMutex.WaitOne();
+            successlistMutex.WaitOne();
+            runningList[key].Status = StatusType.Success;
+            successList.Add(key, runningList[key]);
+            runningList.Remove(key);
+            successlistMutex.ReleaseMutex();
+            runninglistMutex.ReleaseMutex();
+        }
+
+        public static void SetFailure(long key)
+        {
+            runninglistMutex.WaitOne();
+            failurelistMutex.WaitOne();
+            runningList[key].Status = StatusType.Failure;
+            failureList.Add(key, runningList[key]);
+            runningList.Remove(key);
+            failurelistMutex.ReleaseMutex();
+            runninglistMutex.ReleaseMutex();
+        }
+
         public static StatusType GetStatus(long key)
         {
             runninglistMutex.WaitOne();
@@ -61,6 +87,27 @@ namespace Client.TencentCos
             runningList[key].Status = status;
             runninglistMutex.ReleaseMutex();
         }
+
+        public static SortedList<long, FCB> GetWaitingList()
+        {
+            return waitingList;
+        }
+
+        public static SortedList<long, FCB> GetRunningList()
+        {
+            return runningList;
+        }
+
+        public static SortedList<long, FCB> GetSuccessList()
+        {
+            return successList;
+        }
+
+        public static SortedList<long, FCB> GetFailureList()
+        {
+            return failureList;
+        }
+
 
         public static void run()
         {
@@ -92,6 +139,8 @@ namespace Client.TencentCos
                         else break;
                     }
                 }
+
+                //Console.WriteLine("FileTask is running...");
 
                 runninglistMutex.WaitOne();
                 foreach (FCB file in runningList.Values)
@@ -135,5 +184,7 @@ namespace Client.TencentCos
             }
         }
 
+
+        
     }
 }

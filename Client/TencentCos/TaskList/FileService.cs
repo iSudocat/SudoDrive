@@ -46,6 +46,7 @@ namespace Client.TencentCos
             FileRequest fileRequest = new FileRequest();
             var res = fileRequest.Upload(srcPath, file.RemotePath);
 
+
             CosService cosService = new CosService();
             CosXml cosXml = cosService.getCosXml(
                 res.data.token.credentials.tmpSecretId,
@@ -84,6 +85,12 @@ namespace Client.TencentCos
                         {
                             uploadTask.Resume();
                             FileTask.SetStatus(file.Key, StatusType.Running);
+                            break;
+                        }
+                    case StatusType.RequestCancel:
+                        {
+                            uploadTask.Cancel();
+                            FileTask.Remove(file.Key);
                             break;
                         }
                     default:
