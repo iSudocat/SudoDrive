@@ -7,7 +7,7 @@ namespace Server.Models.Entities
 {
     public class AddGroupResultModel
     {
-        public Group _group;
+        public Group _group { get; private set; }
 
         public AddGroupResultModel( Group group)
         {
