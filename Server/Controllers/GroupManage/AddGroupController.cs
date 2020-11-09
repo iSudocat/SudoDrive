@@ -58,7 +58,7 @@ namespace Server.Controllers.GroupManage
             
             _databaseService.SaveChanges();
             
-            return Ok();
+            return Ok(new AddGroupResultModel(group));
         }
     }
 }

@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Query.ExpressionTranslators.Internal;
 using Server.Exceptions;
 using Server.Libraries;
 using Server.Middlewares;
+using Server.Models.DTO;
 using Server.Models.VO;
 using Server.Services;
 using System;
@@ -40,7 +42,7 @@ namespace Server.Controllers.GroupManage
             _databaseService.GroupsToUsersRelation.RemoveRange(grouptouser_db);
             _databaseService.Groups.Remove(group_db);
             _databaseService.SaveChanges();
-            return Ok();
+            return Ok(new DeleteGroupResultModel(group_db.GroupName));
         }
     }
 }
