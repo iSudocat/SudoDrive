@@ -1,15 +1,14 @@
 <template>
-  <div>
-    <el-row>
+  <div id="leftBox">
+    <el-row style="margin: 5px 5px 5px 5px">
       <el-col :span="21">
-        <el-button @click="parentPath">返回</el-button>
+        <el-page-header @back="parentPath" title="返回上一级"></el-page-header>
       </el-col>
       <el-col :span="3">
-        <el-button>上传</el-button>
+        <el-button size="small">上传</el-button>
       </el-col>
     </el-row>
     <el-table
-      id="leftBox"
       highlight-current-row
       :data="uploadTableData"
       style="width: 100%"
@@ -22,12 +21,11 @@
       />
       <el-table-column
         label="文件名"
-        align="center"
       >
         <template slot-scope="scope">
           <i v-if="!scope.row.isFile" class="el-icon-folder" />
           <i v-if="scope.row.isFile" class="el-icon-tickets" />
-          <span>{{ scope.row.name }}</span>
+          <span>&nbsp;{{ scope.row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -183,6 +181,10 @@ export default {
 @media screen and (min-width: 768px) {
   #leftBox {
     /*border-right: 1px solid rgb(235,238,235);*/
+    box-shadow: 4px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    position: relative; z-index: 1;
+  }
+  #xxx {
     box-shadow: 4px 2px 2px 1px rgba(0, 0, 0, 0.2);
     position: relative; z-index: 1;
   }

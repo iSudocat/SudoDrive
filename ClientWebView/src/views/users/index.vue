@@ -44,8 +44,8 @@
     </el-dialog>
     <el-divider />
     <el-row>
-      <el-col :span="10"><br></el-col>
-      <el-col :span="14">
+      <el-col :span="7"><br></el-col>
+      <el-col :span="17">
         <el-form :inline="true" :model="addData">
           <el-form-item label="用户名">
             <el-input v-model="addData.name" size="small" placeholder="用户名" />

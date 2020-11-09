@@ -14,7 +14,7 @@ const store = new Vuex.Store({
     user
   },
   state: {
-    role: 'editor'
+    role: 'admin'
   },
   getters
 })

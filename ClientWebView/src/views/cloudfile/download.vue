@@ -1,11 +1,11 @@
 <template>
   <div>
-    <el-row>
+    <el-row style="margin: 5px 5px 5px 5px">
       <el-col :span="21">
-        <el-button>返回</el-button>
+        <el-page-header @back="parentPath" title="返回上一级"></el-page-header>
       </el-col>
       <el-col :span="3">
-        <el-button>下载</el-button>
+        <el-button size="small">下载</el-button>
       </el-col>
     </el-row>
     <el-table
