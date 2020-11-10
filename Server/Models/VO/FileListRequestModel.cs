@@ -10,6 +10,22 @@ namespace Server.Models.VO
         public string PathPrefix { get; set; }
 
         /// <summary>
+        /// 或关系
+        /// 精确全字匹配路径
+        /// </summary>
+        public string[] Path { get; set; }
+
+        /// <summary>
+        /// 或关系
+        /// </summary>
+        public long[] Id { get; set; }
+
+        /// <summary>
+        /// 或关系
+        /// </summary>
+        public string[] Guid { get; set; }
+
+        /// <summary>
         /// 与关系
         /// </summary>
         public string[] PathContains { get; set; }

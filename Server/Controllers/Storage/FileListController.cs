@@ -140,6 +140,24 @@ namespace Server.Controllers.Storage
                 result = result.Where(s => requestModel.Type.Contains(s.Type));
             }
 
+            // 按照路径全字匹配
+            if (requestModel.Path?.Length > 0)
+            {
+                result = result.Where(s => requestModel.Path.Contains(s.Path));
+            }
+            
+            // 按照 ID 匹配
+            if (requestModel.Id?.Length > 0)
+            {
+                result = result.Where(s => requestModel.Id.Contains(s.Id));
+            }
+
+            // 按照 Guid 匹配
+            if (requestModel.Guid?.Length > 0)
+            {
+                result = result.Where(s => requestModel.Guid.Contains(s.Guid));
+            }
+
             // TODO 按照用户权限添加筛选
 
             // 添加其他的搜索条件
