@@ -96,14 +96,18 @@ namespace Client
             UserRequest userService = new UserRequest();
             var res = userService.Login("sudodog", "ssss11111");
 
-            TaskList.Add(new FileControlBlock
+            for(int i = 1; i <= 100; i++)
             {
-                Operation = OperationType.Upload,
-                FileName = "臭豚.png",
-                LocalPath = @"D:\表情包\臭豚.png",
-                RemotePath = @"users\sudodog\表情包.png",
-                Status = StatusType.Waiting
-            });
+                TaskList.Add(new FileControlBlock
+                {
+                    Operation = OperationType.Upload,
+                    FileName = i + ".txt",
+                    LocalPath = @"C:\Users\i\Desktop\测试数据\a lot of txt\" + i + ".txt",
+                    RemotePath = @"users\sudodog\测试数据\a lot of txt\" + i + ".txt",
+                    Status = StatusType.Waiting
+                });
+            }
+
 
             /*
             FileTask.Add(new FCB
