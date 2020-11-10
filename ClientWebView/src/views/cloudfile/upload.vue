@@ -103,22 +103,32 @@ export default {
   components: { InfoDialog },
   data() {
     return {
+      // 文件信息弹窗
       infoDialogVisible: false,
+      // 盘符切换弹窗
       driveDialogVisible: false,
+      // 是否第一次切换盘符
       showSwitchDrive: 0,
+      // 初始本地路径
       currentPath: ['C:', 'hel', 'llo', 'iii'],
+      // 本地盘符
       drives: ['A:', 'B:', 'C:', 'D:'],
+      // 当前盘符
       currentDrive: '',
+      // 当前选择文件的信息
       currentRow: {
         name: '',
         size: 0,
         lastModified: ''
       },
+      // 存储所有本地信息
       uploadTableData: [],
+      // 浏览器所用窗口（wpf无用
       dirHandle: null
     }
   },
   created() {
+    // 浏览器状态下随机生成数据
     if (typeof (CefSharp) === 'undefined') {
       const table = []
       for (let i = 0; i < 10; i++) {
@@ -131,15 +141,20 @@ export default {
         }
       }
       this.uploadTableData = table
+      // 初始化本地数据
     } else {
       this.InitPath()
     }
   },
   methods: {
+    // 上传方法
     handleUpload(index, row) {
       console.log(index, row)
     },
-    handleTableReturn(table, ret) {
+    // 将C#传来的本地json数据转换为table显示里的数据
+    handleTableReturn(ret) {
+      const that = this
+      const table = []
       const retObject = JSON.parse(ret)
       this.currentPath = retObject.currentPath.split('\\')
       // 去除不知道哪冒出来的最后一个空白
@@ -157,10 +172,13 @@ export default {
         fileTable[i]['isFile'] = true
         table.push(fileTable[i])
       }
+      that.uploadTableData = table
     },
+    // 初始化初始路径文件信息和盘符
     async InitPath() {
       const that = this
       const table = []
+      // 浏览器状态下
       if (typeof (CefSharp) === 'undefined') {
         this.dirHandle = await window.showDirectoryPicker()
         for await (const entry of this.dirHandle.values()) {
@@ -179,8 +197,7 @@ export default {
       } else {
         // 初始化路径为桌面
         window.fileFunction.showAllInfo().then(function(ret) {
-          that.handleTableReturn(table, ret)
-          that.uploadTableData = table
+          that.handleTableReturn(ret)
         })
         // 初始化盘符
         window.fileFunction.showAllDrives().then(function(ret) {
@@ -189,21 +206,21 @@ export default {
         })
       }
     },
+    // 返回父目录
     parentPath() {
       const that = this
-      const table = []
       if (typeof (CefSharp) === 'undefined') {
         return
       } else {
         // 阻止在盘符根目录下回到父目录
         if (that.currentPath.length > 1) {
           window.fileFunction.toParent().then(function(ret) {
-            that.handleTableReturn(table, ret)
-            that.uploadTableData = table
+            that.handleTableReturn(ret)
           })
         }
       }
     },
+    // 面包屑跳转
     handleJump(num) {
       const that = this
       console.log(num)
@@ -219,10 +236,10 @@ export default {
         }
       }
     },
+    // 双击table的处理
     handleDblclick(row) {
       console.log(row)
       const that = this
-      const table = []
       if (typeof (CefSharp) === 'undefined') {
         return
       } else {
@@ -231,16 +248,17 @@ export default {
           this.currentRow = row
         } else {
           window.fileFunction.toChild(String(row.name)).then(function(ret) {
-            that.handleTableReturn(table, ret)
-            that.uploadTableData = table
+            that.handleTableReturn(ret)
           })
         }
       }
     },
+    // 关闭对话框
     closeDialog(visible) {
       console.log('closeDialog')
       this.infoDialogVisible = visible
     },
+    // 点击盘符面包屑时 第一次显示提示，第二次以及之后直接打开切换对话框
     showSwitchDriveMessage() {
       const that = this
       if (that.showSwitchDrive === 0) {
@@ -256,15 +274,14 @@ export default {
         console.log(that.drives)
       }
     },
+    // 切换盘符
     changeDrive() {
       const that = this
-      const table = []
       if (typeof (CefSharp) === 'undefined') {
         return
       } else {
         window.fileFunction.switchDriver(that.currentDrive).then(function(ret) {
-          that.handleTableReturn(table, ret)
-          that.uploadTableData = table
+          that.handleTableReturn(ret)
         })
       }
       that.driveDialogVisible = false
