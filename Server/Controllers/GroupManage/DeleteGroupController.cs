@@ -4,6 +4,7 @@ using Server.Exceptions;
 using Server.Libraries;
 using Server.Middlewares;
 using Server.Models.DTO;
+using Server.Models.Entities;
 using Server.Models.VO;
 using Server.Services;
 using System;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.GroupManage
 {
-    [Route("api/group")]
+    [Route("api/group/{groupname}")]
     [ApiController]
     [NeedPermission(PermissionBank.GroupManageGroupDelete)]
     public class DeleteGroupController : AbstractController
@@ -25,8 +26,15 @@ namespace Server.Controllers.GroupManage
         }
 
         [HttpDelete]
-        public IActionResult DeleteGroup([FromBody] DeleteGroupRequestModel deleteGroupRequestModel)
+        public IActionResult DeleteGroup([FromBody] DeleteGroupRequestModel deleteGroupRequestModel,string groupname)
         {
+            string permission = $"groupmanager.group.operation.{groupname}.delete";
+            var user_actor = HttpContext.Items["actor"] as User;
+            var user_actor_db = _databaseService.Users.Find(user_actor.Id);
+            if (!(bool)user_actor_db.HasPermission(permission))
+            {
+                throw new AuthenticateFailedException("not has enough permission when trying to delete a group.");
+            }
             //use groupname to identify group,because the id is invisible to user
             var group = _databaseService.Groups.FirstOrDefault(t => t.GroupName == deleteGroupRequestModel.GroupName);
             if (group == null)
@@ -42,7 +50,7 @@ namespace Server.Controllers.GroupManage
             _databaseService.GroupsToUsersRelation.RemoveRange(grouptouser_db);
             _databaseService.Groups.Remove(group);
             _databaseService.SaveChanges();
-            return Ok(new DeleteGroupResultModel(group.Id));
+            return Ok(new DeleteGroupResultModel(group));
         }
     }
 }

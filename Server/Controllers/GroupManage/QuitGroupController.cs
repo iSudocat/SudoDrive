@@ -25,7 +25,6 @@ namespace Server.Controllers.GroupManage
             _databaseService = databaseService;
         }
 
-        //it is called id here, but it is groupname actually
         [HttpPost]
         public IActionResult QuitGroup([FromBody] QuitGroupRequestModel quitGroupRequestModel)
         {
@@ -43,7 +42,7 @@ namespace Server.Controllers.GroupManage
             _databaseService.GroupsToUsersRelation.Remove(grouptouser);
             _databaseService.SaveChanges();
 
-            return Ok(new QuitGroupResultModel(group.Id,user.Id));
+            return Ok(new QuitGroupResultModel(group,user));
         }
     }
 }
