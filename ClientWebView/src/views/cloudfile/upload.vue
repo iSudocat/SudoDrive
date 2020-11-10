@@ -16,7 +16,7 @@
       <el-col :span="14">
         <el-breadcrumb separator="/" style="margin: 0px 10px 10px 20px;">
           <el-breadcrumb-item
-            v-for="(item,i) in (currentPath)"
+            v-for="(item, i) in (currentPath)"
             :key="i"
             style="margin-right: -10px"
           >
@@ -75,7 +75,23 @@
         </template>
       </el-table-column>
     </el-table>
-    <info-dialog style="z-index: 2" :dialog-visible="dialogVisible" :current-row="currentRow" @closeDialog="closeDialog" />
+    <info-dialog :dialog-visible="infoDialogVisible" :current-row="currentRow" @closeDialog="closeDialog" />
+    <el-dialog
+      title="盘符切换"
+      :visible.sync="driveDialogVisible"
+      width="30%"
+    >
+      <el-select v-model="currentDrive" size="mini" placeholder="请选择">
+        <el-option
+          v-for="item in drives"
+          :key="item"
+          :label="item.label"
+          :value="item"
+        >
+        </el-option>
+      </el-select>
+      <el-button type="primary" style="margin-left: 5px;position: relative;top: 2px" @click="changeDrive">确认</el-button>
+    </el-dialog>
   </div>
 </template>
 
@@ -87,8 +103,12 @@ export default {
   components: { InfoDialog },
   data() {
     return {
-      dialogVisible: false,
+      infoDialogVisible: false,
+      driveDialogVisible: false,
+      showSwitchDrive: 0,
       currentPath: ['C:', 'hel', 'llo', 'iii'],
+      drives: ['A:', 'B:', 'C:', 'D:'],
+      currentDrive: '',
       currentRow: {
         name: '',
         size: 0,
@@ -157,9 +177,15 @@ export default {
         this.uploadTableData = table
         console.log(table)
       } else {
+        // 初始化路径为桌面
         window.fileFunction.showAllInfo().then(function(ret) {
           that.handleTableReturn(table, ret)
           that.uploadTableData = table
+        })
+        // 初始化盘符
+        window.fileFunction.showAllDrives().then(function(ret) {
+          that.drives = JSON.parse(ret)
+          that.currentDrive = that.drives[0]
         })
       }
     },
@@ -179,9 +205,14 @@ export default {
       }
     },
     handleJump(num) {
-      var that = this
+      const that = this
+      console.log(num)
+      // 点击当前目录名则啥也不做
       if (num === that.currentPath.length - 1) {
-        return
+        // 点击盘符则显示盘符信息
+        if (num === 0) {
+          this.showSwitchDriveMessage()
+        }
       } else {
         for (let i = 0; i < that.currentPath.length - 1 - num; i++) {
           that.parentPath()
@@ -196,7 +227,7 @@ export default {
         return
       } else {
         if (row.isFile) {
-          this.dialogVisible = true
+          this.infoDialogVisible = true
           this.currentRow = row
         } else {
           window.fileFunction.toChild(String(row.name)).then(function(ret) {
@@ -208,7 +239,35 @@ export default {
     },
     closeDialog(visible) {
       console.log('closeDialog')
-      this.dialogVisible = visible
+      this.infoDialogVisible = visible
+    },
+    showSwitchDriveMessage() {
+      const that = this
+      if (that.showSwitchDrive === 0) {
+        that.$notify({
+          title: '切换盘符',
+          message: '再按一次切换盘符',
+          position: 'top-left'
+        })
+        that.showSwitchDrive++
+        console.log(that.showSwitchDrive)
+      } else {
+        that.driveDialogVisible = true
+        console.log(that.drives)
+      }
+    },
+    changeDrive() {
+      const that = this
+      const table = []
+      if (typeof (CefSharp) === 'undefined') {
+        return
+      } else {
+        window.fileFunction.switchDriver(that.currentDrive).then(function(ret) {
+          that.handleTableReturn(table, ret)
+          that.uploadTableData = table
+        })
+      }
+      that.driveDialogVisible = false
     }
   }
 }
@@ -219,11 +278,11 @@ export default {
   #leftBox {
     /*border-right: 1px solid rgb(235,238,235);*/
     /*box-shadow: 4px 2px 2px 1px rgba(0, 0, 0, 0.2);*/
-    position: relative; z-index: 1;
+    position: relative;
   }
   #xxx {
     box-shadow: 4px 2px 2px 1px rgba(0, 0, 0, 0.2);
-    position: relative; z-index: 1;
+    position: relative;
   }
   #rightBox {
   }
