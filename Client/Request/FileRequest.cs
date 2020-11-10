@@ -16,7 +16,7 @@ namespace Client.Request
 {
     public class FileRequest
     {
-        public UploadResponse Upload(string localPath, string remotePath)
+        public int Upload(string localPath, string remotePath, out UploadResponse uploadResponse)
         {
             string type = MimeMapping.GetMimeMapping(localPath);
             long size = new FileInfo(localPath).Length;
@@ -30,9 +30,17 @@ namespace Client.Request
             request.AddParameter("application/json", JsonConvert.SerializeObject(requestBody), ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             Console.WriteLine(response.Content);
-            UploadResponse res = JsonConvert.DeserializeObject<UploadResponse>(response.Content);
-
-            return res;
+            uploadResponse = JsonConvert.DeserializeObject<UploadResponse>(response.Content);
+            if (uploadResponse != null)
+            {
+                return uploadResponse.status;
+            }
+            else
+            {
+                uploadResponse = null;
+                return -114514;
+            }
+            
         }
 
         public int ConfirmUpload(long id, string guid)
@@ -46,8 +54,15 @@ namespace Client.Request
             IRestResponse response = client.Execute(request);
             Console.WriteLine(response.Content);
             UploadResponse res = JsonConvert.DeserializeObject<UploadResponse>(response.Content);
-            var jObj = JObject.Parse(response.Content);
-            return (int)jObj.SelectToken("$.status");
+            if (res != null)
+            {
+                var jObj = JObject.Parse(response.Content);
+                return (int)jObj.SelectToken("$.status");
+            }
+            else
+            {
+                return -114514;
+            }
         }
 
         public FileListResponse GetFileList()

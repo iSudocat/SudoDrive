@@ -96,7 +96,8 @@ namespace Client
             UserRequest userService = new UserRequest();
             var res = userService.Login("sudodog", "ssss11111");
 
-            for(int i = 1; i <= 100; i++)
+            
+            for(int i = 201; i <= 300; i++)
             {
                 TaskList.Add(new FileControlBlock
                 {
@@ -108,35 +109,6 @@ namespace Client
                 });
             }
 
-
-            /*
-            FileTask.Add(new FCB
-            {
-                Operation = OperationType.Upload,
-                FileName = "1.txt",
-                LocalPath = @"F:\软件合集\Adobe CC 2019 SP\1.txt",
-                RemotePath = @"软件合集\Adobe CC 2019 SP\1.txt",
-                Status = 0
-            });
-
-            FileTask.Add(new FCB
-            {
-                Operation = OperationType.Upload,
-                FileName = "2.txt",
-                LocalPath = @"F:\软件合集\Adobe CC 2019 SP\2.txt",
-                RemotePath = @"软件合集\Adobe CC 2019 SP\2.txt",
-                Status = 0
-            });
-
-            FileTask.Add(new FCB
-            {
-                Operation = OperationType.Upload,
-                FileName = "3.txt",
-                LocalPath = @"F:\软件合集\Adobe CC 2019 SP\3.txt",
-                RemotePath = @"软件合集\Adobe CC 2019 SP\3.txt",
-                Status = 0
-            });
-            */
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)

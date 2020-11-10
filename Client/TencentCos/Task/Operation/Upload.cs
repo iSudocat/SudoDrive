@@ -11,6 +11,8 @@ using COSXML.Model;
 using COSXML.Model.Object;
 using COSXML.Network;
 using COSXML.Transfer;
+using Client.Request.Response;
+using COSXML.Auth;
 
 namespace Client.TencentCos.Task.Operation
 {
@@ -33,57 +35,80 @@ namespace Client.TencentCos.Task.Operation
             string srcPath = File.LocalPath;    //本地文件绝对路径
 
             FileRequest fileRequest = new FileRequest();
-            var res = fileRequest.Upload(srcPath, File.RemotePath);
+            int status = fileRequest.Upload(srcPath, File.RemotePath, out UploadResponse res);
 
-            string bucket = res.data.tencentCos.bucket;   //存储桶，格式：BucketName-APPID
-
-
-
-            CosService cosService = new CosService(res.data.tencentCos.region);
-            CosXml cosXml = cosService.getCosXml(
-                res.data.token.credentials.tmpSecretId,
-                res.data.token.credentials.tmpSecretKey,
-                res.data.token.credentials.token,
-                res.data.token.expiredTime);
-
-            string cosPath = res.data.file.storageName;   //对象在存储桶中的位置标识符，即称对象键
-
-            TransferConfig transferConfig = new TransferConfig();
-            TransferManager transferManager = new TransferManager(cosXml, transferConfig);
-            PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, cosPath, srcPath);
-            uploadTask = new COSXMLUploadTask(putObjectRequest);
-
-            uploadTask.SetSrcPath(srcPath);
-
-            uploadTask.progressCallback = delegate (long completed, long total)
+            switch (status)
             {
-                TaskList.SetProgress(File.Key, completed, total);
-                Console.WriteLine(String.Format("progress = {0:##.##}%", completed * 100.0 / total));
-            };
-            uploadTask.successCallback = delegate (CosResult cosResult)
-            {
-                fileRequest.ConfirmUpload(res.data.file.id, res.data.file.guid);
-                COSXMLUploadTask.UploadTaskResult result = cosResult as COSXMLUploadTask.UploadTaskResult;
-                Console.WriteLine("successCallback: " + result.GetResultInfo());
-                string eTag = result.eTag;
-                TaskList.SetSuccess(File.Key);
-                TaskStatusDetectionThread.Abort();
-            };
-            uploadTask.failCallback = delegate (CosClientException clientEx, CosServerException serverEx)
-            {
-                if (clientEx != null)
-                {
-                    Console.WriteLine("CosClientException: " + clientEx);
-                }
-                if (serverEx != null)
-                {
-                    Console.WriteLine("CosServerException: " + serverEx.GetInfo());
-                }
+                case -114514:
+                    TaskStatusDetectionThread.Abort();
+                    TaskList.SetFailure(File.Key, "后端请求失败。");
+                    break;
+                case -10000:
+                    TaskStatusDetectionThread.Abort();
+                    TaskList.SetFailure(File.Key, res.message);
+                    break;
+                case 101:
+                    TaskStatusDetectionThread.Abort();
+                    TaskList.SetSuccess(File.Key);
+                    break;
+                case 100:
+                    {
+                        string bucket = res.data.tencentCos.bucket;   //存储桶，格式：BucketName-APPID
 
-                TaskList.SetFailure(File.Key);
-            };
+                        Console.WriteLine(File.FileName + "的Response：" + res);
+                        Console.WriteLine(File.FileName + "的Token：" + res.data.token.credentials.token);
+                        
+                        CosService cosService = new CosService(res.data.tencentCos.region);
+                        CosXml cosXml = cosService.getCosXml(
+                            res.data.token.credentials.tmpSecretId,
+                            res.data.token.credentials.tmpSecretKey,
+                            res.data.token.credentials.token,
+                            res.data.token.expiredTime);
+                        
+                        string cosPath = res.data.file.storageName;   //对象在存储桶中的位置标识符，即称对象键
 
-            transferManager.Upload(uploadTask);
+                        TransferConfig transferConfig = new TransferConfig();
+                        TransferManager transferManager = new TransferManager(cosXml, transferConfig);
+                        PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, cosPath, srcPath);
+                        uploadTask = new COSXMLUploadTask(putObjectRequest);
+
+                        uploadTask.SetSrcPath(srcPath);
+
+                        uploadTask.progressCallback = delegate (long completed, long total)
+                        {
+                            TaskList.SetProgress(File.Key, completed, total);
+                            Console.WriteLine(String.Format("progress = {0:##.##}%", completed * 100.0 / total));
+                        };
+                        uploadTask.successCallback = delegate (CosResult cosResult)
+                        {
+                            TaskStatusDetectionThread.Abort();
+                            fileRequest.ConfirmUpload(res.data.file.id, res.data.file.guid);
+                            COSXMLUploadTask.UploadTaskResult result = cosResult as COSXMLUploadTask.UploadTaskResult;
+                            Console.WriteLine("successCallback: " + result.GetResultInfo());
+                            string eTag = result.eTag;
+                            TaskList.SetSuccess(File.Key);
+                        };
+                        uploadTask.failCallback = delegate (CosClientException clientEx, CosServerException serverEx)
+                        {
+                            if (clientEx != null)
+                            {
+                                Console.WriteLine("CosClientException: " + clientEx);
+                            }
+                            if (serverEx != null)
+                            {
+                                Console.WriteLine("CosServerException: " + serverEx.GetInfo());
+                            }
+                            TaskStatusDetectionThread.Abort();
+                            TaskList.SetFailure(File.Key, "COS上传出错。");
+                        };
+
+                        transferManager.Upload(uploadTask);
+                    }break;
+                default:
+                    TaskStatusDetectionThread.Abort();
+                    TaskList.SetFailure(File.Key, "未知原因上传失败。");
+                    break;
+            }
         }
 
         public void TaskStatusDetection()

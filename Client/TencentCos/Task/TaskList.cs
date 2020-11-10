@@ -20,7 +20,7 @@ namespace Client.TencentCos.Task
 
         private static long key = 0;
 
-        private static int runningLimit { get; set; } = 3;
+        private static int runningLimit { get; set; } = 5;
 
         private static Mutex waitinglistMutex = new Mutex();
         private static Mutex runninglistMutex = new Mutex();
@@ -62,11 +62,12 @@ namespace Client.TencentCos.Task
             runninglistMutex.ReleaseMutex();
         }
 
-        public static void SetFailure(long key)
+        public static void SetFailure(long key, string errorMessage)
         {
             runninglistMutex.WaitOne();
             failurelistMutex.WaitOne();
             runningList[key].Status = StatusType.Failure;
+            runningList[key].ErrorMessage = errorMessage;
             failureList.Add(key, runningList[key]);
             runningList.Remove(key);
             failurelistMutex.ReleaseMutex();
@@ -172,6 +173,7 @@ namespace Client.TencentCos.Task
                         default:
                             break;
                     }
+                    Thread.Sleep(500);
                 }
                 runninglistMutex.ReleaseMutex();
 
