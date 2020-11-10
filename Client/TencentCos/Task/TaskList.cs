@@ -173,11 +173,11 @@ namespace Client.TencentCos.Task
                         default:
                             break;
                     }
-                    Thread.Sleep(500);
+                    Thread.Sleep(1000);
                 }
                 runninglistMutex.ReleaseMutex();
 
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
             }
         }
 
