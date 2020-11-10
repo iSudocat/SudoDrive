@@ -208,6 +208,10 @@ namespace Server.Exceptions
                 file.Type = requestModel.Type;
                 file.Folder = Path.GetDirectoryName(requestModel.Path) ?? "";
                 file.Name = Path.GetFileName(requestModel.Path) ?? "";
+                if (string.IsNullOrEmpty(file.Name))
+                {
+                    throw new FileNameIsEmptyException("The file name is empty.");
+                }
 
                 file.Guid = Guid.NewGuid().ToString().ToLower();
                 // TODO 检查 Guid 是否有重复
@@ -233,12 +237,12 @@ namespace Server.Exceptions
             {
                 try
                 {
-                    token = _tencentCos.GetToken(file);
+                    token = _tencentCos.GetUploadToken(file);
                 }
                 catch (Exception e)
                 {
                     _logger.LogError(e, e.Message, e.Data);
-                    throw new UnexpectedException();
+                    throw new UnexpectedException(e.Message);
                 }
 
                 SetApiResultStatus(ApiResultStatus.StorageUploadContinue);

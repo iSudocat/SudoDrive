@@ -1,19 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Server.Exceptions;
 using Server.Libraries;
 using Server.Middlewares;
-using Server.Models;
 using Server.Models.DTO;
 using Server.Models.VO;
 using Server.Services;
 
-
-namespace Server.Controllers
+namespace Server.Controllers.UserProfile
 {
     [Route("api/login")]
     [ApiController]
