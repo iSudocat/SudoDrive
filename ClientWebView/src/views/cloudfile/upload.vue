@@ -6,16 +6,26 @@
         <el-button size="small" type="primary" style="height: 24px; line-height: 4px;">上传</el-button>
       </el-col>
     </el-row>
-    <el-breadcrumb separator="/" style="margin: 15px 10px 15px 20px;">
-      <el-breadcrumb-item
-        v-for="(item,i) in (currentPath.split('\\'))"
-        :key="i"
-      >
-        <el-button type="text" size="mini" @click="handleJump(i)">{{ item }}</el-button>
-      </el-breadcrumb-item>
-    </el-breadcrumb>
+    <el-row>
+      <el-col :span="2">
+        <el-button size="small" type="primary" @click="parentPath">返回</el-button>
+      </el-col>
+      <el-col :span="2">
+        <el-button size="small" type="primary">刷新</el-button>
+      </el-col>
+      <el-col :span="14">
+        <el-breadcrumb separator="/" style="margin: 0px 10px 10px 20px;">
+          <el-breadcrumb-item
+            v-for="(item,i) in (currentPath)"
+            :key="i"
+            style="margin-right: -10px"
+          >
+            <el-button type="text" size="mini" @click="handleJump(i)">{{ item }}</el-button>
+          </el-breadcrumb-item>
+        </el-breadcrumb>
+      </el-col>
+    </el-row>
     <hr style="border:0; background-color: #f1f1f1; height: 1px">
-
     <el-table
       highlight-current-row
       :data="uploadTableData"
@@ -78,7 +88,7 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      currentPath: 'C:\\hel\\llo\\iii',
+      currentPath: ['C:', 'hel', 'llo', 'iii'],
       currentRow: {
         name: '',
         size: 0,
@@ -111,7 +121,12 @@ export default {
     },
     handleTableReturn(table, ret) {
       const retObject = JSON.parse(ret)
-      this.currentPath = retObject.currentPath
+      this.currentPath = retObject.currentPath.split('\\')
+      // 去除不知道哪冒出来的最后一个空白
+      const index = this.currentPath.indexOf('')
+      if (index > -1) {
+        this.currentPath.splice(index, index)
+      }
       const fileTable = retObject.files
       const directoryTable = retObject.directories
       for (let j = 0; j < directoryTable.length; j++) {
@@ -154,19 +169,21 @@ export default {
       if (typeof (CefSharp) === 'undefined') {
         return
       } else {
-        window.fileFunction.toParent().then(function(ret) {
-          that.handleTableReturn(table, ret)
-          that.uploadTableData = table
-        })
+        // 阻止在盘符根目录下回到父目录
+        if (that.currentPath.length > 1) {
+          window.fileFunction.toParent().then(function(ret) {
+            that.handleTableReturn(table, ret)
+            that.uploadTableData = table
+          })
+        }
       }
     },
     handleJump(num) {
       var that = this
-      const splits = that.currentPath.split('\\')
-      if (num === splits.length - 1) {
+      if (num === that.currentPath.length - 1) {
         return
       } else {
-        for (let i = 0; i < splits.length - 1 - num; i++) {
+        for (let i = 0; i < that.currentPath.length - 1 - num; i++) {
           that.parentPath()
         }
       }
@@ -210,5 +227,8 @@ export default {
   }
   #rightBox {
   }
+}
+.el-button {
+  height: 24px; line-height: 4px;
 }
 </style>
