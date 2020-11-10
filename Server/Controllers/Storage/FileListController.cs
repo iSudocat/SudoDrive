@@ -147,15 +147,30 @@ namespace Server.Controllers.Storage
             result = result.Skip(requestModel.Offset);
             result = result.Take(requestModel.Amount);
 
-            List<string> resourcesList = new List<string>();
-            foreach (var file in result)
+            Dictionary<string, object> token = null;
+
+            if (requestModel.Download == true)
             {
-                if (file.Type != "text/directory") {
-                    resourcesList.Add(file.StorageName);
+                List<string> resourcesList = new List<string>();
+                foreach (var file in result)
+                {
+                    if (file.Type != "text/directory")
+                    {
+                        resourcesList.Add(file.StorageName);
+                    }
+                }
+
+                try
+                {
+                    token = _tencentCos.GetDownloadToken(resourcesList);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, e.Message, e.Data);
+                    throw new UnexpectedException(e.Message);
                 }
             }
-            var token = _tencentCos.GetDownloadToken(resourcesList);
-
+            
             return Ok(new FileListResultModel(result, requestModel.Amount, requestModel.Offset, token, _tencentCosManagement));
         }
     }

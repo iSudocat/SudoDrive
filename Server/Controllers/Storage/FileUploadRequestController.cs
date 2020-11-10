@@ -242,7 +242,7 @@ namespace Server.Exceptions
                 catch (Exception e)
                 {
                     _logger.LogError(e, e.Message, e.Data);
-                    throw new UnexpectedException();
+                    throw new UnexpectedException(e.Message);
                 }
 
                 SetApiResultStatus(ApiResultStatus.StorageUploadContinue);

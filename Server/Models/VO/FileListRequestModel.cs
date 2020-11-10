@@ -24,6 +24,12 @@ namespace Server.Models.VO
         /// </summary>
         public string[] Type { get; set; }
 
+        /// <summary>
+        /// 是否下载
+        /// 当该值为真时获取下载信息
+        /// </summary>
+        public bool Download { get; set; } = false;
+
         [Range(1, 1000)]
         public int Amount { get; set; } = 100;
 
