@@ -11,7 +11,7 @@
         <el-button size="small" type="primary" @click="parentPath">返回</el-button>
       </el-col>
       <el-col :span="2">
-        <el-button size="small" type="primary">刷新</el-button>
+        <el-button size="small" type="primary" @click="refreshPath">刷新</el-button>
       </el-col>
       <el-col :span="14">
         <el-breadcrumb separator="/" style="margin: 0px 10px 10px 20px;">
@@ -219,6 +219,10 @@ export default {
           })
         }
       }
+    },
+    // 刷新本地文件信息
+    refreshPath() {
+      this.InitPath()
     },
     // 面包屑跳转
     handleJump(num) {
