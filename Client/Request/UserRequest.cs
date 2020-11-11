@@ -24,14 +24,17 @@ namespace Client.Request
             loginResponse = JsonConvert.DeserializeObject<LoginResponse>(response.Content);
             if (loginResponse != null)
             {
-                UserInfo.UserName = loginResponse.data.username;
-                UserInfo.Token = loginResponse.data.token;
+                if(loginResponse.status == 0)
+                {
+                    UserInfo.UserName = loginResponse.data.username;
+                    UserInfo.Token = loginResponse.data.token;
+                }
                 return loginResponse.status;
             }
             else
             {
                 loginResponse = null;
-                return -114514;
+                return -20000;
             }
         }
 

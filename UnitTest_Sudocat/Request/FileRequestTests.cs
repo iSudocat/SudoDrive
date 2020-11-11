@@ -12,16 +12,35 @@ namespace Client.Request.Tests
     public class FileRequestTests
     {
         [TestMethod()]
+        public void UploadTest()
+        {
+            /*
+            UserRequest userService = new UserRequest();
+            userService.Login("sudodog", "ssss11111");
+            FileRequest fileRequest = new FileRequest();
+            var res = fileRequest.Upload(@"C:\Users\i\Desktop\5896f7d1d7bc0.png");
+            var status = fileService.ConfirmUpload(res.data.file.id, res.data.file.guid);
+            Assert.AreEqual(status, 0);
+            */
+        }
+
+        [TestMethod()]
         public void GetFileListTest()
         {
             UserRequest userService = new UserRequest();
             userService.Login("sudodog", "ssss11111", out _);
             FileRequest fileRequest = new FileRequest();
-            fileRequest.GetFileList("/users/sudodog/测试数据/a lot of txt", 
+            fileRequest.GetFileList("/users/sudodog/测试数据/a lot of txt",
                 out int status, out List<Response.FileListResponse.File> fileList);
             Console.WriteLine("文件数： " + fileList.Count);
             Assert.AreEqual(fileList.Count, 463);
 
+        }
+
+        [TestMethod()]
+        public void DownloadTest()
+        {
+            Assert.Fail();
         }
     }
 }
