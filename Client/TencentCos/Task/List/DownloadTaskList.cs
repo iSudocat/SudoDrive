@@ -9,9 +9,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Client.TencentCos.Task
+namespace Client.TencentCos.Task.List
 {
-    public static class TaskList
+    public static class DownloadTaskList
     {
         private static SortedList<long, FileControlBlock> waitingList = new SortedList<long, FileControlBlock>();
         private static SortedList<long, FileControlBlock> runningList = new SortedList<long, FileControlBlock>();
@@ -20,7 +20,7 @@ namespace Client.TencentCos.Task
 
         private static long key = 0;
 
-        private static int runningLimit { get; set; } = 5;
+        private static int runningLimit { get; set; } = 3;
 
         private static Mutex waitinglistMutex = new Mutex();
         private static Mutex runninglistMutex = new Mutex();
@@ -114,11 +114,16 @@ namespace Client.TencentCos.Task
         {
             while (true)
             {
+                waitinglistMutex.WaitOne();
+                runninglistMutex.WaitOne();
                 if (waitingList.Count == 0 && runningList.Count == 0)
                 {
                     key = 0;    //复位key
                 }
+                runninglistMutex.ReleaseMutex();
+                waitinglistMutex.ReleaseMutex();
 
+                waitinglistMutex.WaitOne();
                 if (waitingList.Count != 0)
                 {
                     IList<long> waitingListkeys = waitingList.Keys;
@@ -133,55 +138,29 @@ namespace Client.TencentCos.Task
                             runningList.Add(waitingListkeys[0], waitingListValues[0]);
                             runninglistMutex.ReleaseMutex();
 
-                            waitinglistMutex.WaitOne();
                             waitingList.RemoveAt(0);
-                            waitinglistMutex.ReleaseMutex();
                         }
                         else break;
                     }
                 }
+                waitinglistMutex.ReleaseMutex();
 
                 runninglistMutex.WaitOne();
                 foreach (FileControlBlock file in runningList.Values)
                 {
-                    switch (file.Status)
+                    if (file.Status == StatusType.Waiting)
                     {
-                        case StatusType.Waiting:
-                            {
-                                switch (file.Operation)
-                                {
-                                    case OperationType.Upload:
-                                        Upload upload = new Upload(file);
-                                        new Thread(upload.Run).Start();
-                                        file.Status = StatusType.Running;
-                                        break;
-                                    case OperationType.Download:
-                                        Download download = new Download(file);
-                                        new Thread(download.Run).Start();
-                                        file.Status = StatusType.Running;
-                                        break;
-                                    case OperationType.Delete:
-                                        Delete delete = new Delete(file);
-                                        new Thread(delete.Run).Start();
-                                        file.Status = StatusType.Running;
-                                        break;
-                                    default:
-                                        break;
-                                }
-                                break;
-                            }
-                        default:
-                            break;
+                        Download download = new Download(file);
+                        new Thread(download.Run).Start();
+                        file.Status = StatusType.Running;
+                        break;
                     }
-                    Thread.Sleep(1000);
+                    Thread.Sleep(1000); // 防止CosXml串线
                 }
                 runninglistMutex.ReleaseMutex();
 
                 Thread.Sleep(1000);
             }
         }
-
-
-        
     }
 }

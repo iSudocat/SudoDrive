@@ -21,6 +21,7 @@ using Client.CefUtils.Scheme;
 using Client.Request;
 using Client.TencentCos;
 using Client.TencentCos.Task;
+using Client.TencentCos.Task.List;
 
 namespace Client
 {
@@ -29,14 +30,16 @@ namespace Client
     /// </summary>
     public partial class MainWindow : Window
     {
-        Thread fileListThread;
+        Thread uploadTask, downloadTask;
         public MainWindow()
         {
 
             // 启动任务队列进程
-            fileListThread = new Thread(TaskList.run);
-            fileListThread.Start();
-            
+            uploadTask = new Thread(UploadTaskList.run);
+            uploadTask.Start();
+
+            downloadTask = new Thread(DownloadTaskList.run);
+            downloadTask.Start();
 
 #if DEBUG
             var settings = new CefSettings()
@@ -88,7 +91,8 @@ namespace Client
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            fileListThread.Abort();
+            uploadTask.Abort();
+            downloadTask.Abort();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -96,14 +100,13 @@ namespace Client
             UserRequest userService = new UserRequest();
             userService.Login("sudodog", "ssss11111", out _);
 
-            for(int i = 301; i <= 2333; i++)
+            for (int i = 301; i <= 2333; i++)
             {
-                TaskList.Add(new FileControlBlock
+                UploadTaskList.Add(new FileControlBlock
                 {
-                    Operation = OperationType.Upload,
                     FileName = i + ".txt",
-                    LocalPath = @"C:\Users\i\Desktop\测试数据\a lot of txt\" + i + ".txt",
-                    RemotePath = @"users\sudodog\测试数据\a lot of txt\" + i + ".txt",
+                    LocalPath = @"C:\Users\i\Desktop\测试数据\a lot of txt",
+                    RemotePath = @"users\sudodog\测试数据\a lot of txt",
                     Status = StatusType.Waiting
                 });
             }
@@ -113,17 +116,31 @@ namespace Client
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             //Convert.ToInt64(tbkey.Text)
-            TaskList.SetStatus(0, StatusType.RequestPause);
+            UploadTaskList.SetStatus(0, StatusType.RequestPause);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            TaskList.SetStatus(0, StatusType.RequestRusume);
+            UploadTaskList.SetStatus(0, StatusType.RequestRusume);
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            
+
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            UserRequest userService = new UserRequest();
+            userService.Login("sudodog", "ssss11111", out _);
+
+            DownloadTaskList.Add(new FileControlBlock
+            {
+                FileName = "Thomas Greenberg - Hopeful Hearts.mp3",
+                Guid = "3d04e25d-5a27-4fc2-a2c3-3d17f262df8d",
+                LocalPath = @"C:\Users\i\Desktop",
+                Status = StatusType.Waiting
+            });
         }
     }
 }

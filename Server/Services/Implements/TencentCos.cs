@@ -58,6 +58,7 @@ namespace Server.Services.Implements
             string bucket = _tencentCosManagement.Bucket;
             string region = _tencentCosManagement.Region;
             string[] allowActions = new string[] {
+                "name/cos:HeadObject",
                 "name/cos:GetObject"
             };
             string secretId = _tencentCosManagement.SecretId;

@@ -38,7 +38,7 @@ namespace Client.Request
             else
             {
                 uploadResponse = null;
-                return -114514;
+                return -20000;
             }
         }
 
@@ -59,7 +59,7 @@ namespace Client.Request
             }
             else
             {
-                return -114514;
+                return -20000;
             }
         }
 
@@ -70,7 +70,7 @@ namespace Client.Request
             int currentAmount;
             do
             {
-                var client = new RestClient(ServerAddress.Address + "/api/storage/file?&offset=" + offset + "&amount=100&folder=" + folder);
+                var client = new RestClient(ServerAddress.Address + "/api/storage/file?offset=" + offset + "&amount=100&folder=" + folder);
                 var request = new RestRequest(Method.GET);
                 request.AddHeader("Authorization", "Bearer " + UserInfo.Token);
                 request.AddHeader("Content-Type", "application/json");
@@ -89,7 +89,7 @@ namespace Client.Request
                 }
                 else
                 {
-                    status = -114514;
+                    status = -20000;
                     return;
                 }
             } while (currentAmount != 0);
@@ -97,6 +97,31 @@ namespace Client.Request
             status = 0;
         }
 
+        public int Download(string guid, out FileListResponse fileListResponse)
+        {
+            var client = new RestClient(ServerAddress.Address + "/api/storage/file?download=true&guid=" + guid);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("Authorization", "Bearer " + UserInfo.Token);
+            request.AddHeader("Content-Type", "application/json");
+            IRestResponse response = client.Execute(request);
+            Console.WriteLine(response.Content);
+            fileListResponse = JsonConvert.DeserializeObject<FileListResponse>(response.Content);
+            if (fileListResponse != null)
+            {
+                if(fileListResponse.data.amount == 1)
+                {
+                    return fileListResponse.status;
+                }
+                else
+                {
+                    return -20001;
+                }
+            }
+            else
+            {
+                return -20000;
+            }
+        }
 
         private static string GetFileMD5(string filePath)
         {

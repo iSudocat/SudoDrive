@@ -107,7 +107,6 @@
     <Compile Include="CefUtils\VO\AllInfoVO.cs" />
     <Compile Include="CefUtils\VO\FileInfoVO.cs" />
     <Compile Include="CefUtils\VO\DirectoryInfoVO.cs" />
-    <Compile Include="Request\FileList.cs" />
     <Compile Include="Request\FileRequest.cs" />
     <Compile Include="Request\Response\FileListResponse.cs" />
     <Compile Include="Request\Response\refreshTokenResponse.cs" />
@@ -117,7 +116,8 @@
     <Compile Include="TencentCos\Task\Operation\Delete.cs" />
     <Compile Include="TencentCos\Task\Operation\Download.cs" />
     <Compile Include="TencentCos\Task\FileControlBlock.cs" />
-    <Compile Include="TencentCos\Task\TaskList.cs" />
+    <Compile Include="TencentCos\Task\List\DownloadTaskList.cs" />
+    <Compile Include="TencentCos\Task\List\UploadTaskList.cs" />
     <Compile Include="TencentCos\Task\OperationType.cs" />
     <Compile Include="TencentCos\Task\StatusType.cs" />
     <Compile Include="Request\Response\LoginResponse.cs" />

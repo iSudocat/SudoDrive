@@ -18,29 +18,24 @@ namespace Client.TencentCos.Task
         public long Key { get; set; }
 
         /// <summary>
-        /// 操作类型 1：上传，2：下载，3：删除
-        /// </summary>
-        public OperationType Operation { get; set; }
-
-        /// <summary>
         /// 文件名
         /// </summary>
         public string FileName { get; set; }
 
         /// <summary>
-        /// 文件本地路径（不含文件名）
+        /// 文件标识
+        /// </summary>
+        public string Guid { get; set; }
+
+        /// <summary>
+        /// 本地路径（不含文件名，路径最后无“\”）
         /// </summary>
         public string LocalPath { get; set; }
 
         /// <summary>
-        /// 文件远端路径（不含文件名）
+        /// 远端路径（不含文件名，路径最后无“\”）
         /// </summary>
         public string RemotePath { get; set; }
-
-        /// <summary>
-        /// 文件MD5
-        /// </summary>
-        public string MD5 { get; set; }
 
         /// <summary>
         /// 已上传文件大小
