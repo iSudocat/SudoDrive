@@ -1,15 +1,32 @@
 <template>
-  <div>
-    <el-row>
-      <el-col :span="21">
-        <el-button @click="parentPath">返回</el-button>
-      </el-col>
+  <div id="leftBox">
+    <el-row style="margin: 15px 10px 15px 20px;">
+      <el-col :span="21" />
       <el-col :span="3">
-        <el-button>上传</el-button>
+        <el-button size="small" type="primary" style="height: 24px; line-height: 4px;">上传</el-button>
       </el-col>
     </el-row>
+    <el-row>
+      <el-col :span="2">
+        <el-button size="small" type="primary" @click="parentPath">返回</el-button>
+      </el-col>
+      <el-col :span="2">
+        <el-button size="small" type="primary">刷新</el-button>
+      </el-col>
+      <el-col :span="14">
+        <el-breadcrumb separator="/" style="margin: 0px 10px 10px 20px;">
+          <el-breadcrumb-item
+            v-for="(item, i) in (currentPath)"
+            :key="i"
+            style="margin-right: -10px"
+          >
+            <el-button type="text" size="mini" @click="handleJump(i)">{{ item }}</el-button>
+          </el-breadcrumb-item>
+        </el-breadcrumb>
+      </el-col>
+    </el-row>
+    <hr style="border:0; background-color: #f1f1f1; height: 1px">
     <el-table
-      id="leftBox"
       highlight-current-row
       :data="uploadTableData"
       style="width: 100%"
@@ -27,7 +44,7 @@
         <template slot-scope="scope">
           <i v-if="!scope.row.isFile" class="el-icon-folder" />
           <i v-if="scope.row.isFile" class="el-icon-tickets" />
-          <span>{{ scope.row.name }}</span>
+          <span>&nbsp;{{ scope.row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -58,7 +75,23 @@
         </template>
       </el-table-column>
     </el-table>
-    <info-dialog style="z-index: 2" :dialog-visible="dialogVisible" :current-row="currentRow" @closeDialog="closeDialog" />
+    <info-dialog :dialog-visible="infoDialogVisible" :current-row="currentRow" @closeDialog="closeDialog" />
+    <el-dialog
+      title="盘符切换"
+      :visible.sync="driveDialogVisible"
+      width="30%"
+    >
+      <el-select v-model="currentDrive" size="mini" placeholder="请选择">
+        <el-option
+          v-for="item in drives"
+          :key="item"
+          :label="item.label"
+          :value="item"
+        >
+        </el-option>
+      </el-select>
+      <el-button type="primary" style="margin-left: 5px;position: relative;top: 2px" @click="changeDrive">确认</el-button>
+    </el-dialog>
   </div>
 </template>
 
@@ -70,18 +103,32 @@ export default {
   components: { InfoDialog },
   data() {
     return {
-      dialogVisible: false,
-      currentPath: '',
+      // 文件信息弹窗
+      infoDialogVisible: false,
+      // 盘符切换弹窗
+      driveDialogVisible: false,
+      // 是否第一次切换盘符
+      showSwitchDrive: 0,
+      // 初始本地路径
+      currentPath: ['C:', 'hel', 'llo', 'iii'],
+      // 本地盘符
+      drives: ['A:', 'B:', 'C:', 'D:'],
+      // 当前盘符
+      currentDrive: '',
+      // 当前选择文件的信息
       currentRow: {
         name: '',
         size: 0,
         lastModified: ''
       },
+      // 存储所有本地信息
       uploadTableData: [],
+      // 浏览器所用窗口（wpf无用
       dirHandle: null
     }
   },
   created() {
+    // 浏览器状态下随机生成数据
     if (typeof (CefSharp) === 'undefined') {
       const table = []
       for (let i = 0; i < 10; i++) {
@@ -94,17 +141,27 @@ export default {
         }
       }
       this.uploadTableData = table
+      // 初始化本地数据
     } else {
       this.InitPath()
     }
   },
   methods: {
+    // 上传方法
     handleUpload(index, row) {
       console.log(index, row)
     },
-    handleTableReturn(table, ret) {
+    // 将C#传来的本地json数据转换为table显示里的数据
+    handleTableReturn(ret) {
+      const that = this
+      const table = []
       const retObject = JSON.parse(ret)
-      this.currentPath = retObject.currentPath
+      this.currentPath = retObject.currentPath.split('\\')
+      // 去除不知道哪冒出来的最后一个空白
+      const index = this.currentPath.indexOf('')
+      if (index > -1) {
+        this.currentPath.splice(index, index)
+      }
       const fileTable = retObject.files
       const directoryTable = retObject.directories
       for (let j = 0; j < directoryTable.length; j++) {
@@ -115,10 +172,13 @@ export default {
         fileTable[i]['isFile'] = true
         table.push(fileTable[i])
       }
+      that.uploadTableData = table
     },
+    // 初始化初始路径文件信息和盘符
     async InitPath() {
       const that = this
       const table = []
+      // 浏览器状态下
       if (typeof (CefSharp) === 'undefined') {
         this.dirHandle = await window.showDirectoryPicker()
         for await (const entry of this.dirHandle.values()) {
@@ -135,45 +195,96 @@ export default {
         this.uploadTableData = table
         console.log(table)
       } else {
+        // 初始化路径为桌面
         window.fileFunction.showAllInfo().then(function(ret) {
-          that.handleTableReturn(table, ret)
-          that.uploadTableData = table
+          that.handleTableReturn(ret)
+        })
+        // 初始化盘符
+        window.fileFunction.showAllDrives().then(function(ret) {
+          that.drives = JSON.parse(ret)
+          that.currentDrive = that.drives[0]
         })
       }
     },
+    // 返回父目录
     parentPath() {
       const that = this
-      const table = []
       if (typeof (CefSharp) === 'undefined') {
         return
       } else {
-        window.fileFunction.toParent().then(function(ret) {
-          that.handleTableReturn(table, ret)
-          that.uploadTableData = table
-        })
-      }
-    },
-    handleDblclick(row) {
-      console.log(row)
-      const that = this
-      const table = []
-      if (typeof (CefSharp) === 'undefined') {
-        return
-      } else {
-        if (row.isFile) {
-          this.dialogVisible = true
-          this.currentRow = row
-        } else {
-          window.fileFunction.toChild(String(row.name)).then(function(ret) {
-            that.handleTableReturn(table, ret)
-            that.uploadTableData = table
+        // 阻止在盘符根目录下回到父目录
+        if (that.currentPath.length > 1) {
+          window.fileFunction.toParent().then(function(ret) {
+            that.handleTableReturn(ret)
           })
         }
       }
     },
+    // 面包屑跳转
+    handleJump(num) {
+      const that = this
+      console.log(num)
+      // 点击当前目录名则啥也不做
+      if (num === that.currentPath.length - 1) {
+        // 点击盘符则显示盘符信息
+        if (num === 0) {
+          this.showSwitchDriveMessage()
+        }
+      } else {
+        for (let i = 0; i < that.currentPath.length - 1 - num; i++) {
+          that.parentPath()
+        }
+      }
+    },
+    // 双击table的处理
+    handleDblclick(row) {
+      console.log(row)
+      const that = this
+      if (typeof (CefSharp) === 'undefined') {
+        return
+      } else {
+        if (row.isFile) {
+          this.infoDialogVisible = true
+          this.currentRow = row
+        } else {
+          window.fileFunction.toChild(String(row.name)).then(function(ret) {
+            that.handleTableReturn(ret)
+          })
+        }
+      }
+    },
+    // 关闭对话框
     closeDialog(visible) {
       console.log('closeDialog')
-      this.dialogVisible = visible
+      this.infoDialogVisible = visible
+    },
+    // 点击盘符面包屑时 第一次显示提示，第二次以及之后直接打开切换对话框
+    showSwitchDriveMessage() {
+      const that = this
+      if (that.showSwitchDrive === 0) {
+        that.$notify({
+          title: '切换盘符',
+          message: '再按一次切换盘符',
+          position: 'top-left'
+        })
+        that.showSwitchDrive++
+        console.log(that.showSwitchDrive)
+      } else {
+        that.driveDialogVisible = true
+        console.log(that.drives)
+      }
+    },
+    // 切换盘符
+    changeDrive() {
+      const that = this
+      if (typeof (CefSharp) === 'undefined') {
+        return
+      } else {
+        window.fileFunction.switchDriver(that.currentDrive).then(function(ret) {
+          that.handleTableReturn(ret)
+        })
+      }
+      that.driveDialogVisible = false
     }
   }
 }
@@ -183,10 +294,17 @@ export default {
 @media screen and (min-width: 768px) {
   #leftBox {
     /*border-right: 1px solid rgb(235,238,235);*/
+    /*box-shadow: 4px 2px 2px 1px rgba(0, 0, 0, 0.2);*/
+    position: relative;
+  }
+  #xxx {
     box-shadow: 4px 2px 2px 1px rgba(0, 0, 0, 0.2);
-    position: relative; z-index: 1;
+    position: relative;
   }
   #rightBox {
   }
+}
+.el-button {
+  height: 24px; line-height: 4px;
 }
 </style>
