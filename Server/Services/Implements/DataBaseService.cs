@@ -69,7 +69,7 @@ namespace Server.Services.Implements
 
             modelBuilder.Entity<User>()
                 .HasData(
-                    new {Id = 1L, Username = "admin", Password = BCrypt.Net.BCrypt.HashPassword("admin"), CreatedAt = now, UpdatedAt = now}
+                    new {Id = 1L, Username = "admin", Password = BCrypt.Net.BCrypt.HashPassword("adminadmin"), CreatedAt = now, UpdatedAt = now}
                 );
 
             modelBuilder.Entity<GroupToUser>()

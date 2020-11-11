@@ -17,7 +17,7 @@ namespace Server.Models.VO
 
         [Required]
         [JsonProperty("password")]
-        [RegularExpression(@"^(.?){8,}$")]
+        [RegularExpression(@"^[^\n\r]{8,}$")]
         public string Password { get; set; }
     }
 }

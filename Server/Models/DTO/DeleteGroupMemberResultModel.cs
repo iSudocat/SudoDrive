@@ -1,3 +1,4 @@
+using Server.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +8,12 @@ namespace Server.Models.DTO
 {
     public class DeleteGroupMemberResultModel
     {
-        public long GroupId { get; private set; }
-        public long UserId { get; private set; }
-        public DeleteGroupMemberResultModel(long groupid,long userid)
+        public Group Group { get; private set; }
+        public User User { get; private set; }
+        public DeleteGroupMemberResultModel(Group group,User user)
         {
-            GroupId = groupid;
-            UserId = userid;
+            Group = group;
+            User = user;
         }
     }
 }
