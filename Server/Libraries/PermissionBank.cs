@@ -39,7 +39,11 @@ namespace Server.Libraries
         /// <returns></returns>
         public static string GroupOperationPermission(string groupName, string type, string operation)
         {
-            return $"groupmanager.group.operation.{groupName}.{type}.{operation}";
+            if (type=="member")
+            {
+                return $"groupmanager.group.operation.{groupName}.{type}.{operation}";
+            }
+            return $"groupmanager.group.operation.{groupName}.{operation}";
         }
     }
 }

@@ -10,13 +10,8 @@ namespace Server.Models.VO
     public class DeleteGroupMemberRequestModel
     {
         [Required]
-        [JsonProperty("groupname")]
-        [RegularExpression(@"^[a-zA-Z0-9-_]{4,16}$")]
-        public string GroupName { get;private set; }
-
-        [Required]
         [JsonProperty("username")]
         [RegularExpression(@"^[a-zA-Z0-9-_]{4,16}$")]
-        public string UserName { get;private set; }
+        public string UserName { get; set; }
     }
 }

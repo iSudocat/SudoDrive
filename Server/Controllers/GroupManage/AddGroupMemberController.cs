@@ -9,6 +9,7 @@ using Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.GroupManage
@@ -27,15 +28,18 @@ namespace Server.Controllers.GroupManage
         [HttpPost]
         public IActionResult AddGroupMember([FromBody] AddGroupMemberRequestModel addGroupMemberRequestModel,string groupname)
         {
-            var group = _databaseService.Groups.FirstOrDefault(t => t.GroupName == addGroupMemberRequestModel.GroupName);
+            if (!Regex.IsMatch(groupname, @"^[a-zA-Z0-9-_]{4,16}$"))
+            {
+                throw new GroupnameInvalidException("The groupname you enter is invalid when trying to add a member to it.");
+            }
+            var group = _databaseService.Groups.FirstOrDefault(t => t.GroupName == groupname);
             if (group == null)
             {
                 throw new GroupNotExistException("The groupname you enter does not exsit actually when trying to add a grouptouser.");
             }
-            string permission = $"groupmanager.group.operation.{groupname}.member.add";
+            string permission = PermissionBank.GroupOperationPermission(groupname, "member", "add");
             var user_actor = HttpContext.Items["actor"] as User;
-            var user_actor_db = _databaseService.Users.Find(user_actor.Id);
-            if (!(bool)user_actor_db.HasPermission(permission))
+            if (!(bool)user_actor.HasPermission(permission))
             {
                 throw new AuthenticateFailedException("not has enough permission when trying to add a member to a group.");
             }

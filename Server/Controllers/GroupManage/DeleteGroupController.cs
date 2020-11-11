@@ -10,6 +10,7 @@ using Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.GroupManage
@@ -26,17 +27,20 @@ namespace Server.Controllers.GroupManage
         }
 
         [HttpDelete]
-        public IActionResult DeleteGroup([FromBody] DeleteGroupRequestModel deleteGroupRequestModel,string groupname)
+        public IActionResult DeleteGroup(string groupname)
         {
-            string permission = $"groupmanager.group.operation.{groupname}.delete";
+            if (!Regex.IsMatch(groupname, @"^[a-zA-Z0-9-_]{4,16}$"))
+            {
+                throw new GroupnameInvalidException("The groupname you enter is invalid when trying to delete it.");
+            }
+            string permission = PermissionBank.GroupOperationPermission(groupname,"","delete");
             var user_actor = HttpContext.Items["actor"] as User;
-            var user_actor_db = _databaseService.Users.Find(user_actor.Id);
-            if (!(bool)user_actor_db.HasPermission(permission))
+            if (!(bool)user_actor.HasPermission(permission))
             {
                 throw new AuthenticateFailedException("not has enough permission when trying to delete a group.");
             }
             //use groupname to identify group,because the id is invisible to user
-            var group = _databaseService.Groups.FirstOrDefault(t => t.GroupName == deleteGroupRequestModel.GroupName);
+            var group = _databaseService.Groups.FirstOrDefault(t => t.GroupName == groupname);
             if (group == null)
             {
                 throw new GroupNotExistException("Groupname Does Not Exist when trying to delete group.");
