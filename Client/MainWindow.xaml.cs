@@ -94,9 +94,8 @@ namespace Client
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             UserRequest userService = new UserRequest();
-            var res = userService.Login("sudodog", "ssss11111");
+            userService.Login("sudodog", "ssss11111", out _);
 
-            
             for(int i = 301; i <= 2333; i++)
             {
                 TaskList.Add(new FileControlBlock

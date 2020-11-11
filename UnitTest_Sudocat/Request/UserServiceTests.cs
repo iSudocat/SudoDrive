@@ -15,16 +15,16 @@ namespace Client.Request.Tests
         public void LoginTest()
         {
             UserRequest userService = new UserRequest();
-            var res = userService.Login("sudodog", "ssss11111");
+            var status = userService.Login("sudodog", "ssss11111", out LoginResponse res);
             Console.WriteLine(res);
-            Assert.AreEqual(res.status, 0);
+            Assert.AreEqual(status, 0);
         }
 
         [TestMethod()]
         public void refreshTokenTest()
         {
             UserRequest userService = new UserRequest();
-            userService.Login("sudodog", "ssss11111");
+            userService.Login("sudodog", "ssss11111", out _);
             var res = userService.refreshToken();
             Assert.AreEqual(res, 0);
         }

@@ -15,7 +15,7 @@ namespace Client.Request.Tests
         public void GetFileListTest()
         {
             UserRequest userService = new UserRequest();
-            userService.Login("sudodog", "ssss11111");
+            userService.Login("sudodog", "ssss11111", out _);
             FileRequest fileRequest = new FileRequest();
             fileRequest.GetFileList("/users/sudodog/测试数据/a lot of txt", 
                 out int status, out List<Response.FileListResponse.File> fileList);
