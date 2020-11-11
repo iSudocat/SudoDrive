@@ -1,17 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Server.Exceptions;
 using Server.Libraries;
 using Server.Middlewares;
 using Server.Models.DTO;
-using Server.Models.Entities;
 using Server.Services;
+using Server.Models.Entities;
 
-namespace Server.Controllers
+namespace Server.Controllers.UserProfile
 {
     [Route("api/profile/refreshlogintoken")]
     [ApiController]

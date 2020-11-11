@@ -12,8 +12,7 @@ namespace Client.Request
 {
     public class UserRequest
     {
-
-        public LoginResponse Login(string username, string password)
+        public int Login(string username, string password, out LoginResponse loginResponse)
         {
             var client = new RestClient(ServerAddress.Address + "/api/login");
             var request = new RestRequest(Method.POST);
@@ -22,10 +21,18 @@ namespace Client.Request
             request.AddParameter("application/json", JsonConvert.SerializeObject(requestBody), ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             Console.WriteLine(response.Content);
-            LoginResponse res = JsonConvert.DeserializeObject<LoginResponse>(response.Content);
-            UserInfo.UserName = res.data.username;
-            UserInfo.Token = res.data.token;
-            return res;
+            loginResponse = JsonConvert.DeserializeObject<LoginResponse>(response.Content);
+            if (loginResponse != null)
+            {
+                UserInfo.UserName = loginResponse.data.username;
+                UserInfo.Token = loginResponse.data.token;
+                return loginResponse.status;
+            }
+            else
+            {
+                loginResponse = null;
+                return -114514;
+            }
         }
 
         public int refreshToken()

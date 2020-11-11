@@ -140,6 +140,24 @@ namespace Server.Controllers.Storage
                 result = result.Where(s => requestModel.Type.Contains(s.Type));
             }
 
+            // 按照路径全字匹配
+            if (requestModel.Path?.Length > 0)
+            {
+                result = result.Where(s => requestModel.Path.Contains(s.Path));
+            }
+            
+            // 按照 ID 匹配
+            if (requestModel.Id?.Length > 0)
+            {
+                result = result.Where(s => requestModel.Id.Contains(s.Id));
+            }
+
+            // 按照 Guid 匹配
+            if (requestModel.Guid?.Length > 0)
+            {
+                result = result.Where(s => requestModel.Guid.Contains(s.Guid));
+            }
+
             // TODO 按照用户权限添加筛选
 
             // 添加其他的搜索条件
@@ -147,15 +165,30 @@ namespace Server.Controllers.Storage
             result = result.Skip(requestModel.Offset);
             result = result.Take(requestModel.Amount);
 
-            List<string> resourcesList = new List<string>();
-            foreach (var file in result)
+            Dictionary<string, object> token = null;
+
+            if (requestModel.Download == true)
             {
-                if (file.Type != "text/directory") {
-                    resourcesList.Add(file.StorageName);
+                List<string> resourcesList = new List<string>();
+                foreach (var file in result)
+                {
+                    if (file.Type != "text/directory")
+                    {
+                        resourcesList.Add(file.StorageName);
+                    }
+                }
+
+                try
+                {
+                    token = _tencentCos.GetDownloadToken(resourcesList);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, e.Message, e.Data);
+                    throw new UnexpectedException(e.Message);
                 }
             }
-            var token = _tencentCos.GetDownloadToken(resourcesList);
-
+            
             return Ok(new FileListResultModel(result, requestModel.Amount, requestModel.Offset, token, _tencentCosManagement));
         }
     }

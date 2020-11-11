@@ -121,5 +121,10 @@ namespace Client
         {
             TaskList.SetStatus(0, StatusType.RequestRusume);
         }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }

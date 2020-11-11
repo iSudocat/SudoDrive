@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client.Request.Response
+namespace Client.Request.Response.UploadResponse
 {
     public class UploadResponse
     {
@@ -30,7 +30,7 @@ namespace Client.Request.Response
         public string guid { get; set; }
         public string storageName { get; set; }
         public User user { get; set; }
-        public int fileStatus { get; set; }
+        public int status { get; set; }
         public long size { get; set; }
         public string md5 { get; set; }
         public DateTime createdAt { get; set; }
@@ -41,8 +41,8 @@ namespace Client.Request.Response
     {
         public long id { get; set; }
         public string username { get; set; }
-        public string createdAt { get; set; }
-        public string updatedAt { get; set; }
+        public DateTime createdAt { get; set; }
+        public DateTime updatedAt { get; set; }
     }
 
     public class Token

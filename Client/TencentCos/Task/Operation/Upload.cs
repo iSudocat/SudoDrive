@@ -13,6 +13,7 @@ using COSXML.Network;
 using COSXML.Transfer;
 using Client.Request.Response;
 using COSXML.Auth;
+using Client.Request.Response.UploadResponse;
 
 namespace Client.TencentCos.Task.Operation
 {

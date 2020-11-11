@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using Server.Models.Entities;
-using Server.Services;
 using Server.Exceptions;
 using Server.Libraries;
 using Server.Middlewares;
+using Server.Models.Entities;
 using Server.Models.VO;
+using Server.Services;
 
-namespace Server.Controllers
+namespace Server.Controllers.UserProfile
 {
     [Route("api/auth/updatepassword")]
     [ApiController]
