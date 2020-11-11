@@ -1,23 +1,72 @@
 <template>
   <div id="leftBox">
     <el-row style="margin: 15px 10px 15px 20px;">
-      <el-col :span="21" />
-      <el-col :span="3">
+      <el-col :span="2">
         <el-button
           size="small"
           type="primary"
           style="display: flex;justify-content: center;align-items: center"
-        >上传</el-button>
+        >
+          <svg-icon icon-class="zupload" />
+        </el-button>
+      </el-col>
+      <el-col :span="2">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center"
+        >
+          <svg-icon icon-class="znewfolder" />
+        </el-button>
+      </el-col>
+      <el-col :span="2">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center"
+        >
+          <svg-icon icon-class="zdelete" />
+        </el-button>
+      </el-col>
+      <el-col :span="2">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center"
+        >
+          <svg-icon icon-class="zmore" />
+        </el-button>
+      </el-col>
+      <el-col :span="2">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center"
+        >
+          <svg-icon icon-class="zshare" />
+        </el-button>
       </el-col>
     </el-row>
-    <el-row>
+    <el-row style="margin: 15px 10px 15px 20px;">
       <el-col :span="2">
-        <el-button size="small" type="primary" style="display: flex;justify-content: center;align-items: center" @click="parentPath">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center;"
+          @click="parentPath"
+        >
           <svg-icon icon-class="return" />
         </el-button>
       </el-col>
       <el-col :span="2">
-        <el-button size="small" type="primary" @click="refreshPath">刷新</el-button>
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center;"
+          @click="refreshPath"
+        >
+          <svg-icon icon-class="refresh" />
+        </el-button>
       </el-col>
       <el-col :span="14">
         <el-breadcrumb separator="/" style="margin: 0px 10px 10px 20px;">
@@ -312,6 +361,9 @@ export default {
   }
   #rightBox {
   }
+}
+.el-button:has(.svg-icon) {
+  display: flex;justify-content: center;align-items: center;
 }
 .el-button {
   height: 24px; line-height: 4px;
