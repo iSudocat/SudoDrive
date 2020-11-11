@@ -3,12 +3,18 @@
     <el-row style="margin: 15px 10px 15px 20px;">
       <el-col :span="21" />
       <el-col :span="3">
-        <el-button size="small" type="primary" style="height: 24px; line-height: 4px;">上传</el-button>
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center"
+        >上传</el-button>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="2">
-        <el-button size="small" type="primary" @click="parentPath">返回</el-button>
+        <el-button size="small" type="primary" style="display: flex;justify-content: center;align-items: center" @click="parentPath">
+          <svg-icon icon-class="return" />
+        </el-button>
       </el-col>
       <el-col :span="2">
         <el-button size="small" type="primary" @click="refreshPath">刷新</el-button>
@@ -87,8 +93,7 @@
           :key="item"
           :label="item.label"
           :value="item"
-        >
-        </el-option>
+        />
       </el-select>
       <el-button type="primary" style="margin-left: 5px;position: relative;top: 2px" @click="changeDrive">确认</el-button>
     </el-dialog>
