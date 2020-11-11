@@ -5,15 +5,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Client.TencentCos
+namespace Client.TencentCos.Task
 {
     /// <summary>
     /// 任务队列的文件控制块
     /// </summary>
-    public class FCB
+    public class FileControlBlock
     {
         /// <summary>
-        /// 内部处理Key
+        /// 列表内部处理Key
         /// </summary>
         public long Key { get; set; }
 
@@ -53,11 +53,14 @@ namespace Client.TencentCos
         public long Total { get; set; }
 
         /// <summary>
-        /// 任务状态 0：未开始，1：进行中，2：请求暂停，3：已暂停，4：请求开始，5：请求停止
+        /// 任务状态 0：未开始，1：进行中，2：请求暂停，3：已暂停，4：请求开始，5：请求停止，6：成功，7：失败
         /// </summary>
         public StatusType Status { get; set; }
 
-
+        /// <summary>
+        /// 错误信息
+        /// </summary>
+        public string ErrorMessage { get; set; }
     }
 
 }

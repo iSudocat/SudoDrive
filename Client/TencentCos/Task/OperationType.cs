@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client.TencentCos
+namespace Client.TencentCos.Task
 {
     public enum OperationType
     {

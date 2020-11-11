@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client.TencentCos
+namespace Client.TencentCos.Task
 {
     /// <summary>
     /// 任务状态
@@ -39,6 +39,16 @@ namespace Client.TencentCos
         /// <summary>
         /// 请求停止
         /// </summary>
-        RequestCancel = 5
+        RequestCancel = 5,
+
+        /// <summary>
+        /// 成功
+        /// </summary>
+        Success = 6,
+
+        /// <summary>
+        /// 失败
+        /// </summary>
+        Failure = 7,
     }
 }

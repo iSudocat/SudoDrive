@@ -1,3 +1,4 @@
+using Client.TencentCos.Task.Operation;
 using COSXML;
 using System;
 using System.Collections.Concurrent;
@@ -8,22 +9,25 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Client.TencentCos
+namespace Client.TencentCos.Task
 {
-    public static class FileTask
+    public static class TaskList
     {
-
-        private static SortedList<long, FCB> waitingList = new SortedList<long, FCB>();
-        private static SortedList<long, FCB> runningList = new SortedList<long, FCB>();
+        private static SortedList<long, FileControlBlock> waitingList = new SortedList<long, FileControlBlock>();
+        private static SortedList<long, FileControlBlock> runningList = new SortedList<long, FileControlBlock>();
+        private static SortedList<long, FileControlBlock> successList = new SortedList<long, FileControlBlock>();
+        private static SortedList<long, FileControlBlock> failureList = new SortedList<long, FileControlBlock>();
 
         private static long key = 0;
 
-        private static int runningLimit { get; set; } = 3;
+        private static int runningLimit { get; set; } = 5;
 
         private static Mutex waitinglistMutex = new Mutex();
         private static Mutex runninglistMutex = new Mutex();
+        private static Mutex successlistMutex = new Mutex();
+        private static Mutex failurelistMutex = new Mutex();
 
-        public static void Add(FCB file)
+        public static void Add(FileControlBlock file)
         {
             waitinglistMutex.WaitOne();
             file.Key = key;
@@ -47,6 +51,29 @@ namespace Client.TencentCos
             runninglistMutex.ReleaseMutex();
         }
 
+        public static void SetSuccess(long key)
+        {
+            runninglistMutex.WaitOne();
+            successlistMutex.WaitOne();
+            runningList[key].Status = StatusType.Success;
+            successList.Add(key, runningList[key]);
+            runningList.Remove(key);
+            successlistMutex.ReleaseMutex();
+            runninglistMutex.ReleaseMutex();
+        }
+
+        public static void SetFailure(long key, string errorMessage)
+        {
+            runninglistMutex.WaitOne();
+            failurelistMutex.WaitOne();
+            runningList[key].Status = StatusType.Failure;
+            runningList[key].ErrorMessage = errorMessage;
+            failureList.Add(key, runningList[key]);
+            runningList.Remove(key);
+            failurelistMutex.ReleaseMutex();
+            runninglistMutex.ReleaseMutex();
+        }
+
         public static StatusType GetStatus(long key)
         {
             runninglistMutex.WaitOne();
@@ -62,6 +89,27 @@ namespace Client.TencentCos
             runninglistMutex.ReleaseMutex();
         }
 
+        public static SortedList<long, FileControlBlock> GetWaitingList()
+        {
+            return waitingList;
+        }
+
+        public static SortedList<long, FileControlBlock> GetRunningList()
+        {
+            return runningList;
+        }
+
+        public static SortedList<long, FileControlBlock> GetSuccessList()
+        {
+            return successList;
+        }
+
+        public static SortedList<long, FileControlBlock> GetFailureList()
+        {
+            return failureList;
+        }
+
+
         public static void run()
         {
             while (true)
@@ -74,7 +122,7 @@ namespace Client.TencentCos
                 if (waitingList.Count != 0)
                 {
                     IList<long> waitingListkeys = waitingList.Keys;
-                    IList<FCB> waitingListValues = waitingList.Values;
+                    IList<FileControlBlock> waitingListValues = waitingList.Values;
 
                     int difference = runningLimit - runningList.Count;
                     for (int i = 0; i < difference; i--)
@@ -94,38 +142,27 @@ namespace Client.TencentCos
                 }
 
                 runninglistMutex.WaitOne();
-                foreach (FCB file in runningList.Values)
+                foreach (FileControlBlock file in runningList.Values)
                 {
                     switch (file.Status)
                     {
                         case StatusType.Waiting:
                             {
-                                //TODO 从后端获取密钥
-                                string tmpSecretId = "";
-                                string tmpSecretKey = "";
-                                string tmpToken = "";
-                                long tmpExpireTime = 0;
-
-                                CosService cosService = new CosService();
-                                CosXml cosXml = cosService.getCosXml(tmpSecretId, tmpSecretKey, tmpToken, tmpExpireTime);
-                                FileService fileService = new FileService(file, cosXml);
-
                                 switch (file.Operation)
                                 {
-                                    case 0:
-                                        new Thread(fileService.Test).Start();
-                                        file.Status = StatusType.Running;
-                                        break;
                                     case OperationType.Upload:
-                                        new Thread(fileService.Upload).Start();
+                                        Upload upload = new Upload(file);
+                                        new Thread(upload.Run).Start();
                                         file.Status = StatusType.Running;
                                         break;
                                     case OperationType.Download:
-                                        new Thread(fileService.Download).Start();
+                                        Download download = new Download(file);
+                                        new Thread(download.Run).Start();
                                         file.Status = StatusType.Running;
                                         break;
                                     case OperationType.Delete:
-                                        new Thread(fileService.Delete).Start();
+                                        Delete delete = new Delete(file);
+                                        new Thread(delete.Run).Start();
                                         file.Status = StatusType.Running;
                                         break;
                                     default:
@@ -136,12 +173,15 @@ namespace Client.TencentCos
                         default:
                             break;
                     }
+                    Thread.Sleep(1000);
                 }
                 runninglistMutex.ReleaseMutex();
 
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
             }
         }
 
+
+        
     }
 }
