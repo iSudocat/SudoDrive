@@ -4,6 +4,7 @@
     <el-button @click="testFolderInfo">FolderInfo</el-button>
     <el-button @click="testFileInfo">FileInfo</el-button>
     <el-button @click="testDriver">DriverInfo</el-button>
+    <el-button @click="testList">List</el-button>
   </div>
 </template>
 
@@ -36,6 +37,11 @@ export default {
         console.log(ret)
       })
       window.fileFunction.switchDriver('D:\\').then(function(ret) {
+        console.log(ret)
+      })
+    },
+    async testList() {
+      window.fileFunction.getFileList().then(function(ret) {
         console.log(ret)
       })
     }

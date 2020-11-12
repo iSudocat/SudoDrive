@@ -8,6 +8,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Client.Request;
+using Client.Request.Response.UploadResponse;
+using Client.Request.Response.FileListResponse;
+using Client.Request.Response;
 
 namespace Client.CefUtils.Function
 {
@@ -94,6 +98,16 @@ namespace Client.CefUtils.Function
         {
             path = driver;
             return showAllInfo();
+        }
+
+        public string getFileList()
+        {
+            UserRequest userService = new UserRequest();
+            userService.Login("sudodog", "ssss11111", out _);
+            FileRequest fileRequest = new FileRequest();
+            fileRequest.GetFileList("/users/sudodog/测试数据/a lot of txt",
+                out int status, out List<Client.Request.Response.FileListResponse.File> fileList);
+            return JsonConvert.SerializeObject(fileList);
         }
     }
 }
