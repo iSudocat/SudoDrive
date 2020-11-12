@@ -1,54 +1,54 @@
 <template>
   <div id="leftBox">
     <el-row style="margin: 15px 10px 15px 20px;">
-      <el-col :span="2">
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
         <el-button
           size="small"
           type="primary"
           style="display: flex;justify-content: center;align-items: center"
         >
-          <svg-icon icon-class="zupload" />
+          <svg-icon icon-class="zzupload" />
         </el-button>
       </el-col>
-      <el-col :span="2">
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
         <el-button
           size="small"
           type="primary"
           style="display: flex;justify-content: center;align-items: center"
         >
-          <svg-icon icon-class="znewfolder" />
+          <svg-icon icon-class="zznewfolder" />
         </el-button>
       </el-col>
-      <el-col :span="2">
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
         <el-button
           size="small"
           type="primary"
           style="display: flex;justify-content: center;align-items: center"
         >
-          <svg-icon icon-class="zdelete" />
+          <svg-icon icon-class="zzdelete" />
         </el-button>
       </el-col>
-      <el-col :span="2">
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
         <el-button
           size="small"
           type="primary"
           style="display: flex;justify-content: center;align-items: center"
         >
-          <svg-icon icon-class="zmore" />
+          <svg-icon icon-class="zzmore" />
         </el-button>
       </el-col>
-      <el-col :span="2">
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
         <el-button
           size="small"
           type="primary"
           style="display: flex;justify-content: center;align-items: center"
         >
-          <svg-icon icon-class="zshare" />
+          <svg-icon icon-class="zzshare" />
         </el-button>
       </el-col>
     </el-row>
     <el-row style="margin: 15px 10px 15px 20px;">
-      <el-col :span="2">
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
         <el-button
           size="small"
           type="primary"
@@ -58,7 +58,7 @@
           <svg-icon icon-class="return" />
         </el-button>
       </el-col>
-      <el-col :span="2">
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
         <el-button
           size="small"
           type="primary"
@@ -157,6 +157,10 @@ export default {
   components: { InfoDialog },
   data() {
     return {
+      buttonConfig: {
+        xs: 4,
+        sm: 2
+      },
       // 文件信息弹窗
       infoDialogVisible: false,
       // 盘符切换弹窗
