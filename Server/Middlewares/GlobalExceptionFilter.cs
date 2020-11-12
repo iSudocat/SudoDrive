@@ -30,7 +30,7 @@ namespace Server.Middlewares
             }
             else
             {
-                status = 500;
+                status = -10000;
                 data = context.Exception.Data;
             }
 

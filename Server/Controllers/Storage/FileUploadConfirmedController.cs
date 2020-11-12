@@ -32,17 +32,19 @@ namespace Server.Controllers.Storage
 
         
         [HttpPatch]
-        public IActionResult ConfirmUpload([FromBody] FileUploadConfirmRequestModel requestRequestModel)
+        public IActionResult ConfirmUpload([FromBody] FileUploadConfirmRequestModel requestModel)
         {
             if (!(HttpContext.Items["actor"] is User loginUser))
             {
                 throw new UnexpectedException();
             }
 
-            // 检查被确认文件是否存在
+            requestModel.Guid = requestModel.Guid.ToLower();
+
+            // 检查被确认文件是否存在0
             var file = _databaseService.Files.FirstOrDefault(s => 
-                s.Id == requestRequestModel.Id && 
-                s.Guid == requestRequestModel.Guid &&
+                s.Id == requestModel.Id && 
+                s.Guid == requestModel.Guid &&
                 s.Status == Models.Entities.File.FileStatus.Pending &&
                 s.User == loginUser);
 

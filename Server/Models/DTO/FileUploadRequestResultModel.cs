@@ -11,39 +11,15 @@ namespace Server.Models.DTO
     {
         public FileModel File { get; private set; }
 
-        public class CredentialsType
-        {
-            public string Token { get; private set; }
+        public TencentCosTokenType Token {get; private set;}
 
-            public CredentialsType(string token)
-            {
-                this.Token = token;
-            }
-        }
+        public TencentCosModel TencentCos { get; private set; }
 
-        public class TokenType
-        {
-            public CredentialsType Credentials { get; private set; }
-            public long ExpiredTime { get; private set; }
-            public DateTime Expiration { get; private set; }
-            public string RequestId { get; private set; }
-            public long StartTime { get; private set; }
 
-            public TokenType(CredentialsType credentials, long expiredTime, DateTime expiration, string requestId, long startTime)
-            {
-                this.Credentials = credentials;
-                this.ExpiredTime = expiredTime;
-                this.Expiration = expiration;
-                this.RequestId = requestId;
-                this.StartTime = startTime;
-            }
-        };
-
-        public TokenType Token {get; private set;}
-
-        public FileUploadRequestResultModel(File file, Dictionary<string, object> token)
+        public FileUploadRequestResultModel(File file, Dictionary<string, object> token, TencentCosManagementModel tencentCos)
         {
             this.File = file.ToVo();
+            this.TencentCos = new TencentCosModel(tencentCos);
 
             if (token == null)
             {
@@ -57,7 +33,7 @@ namespace Server.Models.DTO
                 // TODO 不知道这里会不会出错
                 throw new UnexpectedException();
             }
-            CredentialsType credentials =new  CredentialsType(resCredentials["Token"].ToString());
+            TencentCosCredentialsModel tencentCosCredentials = new TencentCosCredentialsModel(resCredentials["Token"].ToString(), resCredentials["TmpSecretId"].ToString(), resCredentials["TmpSecretKey"].ToString());
 
             long expiredTime;
             DateTime expiration;
@@ -76,7 +52,7 @@ namespace Server.Models.DTO
                 throw new UnexpectedException();
             }
 
-            this.Token = new TokenType(credentials, expiredTime, expiration, requestId, startTime);
+            this.Token = new TencentCosTokenType(tencentCosCredentials, expiredTime, expiration, requestId, startTime);
         }
 
     }

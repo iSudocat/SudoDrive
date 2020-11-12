@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Server.Controllers;
-using Server.Exceptions;
 using Server.Libraries;
 using Server.Middlewares;
 using Server.Models.DTO;
@@ -27,12 +27,69 @@ namespace Server.Exceptions
 
         private readonly ILogger _logger;
 
+        private readonly TencentCosManagementModel _tencentCosManagement;
 
-        public FileUploadRequestController(IDatabaseService databaseService, ITencentCos tencentCos, ILogger<GlobalExceptionFilter> logger)
+        public FileUploadRequestController(IDatabaseService databaseService, ITencentCos tencentCos, IOptions<TencentCosManagementModel> TencentCosManagement, ILogger<GlobalExceptionFilter> logger)
         {
             _databaseService = databaseService;
             _tencentCos = tencentCos;
+            _tencentCosManagement = TencentCosManagement.Value;
             _logger = logger;
+        }
+
+        public void RequirePermission(string path, string uploadType, User loginUser, string operation)
+        {
+            string type;
+            string name;
+
+            var splitsPath = path.Split("/");
+
+            if ((uploadType == "text/directory" && splitsPath.Length >= 3) || (splitsPath.Length >= 4))
+            {
+                // 获取上传路径的第一季第二级目录名
+                type = splitsPath[1];
+                name = splitsPath[2];
+
+                switch (type)
+                {
+                    case "users":
+                    case "groups":
+                        break;
+                    default:
+                        type = "root";
+                        break;
+                }
+            }
+            else
+            {
+                // 如果是非 root 的状态
+                type = "root";
+                name = "";
+            }
+
+            // 检查用户权限
+            var ret = loginUser.HasPermission(PermissionBank.StoragePermission(type, name, operation));
+            if (ret == null)
+            {
+                // 检查用户默认
+                if (type == "users" && name == loginUser.Username)
+                {
+                    ret = true;
+                }
+                else if (type == "groups")
+                {
+                    foreach (var groupToUser in loginUser.GroupToUser)
+                    {
+                        if (groupToUser.Group.GroupName == name) ret = true;
+                    }
+                }
+                else ret = false;
+            }
+
+            if (ret != true)
+            {
+                throw new AuthenticateFailedException();
+            }
         }
 
 
@@ -45,10 +102,9 @@ namespace Server.Exceptions
             }
 
             requestModel.Path = requestModel.Path.Replace("\\", "/");
+            if (requestModel.Path[0] != '/') requestModel.Path = "/" + requestModel.Path;
 
-            // TODO 根据上传路径判断权限
-            // /users/用户名/XXX => .HasPermission('file.upload.user.用户名')
-            // /groups/组名/XXX => .HasPermission('file.upload.group.组名')
+            this.RequirePermission(requestModel.Path, requestModel.Type, loginUser, "upload");
 
             if (requestModel.Type == "text/directory")
             {
@@ -118,7 +174,7 @@ namespace Server.Exceptions
             }
 
             SetApiResultStatus(ApiResultStatus.StorageUploadSkip);
-            return Ok(new FileUploadRequestResultModel(ret, null));
+            return Ok(new FileUploadRequestResultModel(ret, null, _tencentCosManagement));
         }
 
 
@@ -152,16 +208,26 @@ namespace Server.Exceptions
                 file.Type = requestModel.Type;
                 file.Folder = Path.GetDirectoryName(requestModel.Path) ?? "";
                 file.Name = Path.GetFileName(requestModel.Path) ?? "";
+                if (string.IsNullOrEmpty(file.Name))
+                {
+                    throw new FileNameIsEmptyException("The file name is empty.");
+                }
 
-                file.Guid = Guid.NewGuid().ToString();
+                file.Guid = Guid.NewGuid().ToString().ToLower();
                 // TODO 检查 Guid 是否有重复
+
                 file.StorageName = $"{file.Guid[0]}{file.Guid[1]}/{file.Guid[2]}{file.Guid[3]}/{file.Guid}{Path.GetExtension(requestModel.Path)}";
+                file.StorageName = Path.Join(_tencentCosManagement.Prefix, file.StorageName).Replace("\\", "/");
+
                 file.User = loginUser;
                 file.Status = Models.Entities.File.FileStatus.Pending;
                 file.Size = requestModel.Size;
                 file.Md5 = requestModel.Md5.ToLower();
             }
 
+            // file.Path = file.Folder.Replace("\\", "/");
+            file.Folder = file.Folder.Replace("\\", "/");
+            file.GetPermission();
             _databaseService.Files.Add(file);
 
 
@@ -171,12 +237,12 @@ namespace Server.Exceptions
             {
                 try
                 {
-                    token = _tencentCos.GetToken(file);
+                    token = _tencentCos.GetUploadToken(file);
                 }
                 catch (Exception e)
                 {
                     _logger.LogError(e, e.Message, e.Data);
-                    throw new UnexpectedException();
+                    throw new UnexpectedException(e.Message);
                 }
 
                 SetApiResultStatus(ApiResultStatus.StorageUploadContinue);
@@ -190,7 +256,7 @@ namespace Server.Exceptions
 
             _databaseService.SaveChanges();
 
-            return Ok(new FileUploadRequestResultModel(file, token));
+            return Ok(new FileUploadRequestResultModel(file, token, _tencentCosManagement));
         }
     }
 }

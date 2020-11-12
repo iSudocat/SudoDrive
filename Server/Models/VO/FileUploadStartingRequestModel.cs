@@ -18,7 +18,7 @@ namespace Server.Models.VO
         [Required]
         [JsonProperty("size")]
         // 最大可上传 2G （确信）
-        [Range(0, 1024 * 1024 * 1024 * 1.5)]
+        [Range(typeof(long), "0", "5368709119")]
         public long Size { get; set; }
 
         [Required]

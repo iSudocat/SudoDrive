@@ -10,18 +10,18 @@ namespace Client.TencentCos
 {
     public class CosService
     {
-        static CosXmlConfig config;
-        static QCloudCredentialProvider cosCredentialProvider;
-        static CosXml cosXml;
+        private CosXmlConfig config;
+        private QCloudCredentialProvider cosCredentialProvider;
+        private CosXml cosXml;
 
         /// <summary>
         /// 初始化CosService类
         /// </summary>
-        public CosService()
+        public CosService(string region)
         {
             config = new CosXmlConfig.Builder()
               .IsHttps(true)  //设置默认 HTTPS 请求
-              .SetRegion(CosConfig.Region)  //设置一个默认的存储桶地域
+              .SetRegion(region)  //设置一个默认的存储桶地域
               .SetDebugLog(true)  //显示日志
               .Build();  //创建 CosXmlConfig 对象
         }
