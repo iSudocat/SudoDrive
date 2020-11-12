@@ -85,7 +85,8 @@
       highlight-current-row
       :data="uploadTableData"
       style="width: 100%"
-      @cell-dblclick="handleDblclick"
+      @current-change="handleCurrentChange"
+      @row-click="handleRowClick"
     >
       <el-table-column
         type="selection"
@@ -157,10 +158,13 @@ export default {
   components: { InfoDialog },
   data() {
     return {
+      // 按钮响应式大小绑定
       buttonConfig: {
         xs: 4,
         sm: 2
       },
+      // 是否第一次点击
+      isFirstClick: true,
       // 文件信息弹窗
       infoDialogVisible: false,
       // 盘符切换弹窗
@@ -285,7 +289,6 @@ export default {
     // 面包屑跳转
     handleJump(num) {
       const that = this
-      console.log(num)
       // 点击当前目录名则啥也不做
       if (num === that.currentPath.length - 1) {
         // 点击盘符则显示盘符信息
@@ -298,11 +301,27 @@ export default {
         }
       }
     },
+    // 第一次单击某行
+    handleCurrentChange(row) {
+      this.isFirstClick = true
+    },
+    // 单击某行
+    handleRowClick(row) {
+      const that = this
+      if (that.isFirstClick) {
+        that.isFirstClick = false
+      } else {
+        that.handleDblclick(row)
+      }
+    },
     // 双击table的处理
     handleDblclick(row) {
-      console.log(row)
       const that = this
       if (typeof (CefSharp) === 'undefined') {
+        if (row.isFile) {
+          this.infoDialogVisible = true
+          this.currentRow = row
+        }
         return
       } else {
         if (row.isFile) {
@@ -317,7 +336,6 @@ export default {
     },
     // 关闭对话框
     closeDialog(visible) {
-      console.log('closeDialog')
       this.infoDialogVisible = visible
     },
     // 点击盘符面包屑时 第一次显示提示，第二次以及之后直接打开切换对话框
@@ -330,10 +348,8 @@ export default {
           position: 'top-left'
         })
         that.showSwitchDrive++
-        console.log(that.showSwitchDrive)
       } else {
         that.driveDialogVisible = true
-        console.log(that.drives)
       }
     },
     // 切换盘符
