@@ -127,7 +127,7 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CreatedAt", "Password", "UpdatedAt", "Username" },
-                values: new object[] { 1L, now, BCrypt.Net.BCrypt.HashPassword("admin"), now, "admin" });
+                values: new object[] { 1L, now, BCrypt.Net.BCrypt.HashPassword("adminadmin"), now, "admin" });
 
             migrationBuilder.InsertData(
                 table: "GroupsToPermissionsRelation",

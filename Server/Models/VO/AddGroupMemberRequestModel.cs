@@ -10,11 +10,8 @@ namespace Server.Models.VO
     public class AddGroupMemberRequestModel
     {
         [Required]
-        [JsonProperty("groupname")]
-        public string GroupName { get; private set; }
-
-        [Required]
         [JsonProperty("username")]
-        public string UserName { get;private set; }
+        [RegularExpression(@"^[a-zA-Z0-9-_]{4,16}$")]
+        public string UserName { get; set; }
     }
 }
