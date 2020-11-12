@@ -35,7 +35,7 @@ namespace Server.Controllers.GroupManage
             }
             string permission = PermissionBank.GroupOperationPermission(groupname,"","delete");
             var user_actor = HttpContext.Items["actor"] as User;
-            if (!(bool)user_actor.HasPermission(permission))
+            if (user_actor.HasPermission(permission) != true)
             {
                 throw new AuthenticateFailedException("not has enough permission when trying to delete a group.");
             }

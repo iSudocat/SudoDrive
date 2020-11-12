@@ -39,7 +39,7 @@ namespace Server.Controllers.GroupManage
             }
             string permission = PermissionBank.GroupOperationPermission(groupname, "member", "add");
             var user_actor = HttpContext.Items["actor"] as User;
-            if (!(bool)user_actor.HasPermission(permission))
+            if (user_actor.HasPermission(permission) != true)
             {
                 throw new AuthenticateFailedException("not has enough permission when trying to add a member to a group.");
             }
