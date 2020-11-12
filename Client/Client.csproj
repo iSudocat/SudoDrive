@@ -104,9 +104,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CefUtils\Function\FileFunction.cs" />
-    <Compile Include="CefUtils\VO\AllInfoVO.cs" />
-    <Compile Include="CefUtils\VO\FileInfoVO.cs" />
-    <Compile Include="CefUtils\VO\DirectoryInfoVO.cs" />
+    <Compile Include="CefUtils\VO\Local\AllInfoVO.cs" />
+    <Compile Include="CefUtils\VO\Local\FileInfoVO.cs" />
+    <Compile Include="CefUtils\VO\Local\DirectoryInfoVO.cs" />
     <Compile Include="Request\FileRequest.cs" />
     <Compile Include="Request\Response\FileListResponse.cs" />
     <Compile Include="Request\Response\refreshTokenResponse.cs" />

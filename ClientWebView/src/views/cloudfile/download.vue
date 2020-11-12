@@ -1,19 +1,85 @@
 <template>
   <div>
     <el-row style="margin: 15px 10px 15px 20px;">
-      <el-col :span="21" />
-      <el-col :span="3">
-        <el-button size="small" type="primary" style="height: 24px; line-height: 4px;">下载</el-button>
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center"
+        >
+          <svg-icon icon-class="zzdownload" />
+        </el-button>
+      </el-col>
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center"
+        >
+          <svg-icon icon-class="zznewfolder" />
+        </el-button>
+      </el-col>
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center"
+        >
+          <svg-icon icon-class="zzdelete" />
+        </el-button>
+      </el-col>
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center"
+        >
+          <svg-icon icon-class="zzmore" />
+        </el-button>
+      </el-col>
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center"
+        >
+          <svg-icon icon-class="zzshare" />
+        </el-button>
       </el-col>
     </el-row>
-    <el-breadcrumb separator="/" style="margin: 15px 10px 15px 20px;">
-      <el-breadcrumb-item
-        v-for="(item,i) in (currentPath.split('\\'))"
-        :key="i"
-      >
-        <el-button type="text" size="mini" @click="handleJump(i)">{{ item }}</el-button>
-      </el-breadcrumb-item>
-    </el-breadcrumb>
+    <el-row style="margin: 15px 10px 15px 20px;">
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center;"
+          @click="parentPath"
+        >
+          <svg-icon icon-class="return" />
+        </el-button>
+      </el-col>
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center;"
+          @click="refreshPath"
+        >
+          <svg-icon icon-class="refresh" />
+        </el-button>
+      </el-col>
+      <el-col :span="14">
+        <el-breadcrumb separator="/" style="margin: 0px 10px 10px 20px;">
+          <el-breadcrumb-item
+            v-for="(item, i) in (currentPath)"
+            :key="i"
+            style="margin-right: -10px"
+          >
+            <el-button type="text" size="mini" @click="handleJump(i)">{{ item }}</el-button>
+          </el-breadcrumb-item>
+        </el-breadcrumb>
+      </el-col>
+    </el-row>
     <hr style="border:0; background-color: #f1f1f1; height: 1px">
     <el-table
       :data="uploadTableData"
@@ -72,9 +138,13 @@ export default {
   components: { InfoDialog },
   data() {
     return {
+      buttonConfig: {
+        xs: 4,
+        sm: 2
+      },
       uploadTableData: [],
       dialogVisible: false,
-      currentPath: '.\\xxx\\xxxxx\\xxxxxxx',
+      currentPath: ['xx', 'xxx', 'xxxx'],
       currentRow: {
         name: '',
         size: 0,
@@ -115,5 +185,7 @@ export default {
 </script>
 
 <style scoped>
-
+.el-button {
+  height: 24px; line-height: 4px;
+}
 </style>
