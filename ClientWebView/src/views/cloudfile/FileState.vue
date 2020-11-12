@@ -6,54 +6,182 @@
         <el-tabs v-model="uploadActiveName" @tab-click="handleUploadClick">
           <el-tab-pane label="" name="" />
           <el-tab-pane label="传输中" name="running">
-            <div
-              v-for="(item, i) in uploads.running"
-              :key="i"
+            <el-table
+              :data="uploads.running"
+              style="width: 100%;height: 78vh;overflow:auto;"
+              :border="true"
             >
-              <span>{{ item.name }}</span>
-              <el-progress
-                :text-inside="true"
-                :stroke-width="20"
-                :percentage="item.percentage"
-              />
-            </div>
+              <el-table-column
+                label="文件名"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <span style="margin-left: 10px">{{ scope.row.name }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="进度"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <el-progress
+                    :text-inside="true"
+                    :stroke-width="16"
+                    :percentage="scope.row.percentage"
+                  />
+                </template>
+              </el-table-column>
+            </el-table>
           </el-tab-pane>
           <el-tab-pane label="成功" name="success">
-            <div
-              v-for="(item, i) in uploads.success"
-              :key="i"
+            <el-table
+              :data="uploads.success"
+              style="width: 100%;height: 78vh;overflow:auto;"
+              :border="true"
             >
-              <span>{{ item.name }}</span>
-              <el-progress
-                :text-inside="true"
-                :stroke-width="20"
-                :percentage="item.percentage"
-                status="success"
-              />
-            </div>
+              <el-table-column
+                label="文件名"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <span style="margin-left: 10px">{{ scope.row.name }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="进度"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <el-progress
+                    :text-inside="true"
+                    :stroke-width="16"
+                    status="success"
+                    :percentage="scope.row.percentage"
+                  />
+                </template>
+              </el-table-column>
+            </el-table>
           </el-tab-pane>
           <el-tab-pane label="失败" name="fail">
-            <div
-              v-for="(item, i) in uploads.fail"
-              :key="i"
+            <el-table
+              :data="uploads.fail"
+              style="width: 100%;height: 78vh;overflow:auto;"
+              :border="true"
             >
-              <span>{{ item.name }}</span>
-              <el-progress
-                :text-inside="true"
-                :stroke-width="20"
-                :percentage="item.percentage"
-                status="exception"
-              />
-            </div>
+              <el-table-column
+                label="文件名"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <span style="margin-left: 10px">{{ scope.row.name }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="进度"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <el-progress
+                    :text-inside="true"
+                    :stroke-width="16"
+                    status="exception"
+                    :percentage="scope.row.percentage"
+                  />
+                </template>
+              </el-table-column>
+            </el-table>
           </el-tab-pane>
         </el-tabs>
       </el-tab-pane>
       <el-tab-pane label="下载" name="download">
         <el-tabs v-model="downloadActiveName" @tab-click="handleDownloadClick">
           <el-tab-pane label="" name="" />
-          <el-tab-pane label="传输中" name="running" />
-          <el-tab-pane label="成功" name="success" />
-          <el-tab-pane label="失败" name="fail" />
+          <el-tab-pane label="传输中" name="running">
+            <el-table
+              :data="downloads.running"
+              style="width: 100%;height: 78vh;overflow:auto;"
+              :border="true"
+            >
+              <el-table-column
+                label="文件名"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <span style="margin-left: 10px">{{ scope.row.name }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="进度"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <el-progress
+                    :text-inside="true"
+                    :stroke-width="16"
+                    :percentage="scope.row.percentage"
+                  />
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
+          <el-tab-pane label="成功" name="success">
+            <el-table
+              :data="downloads.success"
+              style="width: 100%;height: 78vh;overflow:auto;"
+              :border="true"
+            >
+              <el-table-column
+                label="文件名"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <span style="margin-left: 10px">{{ scope.row.name }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="进度"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <el-progress
+                    :text-inside="true"
+                    :stroke-width="16"
+                    status="success"
+                    :percentage="scope.row.percentage"
+                  />
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
+          <el-tab-pane label="失败" name="fail">
+            <el-table
+              :data="downloads.fail"
+              style="width: 100%;height: 78vh;overflow:auto;"
+              :border="true"
+            >
+              <el-table-column
+                label="文件名"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <span style="margin-left: 10px">{{ scope.row.name }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="进度"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <el-progress
+                    :text-inside="true"
+                    :stroke-width="16"
+                    status="exception"
+                    :percentage="scope.row.percentage"
+                  />
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
         </el-tabs>
       </el-tab-pane>
     </el-tabs>
@@ -82,7 +210,7 @@ export default {
     }
   },
   created() {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 9; i++) {
       this.uploads.running.push({
         name: '传输中文件' + i,
         percentage: i * 10
