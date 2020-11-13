@@ -104,6 +104,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CefUtils\Function\FileFunction.cs" />
+    <Compile Include="CefUtils\VO\Cloud\CloudFileListVO.cs" />
     <Compile Include="CefUtils\VO\Local\AllInfoVO.cs" />
     <Compile Include="CefUtils\VO\Local\FileInfoVO.cs" />
     <Compile Include="CefUtils\VO\Local\DirectoryInfoVO.cs" />

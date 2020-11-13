@@ -12,6 +12,7 @@ using Client.Request;
 using Client.Request.Response.UploadResponse;
 using Client.Request.Response.FileListResponse;
 using Client.Request.Response;
+using Client.CefUtils.VO.Cloud;
 
 namespace Client.CefUtils.Function
 {
@@ -107,7 +108,8 @@ namespace Client.CefUtils.Function
             FileRequest fileRequest = new FileRequest();
             fileRequest.GetFileList("/users/sudodog/测试数据/a lot of txt",
                 out int status, out List<Client.Request.Response.FileListResponse.File> fileList);
-            return JsonConvert.SerializeObject(fileList);
+            CloudFileListVO cloudFileListVO = new CloudFileListVO(fileList);
+            return JsonConvert.SerializeObject(cloudFileListVO);
         }
     }
 }
