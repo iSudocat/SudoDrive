@@ -153,6 +153,9 @@ export default {
       isFirstClick: true,
       downloadTableData: [],
       dialogVisible: false,
+      // 云端地址
+      cloudPath: '',
+      // 云端数组
       currentPath: ['xx', 'xxx', 'xxxx'],
       currentRow: {
         name: '',
@@ -216,6 +219,8 @@ export default {
       const that = this
       const table = []
       const retObject = JSON.parse(ret)
+      that.cloudPath = retObject.cloudFileList[0].folder
+      that.currentPath = that.cloudPath.split('/')
       const cloudFileList = retObject.cloudFileList
       for (let i = 0; i < cloudFileList.length; i++) {
         table.push(cloudFileList[i])
