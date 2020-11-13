@@ -389,7 +389,7 @@ export default {
 .el-button {
   height: 24px; line-height: 4px;
 }
-* {
+.el-table {
   user-select:none;
 }
 </style>

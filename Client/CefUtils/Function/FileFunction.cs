@@ -100,7 +100,10 @@ namespace Client.CefUtils.Function
             path = driver;
             return showAllInfo();
         }
-
+        /// <summary>
+        /// 获取云端文件信息
+        /// </summary>
+        /// <returns></returns>
         public string getFileList()
         {
             UserRequest userService = new UserRequest();
@@ -111,5 +114,7 @@ namespace Client.CefUtils.Function
             CloudFileListVO cloudFileListVO = new CloudFileListVO(fileList);
             return JsonConvert.SerializeObject(cloudFileListVO);
         }
+
+
     }
 }

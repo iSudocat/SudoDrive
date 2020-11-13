@@ -85,6 +85,9 @@
       :data="downloadTableData"
       style="width: 100%"
       max-height="480"
+      highlight-current-row
+      @current-change="handleCurrentChange"
+      @row-click="handleRowClick"
       @cell-dblclick="handleDblclick"
     >
       <el-table-column
@@ -143,6 +146,8 @@ export default {
         xs: 4,
         sm: 2
       },
+      // 是否第一次点击
+      isFirstClick: true,
       downloadTableData: [],
       dialogVisible: false,
       currentPath: ['xx', 'xxx', 'xxxx'],
@@ -175,6 +180,19 @@ export default {
   methods: {
     handleUpload(index, row) {
       console.log(index, row)
+    },
+    // 第一次单击某行
+    handleCurrentChange(row) {
+      this.isFirstClick = true
+    },
+    // 单击某行
+    handleRowClick(row) {
+      const that = this
+      if (that.isFirstClick) {
+        that.isFirstClick = false
+      } else {
+        that.handleDblclick(row)
+      }
     },
     handleDblclick(row) {
       console.log(row)
@@ -215,5 +233,8 @@ export default {
 <style scoped>
 .el-button {
   height: 24px; line-height: 4px;
+}
+.el-table {
+  user-select:none;
 }
 </style>
