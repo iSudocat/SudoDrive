@@ -82,7 +82,7 @@
     </el-row>
     <hr style="border:0; background-color: #f1f1f1; height: 1px">
     <el-table
-      :data="uploadTableData"
+      :data="downloadTableData"
       style="width: 100%"
       @cell-dblclick="handleDblclick"
     >
@@ -104,7 +104,7 @@
         align="center"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.date }}</span>
+          <span>{{ scope.row.updatedAt }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -142,27 +142,34 @@ export default {
         xs: 4,
         sm: 2
       },
-      uploadTableData: [],
+      downloadTableData: [],
       dialogVisible: false,
       currentPath: ['xx', 'xxx', 'xxxx'],
       currentRow: {
         name: '',
         size: 0,
-        date: '0'
+        updatedAt: '0'
       }
     }
   },
   created() {
-    const table = []
-    for (let i = 0; i < 5; i++) {
-      table[i] = {
-        name: '文件' + i,
-        size: Math.floor(Math.random() * 1000000),
-        date: '2020-' + (Math.floor(Math.random() * 1000000) % 12 + 1) + '-' +
-          (Math.floor(Math.random() * 1000000) % 30 + 1)
+    var that = this
+    if (typeof (CefSharp) === 'undefined') {
+      const table = []
+      for (let i = 0; i < 5; i++) {
+        table[i] = {
+          name: '文件' + i,
+          size: Math.floor(Math.random() * 1000000),
+          date: '2020-' + (Math.floor(Math.random() * 1000000) % 12 + 1) + '-' +
+            (Math.floor(Math.random() * 1000000) % 30 + 1)
+        }
       }
+      this.uploadTableData = table
+    } else {
+      window.fileFunction.getFileList().then(function(ret) {
+        that.handleTableReturn(ret)
+      })
     }
-    this.uploadTableData = table
   },
   methods: {
     handleUpload(index, row) {
@@ -177,8 +184,28 @@ export default {
       console.log('closeDialog')
       this.dialogVisible = visible
     },
+    // 处理跳转
     handleJump(num) {
       console.log(num)
+    },
+    // 处理服务器返回的文件表信息
+    handleTableReturn(ret) {
+      const that = this
+      const table = []
+      const retObject = JSON.parse(ret)
+      const cloudFileList = retObject.cloudFileList
+      for (let i = 0; i < cloudFileList.length; i++) {
+        table.push(cloudFileList[i])
+      }
+      that.downloadTableData = table
+    },
+    // 返回父目录
+    parentPath() {
+      return
+    },
+    // 刷新目录
+    refreshPath() {
+      return
     }
   }
 }
