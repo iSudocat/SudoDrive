@@ -84,6 +84,7 @@
     <el-table
       :data="downloadTableData"
       style="width: 100%"
+      max-height="480"
       @cell-dblclick="handleDblclick"
     >
       <el-table-column

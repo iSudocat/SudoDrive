@@ -85,6 +85,7 @@
       highlight-current-row
       :data="uploadTableData"
       style="width: 100%"
+      max-height="480"
       @current-change="handleCurrentChange"
       @row-click="handleRowClick"
     >
@@ -193,7 +194,7 @@ export default {
     // 浏览器状态下随机生成数据
     if (typeof (CefSharp) === 'undefined') {
       const table = []
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 20; i++) {
         table[i] = {
           name: '文件' + i,
           size: Math.floor(Math.random() * 1000000),
