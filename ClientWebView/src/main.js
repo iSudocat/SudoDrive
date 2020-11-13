@@ -49,14 +49,16 @@ if (typeof (CefSharp) === 'undefined') {
   })
 } else {
   window.CefSharp.BindObjectAsync('fileFunction').then(
-    () => {
-      new Vue({
-        el: '#app',
-        router,
-        store,
-        render: h => h(App)
-      })
-    }
+    window.CefSharp.BindObjectAsync('cloudFileFunction').then(
+      () => {
+        new Vue({
+          el: '#app',
+          router,
+          store,
+          render: h => h(App)
+        })
+      }
+    )
   )
   // const func_array = ['demoFunction']
   // Promise.all(

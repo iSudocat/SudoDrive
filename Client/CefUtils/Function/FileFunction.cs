@@ -16,7 +16,7 @@ using Client.CefUtils.VO.Cloud;
 
 namespace Client.CefUtils.Function
 {
-    class FileFunction
+    public class FileFunction
     {
         /// <summary>
         /// 维护一个当前查看的路径
@@ -114,7 +114,5 @@ namespace Client.CefUtils.Function
             CloudFileListVO cloudFileListVO = new CloudFileListVO(fileList);
             return JsonConvert.SerializeObject(cloudFileListVO);
         }
-
-
     }
 }
