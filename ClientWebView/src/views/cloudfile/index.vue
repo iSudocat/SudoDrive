@@ -2,10 +2,10 @@
   <div>
     <el-row>
       <el-col :xs="{span:24}" :sm="{span:12}">
-        <upload />
+        <upload @changePath="changeLocalPath"/>
       </el-col>
       <el-col id="rightBox" :xs="{span:24}" :sm="{span:12}">
-        <download />
+        <download :local-path="localPath" />
       </el-col>
     </el-row>
     <RightPanel>
@@ -25,6 +25,12 @@ export default {
   components: { FileState, RightPanel, Download, upload },
   data() {
     return {
+      localPath: ''
+    }
+  },
+  methods: {
+    changeLocalPath(newPath) {
+      this.localPath = newPath
     }
   }
 }

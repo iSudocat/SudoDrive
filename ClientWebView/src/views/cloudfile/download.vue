@@ -140,6 +140,9 @@ import InfoDialog from '@/views/cloudfile/infoDialog'
 export default {
   name: 'Download',
   components: { InfoDialog },
+  props: {
+    localPath: String
+  },
   data() {
     return {
       buttonConfig: {
@@ -187,6 +190,7 @@ export default {
     },
     // 单击某行
     handleRowClick(row) {
+      console.log(this.localPath)
       const that = this
       if (that.isFirstClick) {
         that.isFirstClick = false

@@ -172,8 +172,10 @@ export default {
       driveDialogVisible: false,
       // 是否第一次切换盘符
       showSwitchDrive: 0,
-      // 初始本地路径
+      // 初始本地路径分割数组
       currentPath: ['C:', 'hel', 'llo', 'iii'],
+      // 本地路径
+      localPath: '',
       // 本地盘符
       drives: ['A:', 'B:', 'C:', 'D:'],
       // 当前盘符
@@ -219,6 +221,8 @@ export default {
       const that = this
       const table = []
       const retObject = JSON.parse(ret)
+      this.localPath = retObject.currentPath
+      this.$emit('changePath', this.localPath)
       this.currentPath = retObject.currentPath.split('\\')
       // 去除不知道哪冒出来的最后一个空白
       const index = this.currentPath.indexOf('')
