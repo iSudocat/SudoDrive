@@ -143,11 +143,11 @@ export default {
   components: { InfoDialog },
   props: {
     localPath: {
-      Type: String,
+      type: String,
       default: ''
     },
     localFile: {
-      Type: Object,
+      type: Object,
       default: undefined
     }
   },
@@ -201,7 +201,10 @@ export default {
         console.log(that.localPath)
         console.log(that.currentRow.name)
         console.log(that.currentRow.guid)
-        window.cloudFileFunction.download(String(that.localPath), String(that.currentRow.name), String(that.currentRow.guid))
+        window.cloudFileFunction.download(String(that.localPath), String(that.currentRow.name), String(that.currentRow.guid)).then(function(ret) {
+          console.log(ret)
+          that.$emit('afterDownload')
+        })
       }
     },
     // 第一次单击某行

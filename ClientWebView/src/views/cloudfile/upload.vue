@@ -83,8 +83,8 @@
     </el-row>
     <hr style="border:0; background-color: #f1f1f1; height: 1px">
     <el-table
-      highlight-current-row
       ref="uploadTable"
+      highlight-current-row
       :data="uploadTableData"
       style="width: 100%"
       max-height="480"
@@ -160,7 +160,10 @@ export default {
   name: 'Upload',
   components: { InfoDialog },
   props: {
-    cloudPath: String
+    cloudPath: {
+      type: String,
+      default: ''
+    }
   },
   data() {
     return {
@@ -227,7 +230,10 @@ export default {
         console.log(that.localPath)
         console.log(that.cloudPath)
         console.log(that.currentRow.name)
-        window.cloudFileFunction.upload(String(that.localPath), String(that.cloudPath), String(that.currentRow.name))
+        window.cloudFileFunction.upload(String(that.localPath), String(that.cloudPath), String(that.currentRow.name)).then(function(ret) {
+          console.log(ret)
+          that.$emit('afterUpload')
+        })
       }
     },
     // 将C#传来的本地json数据转换为table显示里的数据

@@ -35,7 +35,6 @@ namespace Client.CefUtils.Function
         {
             UserRequest userService = new UserRequest();
             userService.Login("sudodog", "ssss11111", out _);
-            Console.WriteLine("测试fileName：" + fileName);
             UploadTaskList.Add(new FileControlBlock
             {
                 FileName = fileName,
