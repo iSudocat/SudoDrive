@@ -6,6 +6,7 @@
           size="small"
           type="primary"
           style="display: flex;justify-content: center;align-items: center"
+          @click="handleDownload"
         >
           <svg-icon icon-class="zzdownload" />
         </el-button>
@@ -123,10 +124,10 @@
         label="操作"
         align="center"
       >
-        <template slot-scope="scope">
+        <template>
           <el-button
             size="mini"
-            @click="handleUpload(scope.$index, scope.row)"
+            @click="handleDownload"
           >下载</el-button>
         </template>
       </el-table-column>
@@ -191,8 +192,17 @@ export default {
     }
   },
   methods: {
-    handleUpload(index, row) {
-      console.log(index, row)
+    handleDownload() {
+      const that = this
+      if (typeof (CefSharp) === 'undefined') {
+        console.log(that.currentRow)
+      } else {
+        console.log('download')
+        console.log(that.localPath)
+        console.log(that.currentRow.name)
+        console.log(that.currentRow.guid)
+        window.cloudFileFunction.download(String(that.localPath), String(that.currentRow.name), String(that.currentRow.guid))
+      }
     },
     // 第一次单击某行
     handleCurrentChange(row) {
@@ -203,6 +213,7 @@ export default {
       console.log(this.localPath)
       console.log(this.localFile)
       const that = this
+      that.currentRow = row
       if (that.isFirstClick) {
         that.isFirstClick = false
       } else {

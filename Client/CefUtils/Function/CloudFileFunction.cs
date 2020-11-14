@@ -45,5 +45,19 @@ namespace Client.CefUtils.Function
             });
             return null;
         }
+        public string download(string localPath, string fileName, string guid)
+        {
+            UserRequest userService = new UserRequest();
+            userService.Login("sudodog", "ssss11111", out _);
+
+            DownloadTaskList.Add(new FileControlBlock
+            {
+                FileName = fileName,
+                Guid = guid,
+                LocalPath = localPath,
+                Status = StatusType.Waiting
+            });
+            return null;
+        }
     }
 }
