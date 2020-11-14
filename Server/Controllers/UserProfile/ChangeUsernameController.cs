@@ -38,6 +38,7 @@ namespace Server.Controllers.UserProfile
         /// </summary>
         /// <param name="changeUsernameRequestModel"></param>
         /// <returns></returns>
+        [HttpPost]
         public IActionResult ChangeUsername([FromBody] ChangeUsernameRequestModel changeUsernameRequestModel)
         {
             if (!Regex.IsMatch(changeUsernameRequestModel.NewUsername, @"^[a-zA-Z0-9-_]{4,16}$"))

@@ -36,6 +36,7 @@ namespace Server.Controllers.UserProfile
         /// </summary>
         /// <param name="newUsername"></param>
         /// <returns></returns>
+        [HttpPost]
         public IActionResult UpdateUsername(string newUsername)
         {
             if (!Regex.IsMatch(newUsername, @"^[a-zA-Z0-9-_]{4,16}$"))

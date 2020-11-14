@@ -30,7 +30,12 @@ namespace Server.Controllers.UserProfile
         {
             _databaseService = databaseService;
         }
-
+        /// <summary>
+        /// 用户改变其他用户的密码
+        /// </summary>
+        /// <param name="changePasswordRequestModel"></param>
+        /// <returns></returns>
+        [HttpPost]
         public IActionResult ChangePassword([FromBody] ChangePasswordRequestModel changePasswordRequestModel)
         {
             if (!Regex.IsMatch(changePasswordRequestModel.Username, @"^[a-zA-Z0-9-_]{4,16}$"))
