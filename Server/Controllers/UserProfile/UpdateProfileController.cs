@@ -14,13 +14,12 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 
-
 namespace Server.Controllers.UserProfile
 {
     [Route("api/auth/{username}")]
     [ApiController]
     [NeedPermission(PermissionBank.UserAuthUpdateProfile)]
-    public class UpdateProfileController:AbstractController
+    public class UpdateProfileController : AbstractController
     {
         private IDatabaseService _databaseService;
 
@@ -46,52 +45,59 @@ namespace Server.Controllers.UserProfile
             {
                 throw new UsernameInvalidException("The username you enter is invalid when trying to update password.");
             }
-            var user_db = _databaseService.Users.FirstOrDefault(testc => testc.Username == updateProfileRequestModel.Username);
+
+            var user_db =
+                _databaseService.Users.FirstOrDefault(testc => testc.Username == updateProfileRequestModel.Username);
             if (user_db == null)
             {
                 throw new UserNotExistException("Username Does Not Exist when trying to update password.");
             }
 
             //update nickname
-            if(updateProfileRequestModel.Nickname!=null)
+            if (updateProfileRequestModel.Nickname != null)
             {
                 if (!Regex.IsMatch(updateProfileRequestModel.Nickname, @"^[a-zA-Z0-9-_]{4,16}$"))
                 {
-                    throw new NicknameInvalidException("The nickname you enter is invalid when trying to  change nickname.");
-                }
-                if(user_db.Nickname== updateProfileRequestModel.Nickname)
-                {
-                    throw new NicknameDuplicatedException("The nickname you enter is duplicated when trying to update nickname");
+                    throw new NicknameInvalidException(
+                        "The nickname you enter is invalid when trying to  change nickname.");
                 }
 
-                string permission = PermissionBank.UserOperationPermission(updateProfileRequestModel.Username,"attribute","update");
+                if (user_db.Nickname == updateProfileRequestModel.Nickname)
+                {
+                    throw new NicknameDuplicatedException(
+                        "The nickname you enter is duplicated when trying to update nickname");
+                }
+
+                string permission =
+                    PermissionBank.UserOperationPermission(updateProfileRequestModel.Username, "attribute", "update");
                 var user_actor = HttpContext.Items["actor"] as User;
-                if (!(bool)user_actor.HasPermission(permission))
+                if (!(bool) user_actor.HasPermission(permission))
                 {
                     throw new AuthenticateFailedException("not has enough permission when trying to update nickname.");
                 }
-               
-                user_db.Nickname = updateProfileRequestModel.Nickname;              
+
+                user_db.Nickname = updateProfileRequestModel.Nickname;
             }
-            
+
             //update password
-            if(updateProfileRequestModel.NewPassword!=null)
+            if (updateProfileRequestModel.NewPassword != null)
             {
-                if(!Regex.IsMatch(updateProfileRequestModel.NewPassword, (@"^[^\n\r]{8,}$")))
+                if (!Regex.IsMatch(updateProfileRequestModel.NewPassword, (@"^[^\n\r]{8,}$")))
                 {
-                    throw new PasswordNotMatchException("The password you enter is invalid when trying to update password.");
+                    throw new PasswordNotMatchException(
+                        "The password you enter is invalid when trying to update password.");
                 }
 
-                string permission = PermissionBank.UserOperationPermission(updateProfileRequestModel.Username, "attribute", "update");
+                string permission =
+                    PermissionBank.UserOperationPermission(updateProfileRequestModel.Username, "attribute", "update");
                 var user_actor = HttpContext.Items["actor"] as User;
-                if (!(bool)user_actor.HasPermission(permission))
+                if (!(bool) user_actor.HasPermission(permission))
                 {
                     throw new AuthenticateFailedException("not has enough permission when trying to update password.");
                 }
 
                 if (BCrypt.Net.BCrypt.Verify(updateProfileRequestModel.OldPassword, user_db.Password))
                 {
-
                     user_db.Password = BCrypt.Net.BCrypt.HashPassword(updateProfileRequestModel.NewPassword);
                 }
                 else
@@ -103,11 +109,9 @@ namespace Server.Controllers.UserProfile
             //update photo
 
 
-
             //保存更改并返回结果
             _databaseService.SaveChanges();
             return Ok(new UpdateProfileResultModel(user_db));
         }
-
     }
 }

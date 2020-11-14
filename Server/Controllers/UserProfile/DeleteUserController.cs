@@ -19,7 +19,7 @@ namespace Server.Controllers.UserProfile
     [Route("api/auth/{username}")]
     [ApiController]
     [NeedPermission(PermissionBank.UserAuthDelete)]
-    public class DeleteUserController:AbstractController
+    public class DeleteUserController : AbstractController
     {
         private IDatabaseService _databaseService;
 
@@ -53,16 +53,16 @@ namespace Server.Controllers.UserProfile
 
             string permission = PermissionBank.UserOperationPermission(username, "", "delete");
             var user_actor = HttpContext.Items["actor"] as User;
-            if (!(bool)user_actor.HasPermission(permission))
+            if (!(bool) user_actor.HasPermission(permission))
             {
                 throw new AuthenticateFailedException("not has enough permission when trying to delete a user.");
             }
-           
+
             var grouptouser_db = _databaseService.GroupsToUsersRelation.Where(t => t.UserId == user_db.Id);
             _databaseService.GroupsToUsersRelation.RemoveRange(grouptouser_db);
             _databaseService.Users.Remove(user_db);
             _databaseService.SaveChanges();
             return Ok(new DeleteUserResultModel(user_db));
         }
-    }   
+    }
 }

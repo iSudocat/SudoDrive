@@ -16,6 +16,7 @@ namespace Server.Controllers.UserProfile
     public class LoginController : Controller
     {
         private readonly IAuthenticateService _authService;
+
         public LoginController(IAuthenticateService authService)
         {
             this._authService = authService;
@@ -34,9 +35,8 @@ namespace Server.Controllers.UserProfile
             {
                 return Ok(new LoginResultModel(requestModel.Username, token));
             }
-            
-            throw new AuthenticateFailedException("Password or Username is wrong.");
 
+            throw new AuthenticateFailedException("Password or Username is wrong.");
         }
     }
 }

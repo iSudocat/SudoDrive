@@ -19,7 +19,7 @@ namespace Server.Controllers.UserProfile
     [Route("api/auth/{username}")]
     [ApiController]
     [NeedPermission(PermissionBank.UserAuthGetAttributes)]
-    public class GetAttributesController:AbstractController
+    public class GetAttributesController : AbstractController
     {
         private IDatabaseService _databaseService;
 
@@ -31,7 +31,7 @@ namespace Server.Controllers.UserProfile
         {
             _databaseService = databaseService;
         }
-        
+
         /// <summary>
         /// 获得其他用户的信息
         /// </summary>
@@ -42,7 +42,8 @@ namespace Server.Controllers.UserProfile
         {
             if (!Regex.IsMatch(username, @"^[a-zA-Z0-9-_]{4,16}$"))
             {
-                throw new UsernameInvalidException("The username you enter is invalid when trying to get user's attributes.");
+                throw new UsernameInvalidException(
+                    "The username you enter is invalid when trying to get user's attributes.");
             }
 
             var user_db = _databaseService.Users.FirstOrDefault(t => t.Username == username);
@@ -51,18 +52,15 @@ namespace Server.Controllers.UserProfile
                 throw new UserNotExistException("Username Does Not Exist when trying to get user's attributes.");
             }
 
-            string permission = PermissionBank.UserOperationPermission(username, "attribute","get");
+            string permission = PermissionBank.UserOperationPermission(username, "attribute", "get");
             var user_actor = HttpContext.Items["actor"] as User;
-            if (!(bool)user_actor.HasPermission(permission))
+            if (!(bool) user_actor.HasPermission(permission))
             {
-                throw new AuthenticateFailedException("not has enough permission when trying to get other user's attributes.");
+                throw new AuthenticateFailedException(
+                    "not has enough permission when trying to get other user's attributes.");
             }
 
             return Ok(new GetAttributesResultModel(user_db));
-
         }
-
-
-
     }
 }
