@@ -6,6 +6,7 @@ namespace Server.Libraries
         public const string UserAuthLogin = "user.auth.login";
         public const string UserAuthRefresh = "user.auth.refresh";
         public const string UserAuthUpdatePassword = "user.auth.updatepassword";
+        public const string UserAuthClose = "user.auth.close";
 
         public const string StorageFileUploadBasic = "storage.file.upload.basic";
         public const string StorageFileDeleteBase = "storage.file.delete.basic";
@@ -29,6 +30,23 @@ namespace Server.Libraries
             if (type == "root") return $"storage.file.operation.root.{operation}";
             return $"storage.file.operation.{type}.{name}.{operation}";
         }
+
+        /// <summary>
+        /// 生成用户访问权限
+        /// </summary>
+        /// <param name="userName">用户名</param>
+        /// <param name="type">生成类型：username / password </param>
+        /// <param name="operation">操作：add / delete / update / get</param>
+        /// <returns></returns>
+        public static string UserOperationPermission(string userName,string type,string operation)
+        {
+            if (type == "username" || type== "password")
+            {
+                return $"groupmanager.group.operation.{userName}.{type}.{operation}";
+            }
+            return $"usermanager.user.operation.{userName}.{operation}";
+        }
+
 
         /// <summary>
         /// 生成组访问权限
