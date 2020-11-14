@@ -78,13 +78,13 @@ namespace Client
                     bindingOptions = BindingOptions.DefaultBinder;
                     repo.Register("cloudFileFunction", new CloudFileFunction(), isAsync: true, options: bindingOptions);
                 }
-                if (e.ObjectName == "fileFunction")
+                if (e.ObjectName == "localFileFunction")
                 {
                     //Binding options is an optional param, defaults to null
                     BindingOptions bindingOptions = null;
                     //Use the default binder to serialize values into complex objects, CamelCaseJavascriptNames = true is the default
                     bindingOptions = BindingOptions.DefaultBinder;
-                    repo.Register("fileFunction", new FileFunction(), isAsync: true, options: bindingOptions);
+                    repo.Register("localFileFunction", new LocalFileFunction(), isAsync: true, options: bindingOptions);
                 }
             };
 

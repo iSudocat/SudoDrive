@@ -263,11 +263,11 @@ export default {
         console.log(table)
       } else {
         // 初始化路径为桌面
-        window.fileFunction.showAllInfo().then(function(ret) {
+        window.localFileFunction.showAllInfo().then(function(ret) {
           that.handleTableReturn(ret)
         })
         // 初始化盘符
-        window.fileFunction.showAllDrives().then(function(ret) {
+        window.localFileFunction.showAllDrives().then(function(ret) {
           that.drives = JSON.parse(ret)
           that.currentDrive = that.drives[0]
         })
@@ -281,7 +281,7 @@ export default {
       } else {
         // 阻止在盘符根目录下回到父目录
         if (that.currentPath.length > 1) {
-          window.fileFunction.toParent().then(function(ret) {
+          window.localFileFunction.toParent().then(function(ret) {
             that.handleTableReturn(ret)
           })
         }
@@ -333,7 +333,7 @@ export default {
           this.infoDialogVisible = true
           this.currentRow = row
         } else {
-          window.fileFunction.toChild(String(row.name)).then(function(ret) {
+          window.localFileFunction.toChild(String(row.name)).then(function(ret) {
             that.handleTableReturn(ret)
           })
         }
@@ -363,7 +363,7 @@ export default {
       if (typeof (CefSharp) === 'undefined') {
         return
       } else {
-        window.fileFunction.switchDriver(that.currentDrive).then(function(ret) {
+        window.localFileFunction.switchDriver(that.currentDrive).then(function(ret) {
           that.handleTableReturn(ret)
         })
       }

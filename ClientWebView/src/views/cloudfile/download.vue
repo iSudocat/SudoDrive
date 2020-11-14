@@ -178,7 +178,7 @@ export default {
       }
       this.uploadTableData = table
     } else {
-      window.fileFunction.getFileList().then(function(ret) {
+      window.cloudFileFunction.getFileList().then(function(ret) {
         that.handleTableReturn(ret)
       })
     }
