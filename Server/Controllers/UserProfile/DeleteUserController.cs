@@ -32,6 +32,11 @@ namespace Server.Controllers.UserProfile
             _databaseService = databaseService;
         }
 
+        /// <summary>
+        /// 删除账户
+        /// </summary>
+        /// <param name="username">用户名</param>
+        /// <returns></returns>
         [HttpDelete]
         public IActionResult DeleteUser(string username)
         {

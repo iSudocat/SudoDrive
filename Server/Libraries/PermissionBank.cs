@@ -8,6 +8,7 @@ namespace Server.Libraries
         public const string UserAuthUpdatePassword = "user.auth.updatepassword";
         public const string UserAuthClose = "user.auth.close";
         public const string UserAuthDelete = "user.auth.delete";
+        public const string UserAuthUpdateUsername = "user.auth.updateusername";
 
         public const string StorageFileUploadBasic = "storage.file.upload.basic";
         public const string StorageFileDeleteBase = "storage.file.delete.basic";
