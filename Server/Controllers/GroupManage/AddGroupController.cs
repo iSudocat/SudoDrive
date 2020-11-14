@@ -48,6 +48,14 @@ namespace Server.Controllers.GroupManage
             groupToUser.UserId = user_db.Id;
             _databaseService.GroupsToUsersRelation.Add(groupToUser);
 
+            // initial group permission to the new group
+            _databaseService.GroupsToPermissionsRelation.Add(new GroupToPermission()
+            {
+                Group = group,
+                GroupId = group.Id,
+                Permission = PermissionBank.GroupOperationPermission(group.GroupName, "member", "add")
+            });
+
             //find the grouptouser in the database
             //below is how to input parameters when the entity has composite key values:
             //"The ordering of composite key values is as defined in the EDM, which is in turn as defined in the designer, by the Code First fluent API, or by the DataMember attribute."
