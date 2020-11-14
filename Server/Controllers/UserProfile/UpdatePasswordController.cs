@@ -38,6 +38,7 @@ namespace Server.Controllers.UserProfile
             {
                 var user_db = _databaseService.Users.Find(user.Id);
                 user_db.Password = BCrypt.Net.BCrypt.HashPassword(updatePasswordRequestModel.NewPassword);
+                //缺少对User的UpdateAt的修改
                 _databaseService.SaveChanges();
             }
             else

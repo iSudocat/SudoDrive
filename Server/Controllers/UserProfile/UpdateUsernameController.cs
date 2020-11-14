@@ -50,6 +50,7 @@ namespace Server.Controllers.UserProfile
             var user = HttpContext.Items["actor"] as User;
             var user_db = _databaseService.Users.FirstOrDefault(testc => testc.Username == user.Username);
             user_db.Username = newUsername;
+            //缺少对User的UpdateAt的修改
             _databaseService.SaveChanges();
             return Ok(new UpdateUsernameResultModel(user_db));
             

@@ -48,7 +48,7 @@ namespace Server.Controllers.UserProfile
             {
                 throw new UsernameDuplicatedException("Username duplicated.");
             }
-            string permission = PermissionBank.UserOperationPermission(changeUsernameRequestModel.OldUsername,"username","change");
+            string permission = PermissionBank.UserOperationPermission(changeUsernameRequestModel.OldUsername,"username","update");
             var user_actor = HttpContext.Items["actor"] as User;
             if (!(bool)user_actor.HasPermission(permission))
             {
@@ -56,6 +56,7 @@ namespace Server.Controllers.UserProfile
             }
             var user_db = _databaseService.Users.FirstOrDefault(testc => testc.Username == changeUsernameRequestModel.OldUsername);
             user_db.Username = changeUsernameRequestModel.NewUsername;
+            //缺少对User的UpdateAt的修改
             _databaseService.SaveChanges();
             return Ok(new ChangeUsernameResultModel(user_db));
 
