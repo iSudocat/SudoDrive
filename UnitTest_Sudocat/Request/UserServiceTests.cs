@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Client.Request.Response.LoginResponse;
+using Client.Request.Response.RegisterResponse;
 
 namespace Client.Request.Tests
 {
@@ -25,8 +27,17 @@ namespace Client.Request.Tests
         {
             UserRequest userService = new UserRequest();
             userService.Login("sudodog", "ssss11111", out _);
-            var res = userService.refreshToken();
+            var res = userService.RefreshToken();
             Assert.AreEqual(res, 0);
+        }
+
+        [TestMethod()]
+        public void RegisterTest()
+        {
+            UserRequest userService = new UserRequest();
+            var status = userService.Register("sudobird", "ssss11111", out RegisterResponse res);
+            Console.WriteLine(res);
+            Assert.AreEqual(status, 0);
         }
     }
 }

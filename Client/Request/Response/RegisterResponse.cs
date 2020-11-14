@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client.Request.Response.RefreshTokenResponse
+namespace Client.Request.Response.RegisterResponse
 {
-    public class RefreshTokenResponse
+
+    public class RegisterResponse
     {
         public int status { get; set; }
         public string message { get; set; }
@@ -15,7 +16,7 @@ namespace Client.Request.Response.RefreshTokenResponse
 
     public class Data
     {
-        public string username { get; set; }
-        public string token { get; set; }
+
     }
+
 }
