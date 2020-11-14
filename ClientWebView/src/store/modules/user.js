@@ -53,10 +53,11 @@ const actions = {
             commit('SET_TOKEN', res.data.token)
             setToken(res.data.token)
           } else {
-            alert('错误的用户名密码')
+            alert('用户名密码格式错误')
           }
           resolve()
         }).catch(error => {
+          alert('错误的用户名密码')
           reject(error)
         })
       })
