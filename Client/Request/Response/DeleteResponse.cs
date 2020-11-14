@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client.Request.Response.RegisterResponse
+namespace Client.Request.Response.DeleteResponse
 {
-    public class RegisterResponse
+    public class DeleteResponse
     {
         public int status { get; set; }
         public string message { get; set; }
@@ -15,6 +15,6 @@ namespace Client.Request.Response.RegisterResponse
 
     public class Data
     {
-
+        public int count { get; set; }
     }
 }

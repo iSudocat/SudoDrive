@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using Client.Request.Response.DeleteResponse;
 
 namespace Client.Request
 {
@@ -18,6 +19,11 @@ namespace Client.Request
     {
         public int Upload(string localPath, string remotePath, out UploadResponse uploadResponse)
         {
+            if(UserInfo.UserName == "")
+            {
+                uploadResponse = null;
+                return -1;
+            }
             string type = MimeMapping.GetMimeMapping(localPath);
             long size = new FileInfo(localPath).Length;
             string md5 = GetFileMD5(localPath);
@@ -44,6 +50,10 @@ namespace Client.Request
 
         public int ConfirmUpload(long id, string guid)
         {
+            if (UserInfo.UserName == "")
+            {
+                return -1;
+            }
             var client = new RestClient(ServerAddress.Address + "/api/storage/file");
             var request = new RestRequest(Method.PATCH);
             request.AddHeader("Authorization", "Bearer " + UserInfo.Token);
@@ -65,6 +75,11 @@ namespace Client.Request
 
         public void GetFileList(string folder, out int status, out List<Response.FileListResponse.File> fileList)
         {
+            if (UserInfo.UserName == "")
+            {
+                fileList = null;
+                status = -1;
+            }
             fileList = new List<Response.FileListResponse.File>();
             int offset = 0;
             int currentAmount;
@@ -99,6 +114,11 @@ namespace Client.Request
 
         public int Download(string guid, out FileListResponse fileListResponse)
         {
+            if (UserInfo.UserName == "")
+            {
+                fileListResponse = null;
+                return -1;
+            }
             var client = new RestClient(ServerAddress.Address + "/api/storage/file?download=true&guid=" + guid);
             var request = new RestRequest(Method.GET);
             request.AddHeader("Authorization", "Bearer " + UserInfo.Token);
@@ -123,6 +143,60 @@ namespace Client.Request
             }
         }
 
+
+        /// <summary>
+        /// 删除文件（文件夹） 只需传入一个路径，另一个传入空串即可
+        /// </summary>
+        /// <param name="folderPath">欲删除的文件夹路径</param>
+        /// <param name="filePath">欲删除的文件路径</param>
+        /// <returns>状态码</returns>
+        public int Delete(out DeleteResponse deleteResponse, string folderPath, string filePath)
+        {
+            if (UserInfo.UserName == "")
+            {
+                deleteResponse = null;
+                return -1;
+            }
+            var client = new RestClient(ServerAddress.Address + "/api/storage/file");
+            client.Timeout = -1;
+            var request = new RestRequest(Method.DELETE);
+            request.AddHeader("Authorization", "Bearer " + UserInfo.Token);
+            request.AddHeader("Content-Type", "application/json");
+            if (folderPath != "")
+            {
+                var requestBody = new { folder = folderPath };
+                request.AddParameter("application/json", JsonConvert.SerializeObject(requestBody), ParameterType.RequestBody);
+            }
+            else if (filePath != "")
+            {
+                var requestBody = new { path = new string[] { filePath } };
+                request.AddParameter("application/json", JsonConvert.SerializeObject(requestBody), ParameterType.RequestBody);
+            }
+            else
+            {
+                deleteResponse = null;
+                return -20002;
+            }
+            IRestResponse response = client.Execute(request);
+            Console.WriteLine(response.Content);
+            deleteResponse = JsonConvert.DeserializeObject<DeleteResponse>(response.Content);
+            if (deleteResponse != null)
+            {
+                if (deleteResponse.data.count == 0)
+                {
+                    return -20003;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                return -20000;
+            }
+        }
+
         private static string GetFileMD5(string filePath)
         {
             FileStream file = new FileStream(filePath, FileMode.Open);
@@ -136,5 +210,7 @@ namespace Client.Request
             }
             return sb.ToString();
         }
+
+        
     }
 }

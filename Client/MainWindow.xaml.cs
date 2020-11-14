@@ -101,15 +101,13 @@ namespace Client
             UserRequest userService = new UserRequest();
             userService.Login("sudodog", "ssss11111", out _);
 
-            
-                UploadTaskList.Add(new FileControlBlock
-                {
-                    FileName = "丁震宇不太对劲.txt",
-                    LocalPath = @"C:\Users\i\Desktop",
-                    RemotePath = @"users\sudodog\测试数据\a lot of txt",
-                    Status = StatusType.Waiting
-                });
-            
+            UploadTaskList.Add(new FileControlBlock
+            {
+                FileName = "delTest.txt",
+                LocalPath = @"C:\Users\i\Desktop",
+                RemotePath = @"users\sudodog\测试数据\test",
+                Status = StatusType.Waiting
+            });
 
         }
 
