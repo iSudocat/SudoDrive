@@ -20,14 +20,14 @@ namespace Server.Models.DTO
 
         public DateTime UpdatedAt { get; private set; }
 
-        public GetAttributesResultModel(long id, string username, string nickname, ICollection<GroupToUser> grouptouser, DateTime createdat,DateTime updatedat)
+        public GetAttributesResultModel(User p)
         {
-            Id = id;
-            Username = username;
-            Nickname = nickname;
-            GroupToUser = grouptouser;
-            CreatedAt = createdat;
-            UpdatedAt = updatedat;
+            Id = p.Id;
+            Username = p.Username;
+            Nickname = p.Nickname;
+            GroupToUser = p.GroupToUser;
+            CreatedAt = p.CreatedAt;
+            UpdatedAt = p.UpdatedAt;
         }
 
     }

@@ -19,7 +19,7 @@ namespace Server.Controllers.UserProfile
 {
     [Route("api/auth/{username}")]
     [ApiController]
-    [NeedPermission(PermissionBank.UserAuthChangeUsername)]
+    [NeedPermission(PermissionBank.UserAuthUpdateProfile)]
     public class UpdateProfileController:AbstractController
     {
         private IDatabaseService _databaseService;
@@ -63,6 +63,7 @@ namespace Server.Controllers.UserProfile
                 {
                     throw new NicknameDuplicatedException("The nickname you enter is duplicated when trying to update nickname");
                 }
+
                 string permission = PermissionBank.UserOperationPermission(updateProfileRequestModel.Username,"attribute","update");
                 var user_actor = HttpContext.Items["actor"] as User;
                 if (!(bool)user_actor.HasPermission(permission))

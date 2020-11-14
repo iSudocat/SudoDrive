@@ -58,7 +58,7 @@ namespace Server.Controllers.UserProfile
                 throw new AuthenticateFailedException("not has enough permission when trying to get other user's attributes.");
             }
 
-            return Ok(new GetAttributesResultModel(user_db.Id, user_db.Username, user_db.Nickname, user_db.GroupToUser, user_db.CreatedAt, user_db.UpdatedAt));
+            return Ok(new GetAttributesResultModel(user_db));
 
         }
 

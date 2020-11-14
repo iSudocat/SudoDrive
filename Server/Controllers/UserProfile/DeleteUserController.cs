@@ -58,7 +58,7 @@ namespace Server.Controllers.UserProfile
                 throw new AuthenticateFailedException("not has enough permission when trying to delete a user.");
             }
            
-            var grouptouser_db = _databaseService.GroupsToUsersRelation.Where(t => t.User.Username == user_db.Username);
+            var grouptouser_db = _databaseService.GroupsToUsersRelation.Where(t => t.UserId == user_db.Id);
             _databaseService.GroupsToUsersRelation.RemoveRange(grouptouser_db);
             _databaseService.Users.Remove(user_db);
             _databaseService.SaveChanges();
