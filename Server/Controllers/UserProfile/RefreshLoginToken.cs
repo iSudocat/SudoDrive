@@ -19,7 +19,7 @@ namespace Server.Controllers.UserProfile
         {
             this._authService = authService;
         }
-        
+
         public IActionResult GetNewToken()
         {
             if (!(HttpContext.Items["actor"] is User loginUser))
