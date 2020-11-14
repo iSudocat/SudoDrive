@@ -37,7 +37,7 @@ namespace Server.Controllers.UserProfile
         /// <param name="Close"></param>
         /// <returns></returns>
         [HttpDelete]
-        public ActionResult Close()
+        public IActionResult Close()
         {
             var user = HttpContext.Items["actor"] as User;
             var user_db = _databaseService.Users.FirstOrDefault(t => t.Username == user.Username);
@@ -46,6 +46,7 @@ namespace Server.Controllers.UserProfile
                 throw new UserNotExistException("Username Does Not Exist when trying to close user.");
             }
             var grouptouser_db = _databaseService.GroupsToUsersRelation.Where(t => t.User.Username == user.Username);
+           //缺少对所涉及的Group的UpdateAt的修改
             _databaseService.GroupsToUsersRelation.RemoveRange(grouptouser_db);
             _databaseService.Users.Remove(user_db);
             _databaseService.SaveChanges();
