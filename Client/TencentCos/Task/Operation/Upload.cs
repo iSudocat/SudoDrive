@@ -65,6 +65,8 @@ namespace Client.TencentCos.Task.Operation
                         PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, cosPath, srcPath);
                         uploadTask = new COSXMLUploadTask(putObjectRequest);
 
+                        uploadTask.SetSrcPath(srcPath);
+
                         uploadTask.progressCallback = delegate (long completed, long total)
                         {
                             UploadTaskList.SetProgress(File.Key, completed, total);
