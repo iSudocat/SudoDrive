@@ -1,5 +1,7 @@
 using Client.CefUtils.VO.Cloud;
 using Client.Request;
+using Client.TencentCos.Task;
+using Client.TencentCos.Task.List;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -28,6 +30,19 @@ namespace Client.CefUtils.Function
                 out int status, out List<Client.Request.Response.FileListResponse.File> fileList);
             CloudFileListVO cloudFileListVO = new CloudFileListVO(fileList);
             return JsonConvert.SerializeObject(cloudFileListVO);
+        }
+        public string Upload(string localPath, string cloudPath, string fileName)
+        {
+            UserRequest userService = new UserRequest();
+            userService.Login("sudodog", "ssss11111", out _);
+            UploadTaskList.Add(new FileControlBlock
+            {
+                FileName = fileName,
+                LocalPath = localPath,
+                RemotePath = cloudPath,
+                Status = StatusType.Waiting
+            });
+            return null;
         }
     }
 }

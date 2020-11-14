@@ -141,7 +141,14 @@ export default {
   name: 'Download',
   components: { InfoDialog },
   props: {
-    localPath: String
+    localPath: {
+      Type: String,
+      default: ''
+    },
+    localFile: {
+      Type: Object,
+      default: undefined
+    }
   },
   data() {
     return {
@@ -165,7 +172,7 @@ export default {
     }
   },
   created() {
-    var that = this
+    const that = this
     if (typeof (CefSharp) === 'undefined') {
       const table = []
       for (let i = 0; i < 5; i++) {
@@ -194,6 +201,7 @@ export default {
     // 单击某行
     handleRowClick(row) {
       console.log(this.localPath)
+      console.log(this.localFile)
       const that = this
       if (that.isFirstClick) {
         that.isFirstClick = false
@@ -233,7 +241,14 @@ export default {
     },
     // 刷新目录
     refreshPath() {
-      return
+      const that = this
+      if (typeof (CefSharp) === 'undefined') {
+        return
+      } else {
+        window.cloudFileFunction.getFileList().then(function(ret) {
+          that.handleTableReturn(ret)
+        })
+      }
     }
   }
 }

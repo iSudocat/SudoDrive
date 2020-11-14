@@ -83,6 +83,7 @@
     <hr style="border:0; background-color: #f1f1f1; height: 1px">
     <el-table
       highlight-current-row
+      ref="uploadTable"
       :data="uploadTableData"
       style="width: 100%"
       max-height="480"
@@ -276,6 +277,8 @@ export default {
     // 返回父目录
     parentPath() {
       const that = this
+      // 重置选中行
+      that.resetCurrentRow()
       if (typeof (CefSharp) === 'undefined') {
         return
       } else {
@@ -289,11 +292,15 @@ export default {
     },
     // 刷新本地文件信息
     refreshPath() {
+      // 重置选中行
+      this.resetCurrentRow()
       this.InitPath()
     },
     // 面包屑跳转
     handleJump(num) {
       const that = this
+      // 重置选中行
+      that.resetCurrentRow()
       // 点击当前目录名则啥也不做
       if (num === that.currentPath.length - 1) {
         // 点击盘符则显示盘符信息
@@ -306,6 +313,11 @@ export default {
         }
       }
     },
+    // 重置选中行
+    resetCurrentRow() {
+      this.$refs.uploadTable.setCurrentRow(undefined)
+      this.currentRow = undefined
+    },
     // 第一次单击某行
     handleCurrentChange(row) {
       this.isFirstClick = true
@@ -313,6 +325,8 @@ export default {
     // 单击某行
     handleRowClick(row) {
       const that = this
+      that.currentRow = row
+      that.$emit('changeFile', that.currentRow)
       if (that.isFirstClick) {
         that.isFirstClick = false
       } else {
@@ -360,6 +374,8 @@ export default {
     // 切换盘符
     changeDrive() {
       const that = this
+      // 重置选中行
+      that.resetCurrentRow()
       if (typeof (CefSharp) === 'undefined') {
         return
       } else {
