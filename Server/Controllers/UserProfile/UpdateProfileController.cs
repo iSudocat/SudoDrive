@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.UserProfile
 {
-    [Route("api/auth/{username}")]
+    [Route("api/{username}")]
     [ApiController]
     [NeedPermission(PermissionBank.UserAuthUpdateProfile)]
     public class UpdateProfileController : AbstractController
@@ -37,7 +37,7 @@ namespace Server.Controllers.UserProfile
         /// </summary>
         /// <param name="updateProfileRequestModel"></param>
         /// <returns></returns>
-        [HttpPut]
+        [HttpPatch]
         public IActionResult UpdateProfile([FromBody] UpdateProfileRequestModel updateProfileRequestModel)
         {
             //验证username合法且存在

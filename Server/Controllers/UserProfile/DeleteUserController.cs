@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.UserProfile
 {
-    [Route("api/auth/{username}")]
+    [Route("api/user/{username}")]
     [ApiController]
     [NeedPermission(PermissionBank.UserAuthDelete)]
     public class DeleteUserController : AbstractController

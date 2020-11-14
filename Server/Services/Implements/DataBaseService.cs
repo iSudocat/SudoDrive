@@ -81,7 +81,7 @@ namespace Server.Services.Implements
                 .HasData(
                     new { GroupId = Group.GroupID.ADMIN, Permission = "*" },
                     new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.UserAuthRefresh },
-                    new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.UserAuthUpdatePassword },
+                    new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.UserAuthUpdateProfile },
                     new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.StorageFileListBasic },
                     new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.StorageFileUploadBasic },
                     new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.StorageFileDeleteBase },

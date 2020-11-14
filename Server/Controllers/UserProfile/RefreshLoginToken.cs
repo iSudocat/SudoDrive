@@ -8,7 +8,7 @@ using Server.Models.Entities;
 
 namespace Server.Controllers.UserProfile
 {
-    [Route("api/profile/refreshlogintoken")]
+    [Route("api/refreshlogintoken")]
     [ApiController]
     [NeedPermission(PermissionBank.UserAuthRefresh)]
     public class RefreshLoginToken : Controller

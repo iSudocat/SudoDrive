@@ -16,10 +16,10 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.UserProfile
 {
-    [Route("api/auth/{username}")]
+    [Route("api/user/{username}")]
     [ApiController]
     [NeedPermission(PermissionBank.UserAuthGetAttributes)]
-    public class GetAttributesController : AbstractController
+    public class GetUserProfileController : AbstractController
     {
         private IDatabaseService _databaseService;
 
@@ -27,7 +27,7 @@ namespace Server.Controllers.UserProfile
         /// 构造函数
         /// </summary>
         /// <param name="databaseService">通过依赖注入获得数据库对象</param>
-        public GetAttributesController(IDatabaseService databaseService)
+        public GetUserProfileController(IDatabaseService databaseService)
         {
             _databaseService = databaseService;
         }
