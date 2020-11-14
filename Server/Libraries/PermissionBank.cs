@@ -5,14 +5,9 @@ namespace Server.Libraries
         public const string UserAuthRegister = "user.auth.register";
         public const string UserAuthLogin = "user.auth.login";
         public const string UserAuthRefresh = "user.auth.refresh";
-        public const string UserAuthUpdatePassword = "user.auth.updatepassword";
-        public const string UserAuthClose = "user.auth.close";
         public const string UserAuthDelete = "user.auth.delete";
-        public const string UserAuthUpdateUsername = "user.auth.updateusername";
-        public const string UserAuthChangeUsername = "user.auth.changeusername";
-        public const string UserAuthChangePassword = "user.auth.changepassword";
+        public const string UserAuthUpdateProfile = "user.auth.updateprofile";
         public const string UserAuthGetAttributes = "user.auth.getattributes";
-        public const string UserAuthGetAttributesOfOthers = "user.auth.getattributesofothers";
 
 
 
@@ -43,12 +38,12 @@ namespace Server.Libraries
         /// 生成用户访问权限
         /// </summary>
         /// <param name="userName">用户名</param>
-        /// <param name="type">生成类型：username / password </param>
+        /// <param name="type">生成类型：attribute </param>
         /// <param name="operation">操作：add / delete / update / get</param>
         /// <returns></returns>
         public static string UserOperationPermission(string userName,string type,string operation)
         {
-            if (type == "username" || type== "password")
+            if (type == "attribute")
             {
                 return $"usermanager.user.operation.{userName}.{type}.{operation}";
             }

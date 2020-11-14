@@ -13,9 +13,10 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+
 namespace Server.Controllers.UserProfile
 {
-    [Route("api/auth/getattributes")]
+    [Route("api/auth/{username}")]
     [ApiController]
     [NeedPermission(PermissionBank.UserAuthGetAttributes)]
     public class GetAttributesController:AbstractController
@@ -30,22 +31,38 @@ namespace Server.Controllers.UserProfile
         {
             _databaseService = databaseService;
         }
-
+        
         /// <summary>
-        /// 获取用户自身的属性
+        /// 获得其他用户的信息
         /// </summary>
+        /// <param name="username"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult GetAttributes()
+        public IActionResult GetAttributes(string username)
         {
-            var user = HttpContext.Items["actor"] as User;
-            var user_db = _databaseService.Users.FirstOrDefault(t => t.Username == user.Username);
-            if(user_db==null)
+            if (!Regex.IsMatch(username, @"^[a-zA-Z0-9-_]{4,16}$"))
             {
-                throw new UserNotExistException("Username Does Not Exist when trying to get the user's attributes.");
+                throw new UsernameInvalidException("The username you enter is invalid when trying to get user's attributes.");
             }
-            return Ok(new GetAttributesResultModel(user_db));
+
+            var user_db = _databaseService.Users.FirstOrDefault(t => t.Username == username);
+            if (user_db == null)
+            {
+                throw new UserNotExistException("Username Does Not Exist when trying to get user's attributes.");
+            }
+
+            string permission = PermissionBank.UserOperationPermission(username, "attribute","get");
+            var user_actor = HttpContext.Items["actor"] as User;
+            if (!(bool)user_actor.HasPermission(permission))
+            {
+                throw new AuthenticateFailedException("not has enough permission when trying to get other user's attributes.");
+            }
+
+            return Ok(new GetAttributesResultModel(user_db.Id, user_db.Username, user_db.Nickname, user_db.GroupToUser, user_db.CreatedAt, user_db.UpdatedAt));
 
         }
+
+
+
     }
 }

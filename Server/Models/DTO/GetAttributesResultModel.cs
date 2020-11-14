@@ -12,7 +12,7 @@ namespace Server.Models.DTO
 
         public string Username { get; private set; }
 
-        public string Password { get; private set; }
+        public string Nickname { get; private set; }
 
         public ICollection<GroupToUser> GroupToUser { get; private set; }
 
@@ -20,14 +20,15 @@ namespace Server.Models.DTO
 
         public DateTime UpdatedAt { get; private set; }
 
-        public GetAttributesResultModel(User user)
+        public GetAttributesResultModel(long id, string username, string nickname, ICollection<GroupToUser> grouptouser, DateTime createdat,DateTime updatedat)
         {
-            Id = user.Id;
-            Username = user.Username;
-            Password = user.Password;
-            GroupToUser = user.GroupToUser;
-            CreatedAt = user.CreatedAt;
-            UpdatedAt = user.UpdatedAt;
+            Id = id;
+            Username = username;
+            Nickname = nickname;
+            GroupToUser = grouptouser;
+            CreatedAt = createdat;
+            UpdatedAt = updatedat;
         }
+
     }
 }
