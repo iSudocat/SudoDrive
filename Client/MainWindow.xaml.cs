@@ -22,6 +22,7 @@ using Client.Request;
 using Client.TencentCos;
 using Client.TencentCos.Task;
 using Client.TencentCos.Task.List;
+using Client.Request.Response;
 
 namespace Client
 {
@@ -100,16 +101,15 @@ namespace Client
             UserRequest userService = new UserRequest();
             userService.Login("sudodog", "ssss11111", out _);
 
-            for (int i = 301; i <= 2333; i++)
-            {
+            
                 UploadTaskList.Add(new FileControlBlock
                 {
-                    FileName = i + ".txt",
-                    LocalPath = @"C:\Users\i\Desktop\测试数据\a lot of txt",
+                    FileName = "丁震宇不太对劲.txt",
+                    LocalPath = @"C:\Users\i\Desktop",
                     RemotePath = @"users\sudodog\测试数据\a lot of txt",
                     Status = StatusType.Waiting
                 });
-            }
+            
 
         }
 
@@ -126,6 +126,12 @@ namespace Client
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
+            UserRequest userService = new UserRequest();
+            userService.Login("sudodog", "ssss11111", out _);
+            FileRequest fileRequest = new FileRequest();
+            fileRequest.GetFileList("/users/sudodog/测试数据",
+                out int status, out List<Client.Request.Response.FileListResponse.File> fileList);
+            Console.WriteLine("文件数： " + fileList.Count);
 
         }
 
