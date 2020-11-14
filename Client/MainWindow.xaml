@@ -11,11 +11,11 @@
             <ColumnDefinition Width="442*"/>
         </Grid.ColumnDefinitions>
         <cefSharp:ChromiumWebBrowser x:Name="browser" Grid.Row="0" Grid.ColumnSpan="2"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="60,74,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="60,149,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
-        <TextBox x:Name="tbkey" HorizontalAlignment="Left" Height="23" Margin="35,110,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="60,189,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="71,275,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_3"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="60,339,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_4"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="13,-47,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="42.667,-46,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2" RenderTransformOrigin="2.736,-8.592" Grid.Column="1"/>
+        <TextBox x:Name="tbkey" HorizontalAlignment="Left" Height="23" Margin="93,-46,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Grid.ColumnSpan="2"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="122.667,-47,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1" Grid.Column="1"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="202.667,-47,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_3" Grid.Column="1"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="282.667,-47,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_4" Grid.Column="1"/>
     </Grid>
 </Window>

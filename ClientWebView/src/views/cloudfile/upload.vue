@@ -6,6 +6,7 @@
           size="small"
           type="primary"
           style="display: flex;justify-content: center;align-items: center"
+          @click="handleUpload"
         >
           <svg-icon icon-class="zzupload" />
         </el-button>
@@ -82,9 +83,11 @@
     </el-row>
     <hr style="border:0; background-color: #f1f1f1; height: 1px">
     <el-table
+      ref="uploadTable"
       highlight-current-row
       :data="uploadTableData"
       style="width: 100%"
+      max-height="480"
       @current-change="handleCurrentChange"
       @row-click="handleRowClick"
     >
@@ -123,10 +126,10 @@
         label="操作"
         align="center"
       >
-        <template slot-scope="scope">
+        <template>
           <el-button
             size="mini"
-            @click="handleUpload(scope.$index, scope.row)"
+            @click="handleUpload"
           >上传</el-button>
         </template>
       </el-table-column>
@@ -156,6 +159,12 @@ import InfoDialog from '@/views/cloudfile/infoDialog'
 export default {
   name: 'Upload',
   components: { InfoDialog },
+  props: {
+    cloudPath: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       // 按钮响应式大小绑定
@@ -171,8 +180,10 @@ export default {
       driveDialogVisible: false,
       // 是否第一次切换盘符
       showSwitchDrive: 0,
-      // 初始本地路径
+      // 初始本地路径分割数组
       currentPath: ['C:', 'hel', 'llo', 'iii'],
+      // 本地路径
+      localPath: '',
       // 本地盘符
       drives: ['A:', 'B:', 'C:', 'D:'],
       // 当前盘符
@@ -193,7 +204,7 @@ export default {
     // 浏览器状态下随机生成数据
     if (typeof (CefSharp) === 'undefined') {
       const table = []
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 20; i++) {
         table[i] = {
           name: '文件' + i,
           size: Math.floor(Math.random() * 1000000),
@@ -210,14 +221,28 @@ export default {
   },
   methods: {
     // 上传方法
-    handleUpload(index, row) {
-      console.log(index, row)
+    handleUpload() {
+      const that = this
+      if (typeof (CefSharp) === 'undefined') {
+        console.log(that.currentRow)
+      } else {
+        console.log('upload')
+        console.log(that.localPath)
+        console.log(that.cloudPath)
+        console.log(that.currentRow.name)
+        window.cloudFileFunction.upload(String(that.localPath), String(that.cloudPath), String(that.currentRow.name)).then(function(ret) {
+          console.log(ret)
+          that.$emit('afterUpload')
+        })
+      }
     },
     // 将C#传来的本地json数据转换为table显示里的数据
     handleTableReturn(ret) {
       const that = this
       const table = []
       const retObject = JSON.parse(ret)
+      this.localPath = retObject.currentPath
+      this.$emit('changePath', this.localPath)
       this.currentPath = retObject.currentPath.split('\\')
       // 去除不知道哪冒出来的最后一个空白
       const index = this.currentPath.indexOf('')
@@ -258,11 +283,11 @@ export default {
         console.log(table)
       } else {
         // 初始化路径为桌面
-        window.fileFunction.showAllInfo().then(function(ret) {
+        window.localFileFunction.showAllInfo().then(function(ret) {
           that.handleTableReturn(ret)
         })
         // 初始化盘符
-        window.fileFunction.showAllDrives().then(function(ret) {
+        window.localFileFunction.showAllDrives().then(function(ret) {
           that.drives = JSON.parse(ret)
           that.currentDrive = that.drives[0]
         })
@@ -271,12 +296,14 @@ export default {
     // 返回父目录
     parentPath() {
       const that = this
+      // 重置选中行
+      that.resetCurrentRow()
       if (typeof (CefSharp) === 'undefined') {
         return
       } else {
         // 阻止在盘符根目录下回到父目录
         if (that.currentPath.length > 1) {
-          window.fileFunction.toParent().then(function(ret) {
+          window.localFileFunction.toParent().then(function(ret) {
             that.handleTableReturn(ret)
           })
         }
@@ -284,11 +311,15 @@ export default {
     },
     // 刷新本地文件信息
     refreshPath() {
+      // 重置选中行
+      this.resetCurrentRow()
       this.InitPath()
     },
     // 面包屑跳转
     handleJump(num) {
       const that = this
+      // 重置选中行
+      that.resetCurrentRow()
       // 点击当前目录名则啥也不做
       if (num === that.currentPath.length - 1) {
         // 点击盘符则显示盘符信息
@@ -301,6 +332,11 @@ export default {
         }
       }
     },
+    // 重置选中行
+    resetCurrentRow() {
+      this.$refs.uploadTable.setCurrentRow(undefined)
+      this.currentRow = undefined
+    },
     // 第一次单击某行
     handleCurrentChange(row) {
       this.isFirstClick = true
@@ -308,6 +344,9 @@ export default {
     // 单击某行
     handleRowClick(row) {
       const that = this
+      that.currentRow = row
+      that.$emit('changeFile', that.currentRow)
+      console.log(this.cloudPath)
       if (that.isFirstClick) {
         that.isFirstClick = false
       } else {
@@ -328,7 +367,7 @@ export default {
           this.infoDialogVisible = true
           this.currentRow = row
         } else {
-          window.fileFunction.toChild(String(row.name)).then(function(ret) {
+          window.localFileFunction.toChild(String(row.name)).then(function(ret) {
             that.handleTableReturn(ret)
           })
         }
@@ -355,10 +394,12 @@ export default {
     // 切换盘符
     changeDrive() {
       const that = this
+      // 重置选中行
+      that.resetCurrentRow()
       if (typeof (CefSharp) === 'undefined') {
         return
       } else {
-        window.fileFunction.switchDriver(that.currentDrive).then(function(ret) {
+        window.localFileFunction.switchDriver(that.currentDrive).then(function(ret) {
           that.handleTableReturn(ret)
         })
       }
@@ -388,7 +429,7 @@ export default {
 .el-button {
   height: 24px; line-height: 4px;
 }
-* {
+.el-table {
   user-select:none;
 }
 </style>

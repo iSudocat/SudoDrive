@@ -8,10 +8,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Client.Request;
+using Client.Request.Response.UploadResponse;
+using Client.Request.Response.FileListResponse;
+using Client.Request.Response;
+using Client.CefUtils.VO.Cloud;
 
 namespace Client.CefUtils.Function
 {
-    class FileFunction
+    public class LocalFileFunction
     {
         /// <summary>
         /// 维护一个当前查看的路径
