@@ -14,10 +14,25 @@ namespace Client.CefUtils.Function
     public class CloudFileFunction
     {
         public static UserRequest userService = null;
+        public static LoginResponse loginResponse;
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public string login(string userName, string password)
         {
             userService = new UserRequest();
-            userService.Login(userName, password, out LoginResponse loginResponse);
+            userService.Login(userName, password, out loginResponse);
+            return JsonConvert.SerializeObject(loginResponse);
+        }
+        /// <summary>
+        ///  获取登录信息
+        /// </summary>
+        /// <returns></returns>
+        public string getLoginInfo()
+        {
             return JsonConvert.SerializeObject(loginResponse);
         }
         /// <summary>

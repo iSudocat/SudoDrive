@@ -91,8 +91,8 @@ export default {
       // form头像地址
       head_img: 'https://avatars3.githubusercontent.com/u/42528067?s=400&u=375133832a4d631e7a1be26aa764b0ff91565f7f&v=4',
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: 'sudodog',
+        password: 'ssss11111'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
