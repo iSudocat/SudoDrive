@@ -33,7 +33,7 @@ namespace Server.Controllers.UserProfile
         }
 
         /// <summary>
-        /// 删除账户
+        /// 用户删除其他账户
         /// </summary>
         /// <param name="username">用户名</param>
         /// <returns></returns>

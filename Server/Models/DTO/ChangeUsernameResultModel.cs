@@ -6,12 +6,14 @@ using Server.Models.Entities;
 
 namespace Server.Models.DTO
 {
-    public class UpdateUsernameResultModel
+    public class ChangeUsernameResultModel
     {
         public User User { get; private set; }
-        public UpdateUsernameResultModel(User user)
+
+        public ChangeUsernameResultModel(User user)
         {
             User = user;
         }
+
     }
 }

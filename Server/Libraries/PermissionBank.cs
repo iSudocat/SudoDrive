@@ -9,6 +9,7 @@ namespace Server.Libraries
         public const string UserAuthClose = "user.auth.close";
         public const string UserAuthDelete = "user.auth.delete";
         public const string UserAuthUpdateUsername = "user.auth.updateusername";
+        public const string UserAuthChangeUsername = "user.auth.changeusername";
 
         public const string StorageFileUploadBasic = "storage.file.upload.basic";
         public const string StorageFileDeleteBase = "storage.file.delete.basic";
@@ -44,7 +45,7 @@ namespace Server.Libraries
         {
             if (type == "username" || type== "password")
             {
-                return $"groupmanager.group.operation.{userName}.{type}.{operation}";
+                return $"usermanager.user.operation.{userName}.{type}.{operation}";
             }
             return $"usermanager.user.operation.{userName}.{operation}";
         }

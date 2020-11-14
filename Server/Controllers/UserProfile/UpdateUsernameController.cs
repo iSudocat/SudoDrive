@@ -31,11 +31,16 @@ namespace Server.Controllers.UserProfile
             _databaseService = databaseService;
         }
 
+        /// <summary>
+        /// 自己更改用户名
+        /// </summary>
+        /// <param name="newUsername"></param>
+        /// <returns></returns>
         public IActionResult UpdateUsername(string newUsername)
         {
             if (!Regex.IsMatch(newUsername, @"^[a-zA-Z0-9-_]{4,16}$"))
             {
-                throw new UsernameInvalidException("The username you enter is invalid when trying to update it.");
+                throw new UsernameInvalidException("The username you enter is invalid when trying to change it.");
             }
             if(_databaseService.Users.FirstOrDefault(t=>t.Username==newUsername)!=null)
             {

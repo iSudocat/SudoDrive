@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Server.Exceptions;
 using Server.Libraries;
 using Server.Middlewares;
+using Server.Models.DTO;
 using Server.Models.Entities;
 using Server.Models.VO;
 using Server.Services;
@@ -25,25 +26,25 @@ namespace Server.Controllers.UserProfile
         }
 
         /// <summary>
-        /// 修改密码
+        /// 自己修改密码
         /// </summary>
-        /// <param name="changePasswordRequestModel"></param>
+        /// <param name="updatePasswordRequestModel"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult ChangePassword(ChangePasswordRequestModel changePasswordRequestModel)
+        public ActionResult UpdatePassword(UpdatePasswordRequestModel updatePasswordRequestModel)
         {
             var user= HttpContext.Items["actor"] as User;
-            if (BCrypt.Net.BCrypt.Verify(changePasswordRequestModel.OldPassword, user.Password))
+            if (BCrypt.Net.BCrypt.Verify(updatePasswordRequestModel.OldPassword, user.Password))
             {
                 var user_db = _databaseService.Users.Find(user.Id);
-                user_db.Password = BCrypt.Net.BCrypt.HashPassword(changePasswordRequestModel.NewPassword);
+                user_db.Password = BCrypt.Net.BCrypt.HashPassword(updatePasswordRequestModel.NewPassword);
                 _databaseService.SaveChanges();
             }
             else
             {
                 throw new AuthenticateFailedException("The old password is not correct!");
             }
-            return Ok();
+            return Ok(new UpdatePasswordResultModel(user));
         }
     }
 }
