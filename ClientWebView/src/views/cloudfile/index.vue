@@ -2,10 +2,10 @@
   <div>
     <el-row>
       <el-col :xs="{span:24}" :sm="{span:12}">
-        <upload @changePath="changeLocalPath" @changeFile="changeLocalFile"/>
+        <upload :cloud-path="cloudPath" @changePath="changeLocalPath" @changeFile="changeLocalFile"/>
       </el-col>
       <el-col id="rightBox" :xs="{span:24}" :sm="{span:12}">
-        <download :local-path="localPath" :local-file="localFile"/>
+        <download :local-path="localPath" :local-file="localFile" @changePath="changeCloudPath"/>
       </el-col>
     </el-row>
     <RightPanel>
@@ -26,7 +26,8 @@ export default {
   data() {
     return {
       localPath: '',
-      localFile: null
+      localFile: null,
+      cloudPath: ''
     }
   },
   methods: {
@@ -35,6 +36,9 @@ export default {
     },
     changeLocalFile(newFile) {
       this.localFile = newFile
+    },
+    changeCloudPath(newPath) {
+      this.cloudPath = newPath
     }
   }
 }

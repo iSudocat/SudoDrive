@@ -6,6 +6,7 @@
           size="small"
           type="primary"
           style="display: flex;justify-content: center;align-items: center"
+          @click="handleUpload"
         >
           <svg-icon icon-class="zzupload" />
         </el-button>
@@ -125,10 +126,10 @@
         label="操作"
         align="center"
       >
-        <template slot-scope="scope">
+        <template>
           <el-button
             size="mini"
-            @click="handleUpload(scope.$index, scope.row)"
+            @click="handleUpload"
           >上传</el-button>
         </template>
       </el-table-column>
@@ -158,6 +159,9 @@ import InfoDialog from '@/views/cloudfile/infoDialog'
 export default {
   name: 'Upload',
   components: { InfoDialog },
+  props: {
+    cloudPath: String
+  },
   data() {
     return {
       // 按钮响应式大小绑定
@@ -214,8 +218,17 @@ export default {
   },
   methods: {
     // 上传方法
-    handleUpload(index, row) {
-      console.log(index, row)
+    handleUpload() {
+      const that = this
+      if (typeof (CefSharp) === 'undefined') {
+        console.log(that.currentRow)
+      } else {
+        console.log('upload')
+        console.log(that.localPath)
+        console.log(that.cloudPath)
+        console.log(that.currentRow.name)
+        window.cloudFileFunction.upload(String(that.localPath), String(that.cloudPath), String(that.currentRow.name))
+      }
     },
     // 将C#传来的本地json数据转换为table显示里的数据
     handleTableReturn(ret) {
@@ -327,6 +340,7 @@ export default {
       const that = this
       that.currentRow = row
       that.$emit('changeFile', that.currentRow)
+      console.log(this.cloudPath)
       if (that.isFirstClick) {
         that.isFirstClick = false
       } else {

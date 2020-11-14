@@ -106,17 +106,23 @@ namespace Client
         {
             UserRequest userService = new UserRequest();
             userService.Login("sudodog", "ssss11111", out _);
-
-            for (int i = 301; i <= 2333; i++)
+            UploadTaskList.Add(new FileControlBlock
             {
-                UploadTaskList.Add(new FileControlBlock
-                {
-                    FileName = i + ".txt",
-                    LocalPath = @"C:\Users\i\Desktop\测试数据\a lot of txt",
-                    RemotePath = @"users\sudodog\测试数据\a lot of txt",
-                    Status = StatusType.Waiting
-                });
-            }
+                FileName = "轩巨给点作用.txt",
+                LocalPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                RemotePath = @"users\sudodog\测试数据\a lot of txt",
+                Status = StatusType.Waiting
+            });
+            //for (int i = 1; i <= 10; i++)
+            //{
+            //    UploadTaskList.Add(new FileControlBlock
+            //    {
+            //        FileName = i + ".txt",
+            //        LocalPath = @"C:\Users\i\Desktop\测试数据\a lot of txt",
+            //        RemotePath = @"users\sudodog\测试数据\a lot of txt",
+            //        Status = StatusType.Waiting
+            //    });
+            //}
 
         }
 

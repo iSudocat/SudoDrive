@@ -228,6 +228,7 @@ export default {
       const table = []
       const retObject = JSON.parse(ret)
       that.cloudPath = retObject.cloudFileList[0].folder
+      this.$emit('changePath', that.cloudPath)
       that.currentPath = that.cloudPath.split('/')
       const cloudFileList = retObject.cloudFileList
       for (let i = 0; i < cloudFileList.length; i++) {

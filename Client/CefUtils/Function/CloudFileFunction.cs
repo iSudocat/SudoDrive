@@ -31,10 +31,11 @@ namespace Client.CefUtils.Function
             CloudFileListVO cloudFileListVO = new CloudFileListVO(fileList);
             return JsonConvert.SerializeObject(cloudFileListVO);
         }
-        public string Upload(string localPath, string cloudPath, string fileName)
+        public string upload(string localPath, string cloudPath, string fileName)
         {
             UserRequest userService = new UserRequest();
             userService.Login("sudodog", "ssss11111", out _);
+            Console.WriteLine("测试fileName：" + fileName);
             UploadTaskList.Add(new FileControlBlock
             {
                 FileName = fileName,
