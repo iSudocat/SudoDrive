@@ -43,14 +43,18 @@ namespace Server.Controllers.UserProfile
                 throw new UsernameInvalidException("The username you enter is invalid when trying to  change password.");
             }
 
+            var user_db = _databaseService.Users.FirstOrDefault(testc => testc.Username == changePasswordRequestModel.Username);
+            if (user_db == null)
+            {
+                throw new UserNotExistException("Username Does Not Exist when trying to change password.");
+            }
+
             string permission = PermissionBank.UserOperationPermission(changePasswordRequestModel.Username, "password","update");
             var user_actor = HttpContext.Items["actor"] as User;
             if (!(bool)user_actor.HasPermission(permission))
             {
                 throw new AuthenticateFailedException("not has enough permission when trying to change password.");
             }
-
-            var user_db = _databaseService.Users.FirstOrDefault(testc => testc.Username == changePasswordRequestModel.Username);
 
             if (BCrypt.Net.BCrypt.Verify(changePasswordRequestModel.OldPassword, user_db.Password))
             {

@@ -12,6 +12,8 @@ namespace Server.Libraries
         public const string UserAuthChangeUsername = "user.auth.changeusername";
         public const string UserAuthChangePassword = "user.auth.changepassword";
         public const string UserAuthGetAttributes = "user.auth.getattributes";
+        public const string UserAuthGetAttributesOfOthers = "user.auth.getattributesofothers";
+
 
 
         public const string StorageFileUploadBasic = "storage.file.upload.basic";
