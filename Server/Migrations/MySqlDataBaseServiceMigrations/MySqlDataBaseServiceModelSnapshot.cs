@@ -105,23 +105,23 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2020, 11, 8, 16, 30, 0, 508, DateTimeKind.Local).AddTicks(6828),
+                            CreatedAt = new DateTime(2020, 11, 15, 18, 24, 43, 937, DateTimeKind.Local).AddTicks(5124),
                             GroupName = "Admin",
-                            UpdatedAt = new DateTime(2020, 11, 8, 16, 30, 0, 508, DateTimeKind.Local).AddTicks(6828)
+                            UpdatedAt = new DateTime(2020, 11, 15, 18, 24, 43, 937, DateTimeKind.Local).AddTicks(5124)
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2020, 11, 8, 16, 30, 0, 508, DateTimeKind.Local).AddTicks(6828),
+                            CreatedAt = new DateTime(2020, 11, 15, 18, 24, 43, 937, DateTimeKind.Local).AddTicks(5124),
                             GroupName = "User",
-                            UpdatedAt = new DateTime(2020, 11, 8, 16, 30, 0, 508, DateTimeKind.Local).AddTicks(6828)
+                            UpdatedAt = new DateTime(2020, 11, 15, 18, 24, 43, 937, DateTimeKind.Local).AddTicks(5124)
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2020, 11, 8, 16, 30, 0, 508, DateTimeKind.Local).AddTicks(6828),
+                            CreatedAt = new DateTime(2020, 11, 15, 18, 24, 43, 937, DateTimeKind.Local).AddTicks(5124),
                             GroupName = "Guest",
-                            UpdatedAt = new DateTime(2020, 11, 8, 16, 30, 0, 508, DateTimeKind.Local).AddTicks(6828)
+                            UpdatedAt = new DateTime(2020, 11, 15, 18, 24, 43, 937, DateTimeKind.Local).AddTicks(5124)
                         });
                 });
 
@@ -152,7 +152,12 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                         new
                         {
                             GroupId = 2L,
-                            Permission = "user.auth.updatepassword"
+                            Permission = "user.profile.basic"
+                        },
+                        new
+                        {
+                            GroupId = 2L,
+                            Permission = "user.profile.update.basic"
                         },
                         new
                         {
@@ -168,6 +173,31 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                         {
                             GroupId = 2L,
                             Permission = "storage.file.delete.basic"
+                        },
+                        new
+                        {
+                            GroupId = 2L,
+                            Permission = "groupmanager.group.create.basic"
+                        },
+                        new
+                        {
+                            GroupId = 2L,
+                            Permission = "groupmanager.group.delete.basic"
+                        },
+                        new
+                        {
+                            GroupId = 2L,
+                            Permission = "groupmanager.group.quit.basic"
+                        },
+                        new
+                        {
+                            GroupId = 2L,
+                            Permission = "groupmanager.group.member.add.basic"
+                        },
+                        new
+                        {
+                            GroupId = 2L,
+                            Permission = "groupmanager.group.member.remove.basic"
                         },
                         new
                         {
@@ -212,9 +242,15 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("Nickname")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
@@ -233,9 +269,9 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2020, 11, 8, 16, 30, 0, 508, DateTimeKind.Local).AddTicks(6828),
-                            Password = "$2a$11$H7BFaQnS7GvhFtr0wLJsQ.Wejp0nbqohJZ3FxaV9Z2TXHWqq/sJMC",
-                            UpdatedAt = new DateTime(2020, 11, 8, 16, 30, 0, 508, DateTimeKind.Local).AddTicks(6828),
+                            CreatedAt = new DateTime(2020, 11, 15, 18, 24, 43, 937, DateTimeKind.Local).AddTicks(5124),
+                            Password = "$2a$11$ft/Yx8KRstacgwmvdHjmduXVDlcKK9h8mv14Qfdab4BQHv4PuZrwq",
+                            UpdatedAt = new DateTime(2020, 11, 15, 18, 24, 43, 937, DateTimeKind.Local).AddTicks(5124),
                             Username = "admin"
                         });
                 });
