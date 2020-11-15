@@ -118,8 +118,6 @@ namespace Server.Controllers.UserProfile
                 }
 
             }
-
-
             _databaseService.SaveChanges();
             return Ok(new UpdateProfileResultModel(beingOperator));
         }

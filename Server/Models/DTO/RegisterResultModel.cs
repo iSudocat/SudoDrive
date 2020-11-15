@@ -3,14 +3,13 @@ using Server.Models.VO;
 
 namespace Server.Models.DTO
 {
-    public class UpdateProfileResultModel
+    public class RegisterResultModel
     {
         public UserModel User { get; private set; }
 
-        public UpdateProfileResultModel(User user)
+        public RegisterResultModel(User user)
         {
             User = user.ToVO();
         }
-
     }
 }

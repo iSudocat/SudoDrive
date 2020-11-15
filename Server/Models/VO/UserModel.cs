@@ -9,6 +9,8 @@ namespace Server.Models.VO
 
         public string Username { get; set; }
 
+        public string Nickname { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
@@ -17,8 +19,10 @@ namespace Server.Models.VO
         {
             this.Id = user.Id;
             this.Username = user.Username;
+            this.Nickname = user.Nickname;
             this.CreatedAt = user.CreatedAt;
             this.UpdatedAt = user.UpdatedAt;
         }
+
     }
 }
