@@ -39,6 +39,14 @@ namespace Client.CefUtils.Function
             return JsonConvert.SerializeObject(loginResponse);
         }
         /// <summary>
+        /// 获取当前路径
+        /// </summary>
+        /// <returns></returns>
+        public string getCurrentPath()
+        {
+            return currentPath;
+        }
+        /// <summary>
         /// 获取云端文件信息
         /// </summary>
         /// <returns></returns>
@@ -102,6 +110,27 @@ namespace Client.CefUtils.Function
             Console.WriteLine("NewFolder");
             Console.WriteLine(result);
             return result.status.ToString();
+        }
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public string deleteFile(string folderName, string fileName)
+        {
+            if (userService == null) return null;
+            FileRequest fileRequest = new FileRequest();
+            if (folderName == "")
+            {
+                int status = fileRequest.Delete(out _, "", fileName);
+                return status.ToString();
+            }
+            else
+            {
+                int status = fileRequest.Delete(out _, folderName, "");
+                return status.ToString();
+            }
+            return null;
         }
     }
 }

@@ -26,6 +26,7 @@
           size="small"
           type="primary"
           style="display: flex;justify-content: center;align-items: center"
+          @click="handleDelete"
         >
           <svg-icon icon-class="zzdelete" />
         </el-button>
@@ -238,10 +239,9 @@ export default {
       if (typeof (CefSharp) === 'undefined') {
         console.log(that.currentRow)
       } else {
-        that.multipleRow.forEach(row => {
-          window.cloudFileFunction.download(String(that.localPath), String(row.name), String(row.id)).then(function(ret) {
+        that.multipleRow.forEach(async row => {
+          await window.cloudFileFunction.download(String(that.localPath), String(row.name), String(row.id)).then(function(ret) {
             console.log(ret)
-            that.$emit('afterDownload')
           })
         })
       }
@@ -284,10 +284,12 @@ export default {
     handleTableReturn(ret) {
       const that = this
       const table = []
+      window.cloudFileFunction.getCurrentPath().then(function(ret) {
+        that.cloudPath = ret
+        that.currentPath = that.cloudPath.split('/')
+      })
       const retObject = JSON.parse(ret)
-      that.cloudPath = retObject.cloudFileList[0].folder
       this.$emit('changePath', that.cloudPath)
-      that.currentPath = that.cloudPath.split('/')
       const cloudFileList = retObject.cloudFileList
       for (let i = 0; i < cloudFileList.length; i++) {
         table.push(cloudFileList[i])
@@ -349,6 +351,22 @@ export default {
           type: 'info',
           message: '取消新建文件夹'
         })
+      })
+    },
+    handleDelete() {
+      const that = this
+      that.multipleRow.forEach(row => {
+        console.log('delete')
+        console.log(row.path)
+        if (row.type === 'text/directory') {
+          window.cloudFileFunction.deleteFile(String(row.path), String('')).then(function(ret) {
+            console.log(ret)
+          })
+        } else {
+          window.cloudFileFunction.deleteFile(String(''), String(row.path)).then(function(ret) {
+            console.log(ret)
+          })
+        }
       })
     }
   }
