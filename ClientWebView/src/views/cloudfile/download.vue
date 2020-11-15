@@ -47,6 +47,19 @@
           <svg-icon icon-class="zzshare" />
         </el-button>
       </el-col>
+      <el-col :span="6">
+        <el-input v-model="searchText" size="mini" style="top:-2px" @keyup.enter.native="search" />
+      </el-col>
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center;margin-left: 5px;"
+          @click="search"
+        >
+          <svg-icon icon-class="search" />
+        </el-button>
+      </el-col>
     </el-row>
     <el-row style="margin: 15px 10px 15px 20px;">
       <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
@@ -160,13 +173,20 @@ export default {
       },
       // 是否第一次点击
       isFirstClick: true,
+      // 搜索框内容
+      searchText: '',
+      // 云端数据显示数组
       downloadTableData: [],
+      // 云端数据所有数组
+      AllTableData: [],
       dialogVisible: false,
       // 云端地址
       cloudPath: '',
-      // 云端数组
+      // 云端地址数组
       currentPath: ['xx', 'xxx', 'xxxx'],
+      // 多选数据
       multipleRow: [],
+      // 单选数据
       currentRow: {
         name: '',
         size: 0,
@@ -269,6 +289,7 @@ export default {
         table.push(cloudFileList[i])
       }
       that.downloadTableData = table
+      that.AllTableData = table
     },
     // 返回父目录
     parentPath() {
@@ -284,6 +305,16 @@ export default {
           that.handleTableReturn(ret)
         })
       }
+    },
+    // 搜索
+    search() {
+      const table = []
+      this.AllTableData.forEach(data => {
+        if (data.name.includes(this.searchText)) {
+          table.push(data)
+        }
+      })
+      this.downloadTableData = table
     }
   }
 }

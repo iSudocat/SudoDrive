@@ -1,10 +1,12 @@
 <template>
   <div>
     <el-dialog
+      id="registerDialog"
       title="注册"
       :visible="dialogVisible"
       :show-close="true"
-      :modal-append-to-body='false'
+      :modal-append-to-body="false"
+      @close="$emit('close')"
       width="30%"
       style="z-index: 100"
     >
@@ -19,7 +21,7 @@
           <el-input v-model="ruleForm.checkPass" type="password" autocomplete="off" />
         </el-form-item>
         <el-row>
-          <el-col :span="6"><el-button style="visibility: hidden"></el-button></el-col>
+          <el-col :span="6"><el-button style="visibility: hidden"/></el-col>
           <el-col :span="6">
             <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
           </el-col>
@@ -44,19 +46,8 @@ export default {
   data() {
     var checkAge = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('年龄不能为空'))
+        return callback(new Error('账号不能为空'))
       }
-      setTimeout(() => {
-        if (!Number.isInteger(value)) {
-          callback(new Error('请输入数字值'))
-        } else {
-          if (value < 18) {
-            callback(new Error('必须年满18岁'))
-          } else {
-            callback()
-          }
-        }
-      }, 1000)
     }
     var validatePass = (rule, value, callback) => {
       if (value === '') {
@@ -116,7 +107,10 @@ export default {
 </script>
 
 <style scoped>
-.el-form-item {
+#registerDialog .el-form-item {
+  background: rgba(0, 0, 0, 0);
+}
+#registerDialog .el-input{
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.1);
   border-radius: 5px;

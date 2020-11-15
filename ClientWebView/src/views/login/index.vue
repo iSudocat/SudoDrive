@@ -64,7 +64,7 @@
         <el-button type="text" style="flex-grow: 0">忘记密码</el-button>
       </div>
     </el-form>
-    <RegisterDialog :dialog-visible="registerDialogVisible"/>
+    <RegisterDialog :dialog-visible="registerDialogVisible" @close="closeRegisterDialog"/>
   </div>
 </template>
 
@@ -125,6 +125,9 @@ export default {
       this.$nextTick(() => {
         this.$refs.password.focus()
       })
+    },
+    closeRegisterDialog() {
+      this.registerDialogVisible = false
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
