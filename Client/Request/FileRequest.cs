@@ -112,14 +112,14 @@ namespace Client.Request
             status = 0;
         }
 
-        public int Download(string guid, out FileListResponse fileListResponse)
+        public int Download(string id, out FileListResponse fileListResponse)
         {
             if (UserInfo.UserName == "")
             {
                 fileListResponse = null;
                 return -1;
             }
-            var client = new RestClient(ServerAddress.Address + "/api/storage/file?download=true&guid=" + guid);
+            var client = new RestClient(ServerAddress.Address + "/api/storage/file?download=true&id=" + id);
             var request = new RestRequest(Method.GET);
             request.AddHeader("Authorization", "Bearer " + UserInfo.Token);
             request.AddHeader("Content-Type", "application/json");

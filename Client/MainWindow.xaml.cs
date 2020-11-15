@@ -140,8 +140,56 @@ namespace Client
 
             DownloadTaskList.Add(new FileControlBlock
             {
-                FileName = "Thomas Greenberg - Hopeful Hearts.mp3",
-                Guid = "3d04e25d-5a27-4fc2-a2c3-3d17f262df8d",
+                FileName = "1.txt",
+                Id = "335",
+                LocalPath = @"C:\Users\i\Desktop",
+                Status = StatusType.Waiting
+            });
+
+            DownloadTaskList.Add(new FileControlBlock
+            {
+                FileName = "2.txt",
+                Id = "336",
+                LocalPath = @"C:\Users\i\Desktop",
+                Status = StatusType.Waiting
+            });
+
+            DownloadTaskList.Add(new FileControlBlock
+            {
+                FileName = "3.txt",
+                Id = "337",
+                LocalPath = @"C:\Users\i\Desktop",
+                Status = StatusType.Waiting
+            });
+
+            DownloadTaskList.Add(new FileControlBlock
+            {
+                FileName = "4.txt",
+                Id = "338",
+                LocalPath = @"C:\Users\i\Desktop",
+                Status = StatusType.Waiting
+            });
+
+            DownloadTaskList.Add(new FileControlBlock
+            {
+                FileName = "5.txt",
+                Id = "339",
+                LocalPath = @"C:\Users\i\Desktop",
+                Status = StatusType.Waiting
+            });
+
+            DownloadTaskList.Add(new FileControlBlock
+            {
+                FileName = "6.txt",
+                Id = "340",
+                LocalPath = @"C:\Users\i\Desktop",
+                Status = StatusType.Waiting
+            });
+
+            DownloadTaskList.Add(new FileControlBlock
+            {
+                FileName = "7.txt",
+                Id = "341",
                 LocalPath = @"C:\Users\i\Desktop",
                 Status = StatusType.Waiting
             });
