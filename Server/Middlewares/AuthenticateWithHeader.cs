@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Server.Exceptions;
 using Server.Services;
 
@@ -43,7 +45,16 @@ namespace Server.Middlewares
             }
 
             // 获取到当前的登录用户
-            var userEntity = databaseService.Users.Find(actor);
+            var userEntity = databaseService.Users
+                .Include(s => s.GroupToUser)
+                .ThenInclude(s => s.Group)
+                .ThenInclude(s => s.GroupToPermission)
+                .FirstOrDefault(s => s.Id == actor);
+
+            if (userEntity != null && userEntity.Status != 0)
+            {
+                throw new BannedFromServerException();
+            }
 
             // 如果找不到， userEntity 会为 null
             context.Items["actor"] = userEntity;

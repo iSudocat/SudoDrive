@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Server.Models.DTO
 {
-    public class AddGroupMemberResultModel
+    public class GroupMemberAddResultModel
     {
         public Group Group { get; private set; }
         public User User { get; private set; }
         
-        public AddGroupMemberResultModel(Group group,User user)
+        public GroupMemberAddResultModel(Group group,User user)
         {
             Group = group;
             User = user;

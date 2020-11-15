@@ -39,10 +39,9 @@ namespace Server.Services.Implements
             return token;
         }
 
-        public bool IsAuthenticated(LoginRequestModel requestModel, out string token)
+        public bool IsAuthenticated(LoginRequestModel requestModel, out string token, out User loginUser)
         {
             token = string.Empty;
-            User loginUser;
             if (!_userService.IsValid(requestModel, out loginUser))
                 return false;
 

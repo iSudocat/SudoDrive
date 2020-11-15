@@ -8,10 +8,10 @@ using Server.Models.Entities;
 
 namespace Server.Controllers.UserProfile
 {
-    [Route("api/profile/refreshlogintoken")]
+    [Route("api/refreshlogintoken")]
     [ApiController]
     [NeedPermission(PermissionBank.UserAuthRefresh)]
-    public class RefreshLoginToken : Controller
+    public class RefreshLoginToken : AbstractController
     {
         private readonly IAuthenticateService _authService;
 
@@ -19,7 +19,7 @@ namespace Server.Controllers.UserProfile
         {
             this._authService = authService;
         }
-        
+
         public IActionResult GetNewToken()
         {
             if (!(HttpContext.Items["actor"] is User loginUser))
@@ -28,7 +28,7 @@ namespace Server.Controllers.UserProfile
             }
 
             var token = _authService.GetNewToken(loginUser);
-            return Ok(new LoginResultModel(loginUser.Username, token));
+            return Ok(new LoginResultModel(loginUser.Username, token, loginUser));
         }
     }
 }

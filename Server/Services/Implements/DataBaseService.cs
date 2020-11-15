@@ -80,11 +80,19 @@ namespace Server.Services.Implements
             modelBuilder.Entity<GroupToPermission>()
                 .HasData(
                     new { GroupId = Group.GroupID.ADMIN, Permission = "*" },
+
                     new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.UserAuthRefresh },
-                    new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.UserAuthUpdatePassword },
+                    new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.UserProfileBasic },
+                    new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.UserProfileUpdateBasic },
                     new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.StorageFileListBasic },
                     new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.StorageFileUploadBasic },
                     new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.StorageFileDeleteBase },
+                    new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.GroupManageGroupCreateBasic },
+                    new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.GroupManageGroupDeleteBasic },
+                    new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.GroupManageGroupQuitBasic },
+                    new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.GroupManageGroupMemberAddBasic },
+                    new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.GroupManageGroupMemberRemoveBasic },
+
                     new { GroupId = Group.GroupID.GUEST, Permission = PermissionBank.UserAuthRegister },
                     new { GroupId = Group.GroupID.GUEST, Permission = PermissionBank.UserAuthLogin }
                 );

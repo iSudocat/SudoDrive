@@ -2,69 +2,68 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Server.Services.Implements;
 
-namespace Server.Migrations
+namespace Server.Migrations.MySqlDataBaseServiceMigrations
 {
-    [DbContext(typeof(PostgreSqlDataBaseService))]
-    partial class PostgreSqlDataBaseServiceModelSnapshot : ModelSnapshot
+    [DbContext(typeof(MySqlDataBaseService))]
+    [Migration("20201115102447_AlterUserAddNicknameAndStatus")]
+    partial class AlterUserAddNicknameAndStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseIdentityByDefaultColumns()
-                .HasAnnotation("Relational:MaxIdentifierLength", 63)
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.0-rc.2.20475.6");
 
             modelBuilder.Entity("Server.Models.Entities.File", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .UseIdentityByDefaultColumn();
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Folder")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<string>("Guid")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<string>("Md5")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Path")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<string>("Permission")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<long>("Size")
                         .HasColumnType("bigint");
 
                     b.Property<int>("Status")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<string>("StorageName")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<long?>("UserId")
                         .HasColumnType("bigint");
@@ -88,18 +87,17 @@ namespace Server.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .UseIdentityByDefaultColumn();
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("GroupName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -109,23 +107,23 @@ namespace Server.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2020, 11, 15, 18, 23, 9, 342, DateTimeKind.Local).AddTicks(7060),
+                            CreatedAt = new DateTime(2020, 11, 15, 18, 24, 43, 937, DateTimeKind.Local).AddTicks(5124),
                             GroupName = "Admin",
-                            UpdatedAt = new DateTime(2020, 11, 15, 18, 23, 9, 342, DateTimeKind.Local).AddTicks(7060)
+                            UpdatedAt = new DateTime(2020, 11, 15, 18, 24, 43, 937, DateTimeKind.Local).AddTicks(5124)
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2020, 11, 15, 18, 23, 9, 342, DateTimeKind.Local).AddTicks(7060),
+                            CreatedAt = new DateTime(2020, 11, 15, 18, 24, 43, 937, DateTimeKind.Local).AddTicks(5124),
                             GroupName = "User",
-                            UpdatedAt = new DateTime(2020, 11, 15, 18, 23, 9, 342, DateTimeKind.Local).AddTicks(7060)
+                            UpdatedAt = new DateTime(2020, 11, 15, 18, 24, 43, 937, DateTimeKind.Local).AddTicks(5124)
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2020, 11, 15, 18, 23, 9, 342, DateTimeKind.Local).AddTicks(7060),
+                            CreatedAt = new DateTime(2020, 11, 15, 18, 24, 43, 937, DateTimeKind.Local).AddTicks(5124),
                             GroupName = "Guest",
-                            UpdatedAt = new DateTime(2020, 11, 15, 18, 23, 9, 342, DateTimeKind.Local).AddTicks(7060)
+                            UpdatedAt = new DateTime(2020, 11, 15, 18, 24, 43, 937, DateTimeKind.Local).AddTicks(5124)
                         });
                 });
 
@@ -136,7 +134,7 @@ namespace Server.Migrations
 
                     b.Property<string>("Permission")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.HasKey("GroupId", "Permission");
 
@@ -241,28 +239,27 @@ namespace Server.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .UseIdentityByDefaultColumn();
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Nickname")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int?>("Status")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
 
@@ -274,9 +271,9 @@ namespace Server.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2020, 11, 15, 18, 23, 9, 342, DateTimeKind.Local).AddTicks(7060),
-                            Password = "$2a$11$O9XLi4NEO0FbQ8vv9Hh8yuL1D88CT8SQvVsjGejJm3jc55RL3h7He",
-                            UpdatedAt = new DateTime(2020, 11, 15, 18, 23, 9, 342, DateTimeKind.Local).AddTicks(7060),
+                            CreatedAt = new DateTime(2020, 11, 15, 18, 24, 43, 937, DateTimeKind.Local).AddTicks(5124),
+                            Password = "$2a$11$ft/Yx8KRstacgwmvdHjmduXVDlcKK9h8mv14Qfdab4BQHv4PuZrwq",
+                            UpdatedAt = new DateTime(2020, 11, 15, 18, 24, 43, 937, DateTimeKind.Local).AddTicks(5124),
                             Username = "admin"
                         });
                 });
