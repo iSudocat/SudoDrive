@@ -5,7 +5,6 @@ namespace Server.Libraries
         public const string UserAuthRegister = "user.auth.register";
         public const string UserAuthLogin = "user.auth.login";
         public const string UserAuthRefresh = "user.auth.refresh";
-        public const string UserAuthDelete = "user.auth.delete";
 
         public const string UserProfileBasic = "user.profile.basic";
         public const string UserProfileUpdateBasic = "user.profile.update.basic";
