@@ -14,11 +14,11 @@ namespace Server.Libraries
         public const string StorageFileDeleteBase = "storage.file.delete.basic";
         public const string StorageFileListBasic = "storage.file.list.basic";
 
-        public const string GroupManageGroupAdd = "groupmanager.group.add.basic";
-        public const string GroupManageGroupDelete = "groupmanager.group.delete.basic";
-        public const string GroupManageGroupQuit = "groupmanager.group.quit.basic";
-        public const string GroupManageGroupMemberAdd = "groupmanager.group.member.add.basic";
-        public const string GroupManageGroupMemberDelete = "groupmanager.group.member.delete.basic";
+        public const string GroupManageGroupCreateBasic = "groupmanager.group.create.basic";
+        public const string GroupManageGroupDeleteBasic = "groupmanager.group.delete.basic";
+        public const string GroupManageGroupQuitBasic = "groupmanager.group.quit.basic";
+        public const string GroupManageGroupMemberAddBasic = "groupmanager.group.member.add.basic";
+        public const string GroupManageGroupMemberDeleteBasic = "groupmanager.group.member.delete.basic";
 
         /// <summary>
         /// 生成文件访问权限
@@ -29,26 +29,12 @@ namespace Server.Libraries
         /// <returns></returns>
         public static string StoragePermission(string type, string name, string operation)
         {
-            if (type == "root") return $"storage.file.operation.root.{operation}";
+            if (type == "root")
+            {
+                return $"storage.file.operation.root.{operation}";
+            }
             return $"storage.file.operation.{type}.{name}.{operation}";
         }
-
-        /// <summary>
-        /// 生成用户访问权限
-        /// </summary>
-        /// <param name="userName">用户名</param>
-        /// <param name="type">生成类型：attribute </param>
-        /// <param name="operation">操作：add / delete / update / get</param>
-        /// <returns></returns>
-        public static string UserOperationPermission(string userName,string type,string operation)
-        {
-            if (type == "attribute")
-            {
-                return $"usermanager.user.operation.{userName}.{type}.{operation}";
-            }
-            return $"usermanager.user.operation.{userName}.{operation}";
-        }
-
 
         /// <summary>
         /// 生成组访问权限

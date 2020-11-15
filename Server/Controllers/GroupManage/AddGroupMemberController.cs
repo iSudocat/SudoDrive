@@ -16,7 +16,7 @@ namespace Server.Controllers.GroupManage
 {
     [Route("api/group/{groupname}/member")]
     [ApiController]
-    [NeedPermission(PermissionBank.GroupManageGroupMemberAdd)]
+    [NeedPermission(PermissionBank.GroupManageGroupMemberAddBasic)]
     public class AddGroupMemberController : AbstractController
     {
         private IDatabaseService _databaseService;
@@ -26,7 +26,7 @@ namespace Server.Controllers.GroupManage
         }
 
         [HttpPost]
-        public IActionResult AddGroupMember([FromBody] AddGroupMemberRequestModel addGroupMemberRequestModel,string groupname)
+        public IActionResult AddGroupMember([FromBody] AddGroupMemberRequestModel addGroupMemberRequestModel, string groupname)
         {
             if (!Regex.IsMatch(groupname, @"^[a-zA-Z0-9-_]{4,16}$"))
             {

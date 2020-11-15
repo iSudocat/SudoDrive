@@ -15,7 +15,7 @@ namespace Server.Controllers.GroupManage
 {
     [Route("api/group")]
     [ApiController]
-    [NeedPermission(PermissionBank.GroupManageGroupAdd)]
+    [NeedPermission(PermissionBank.GroupManageGroupCreateBasic)]
     public class AddGroupController : AbstractController
     {
         private IDatabaseService _databaseService;
@@ -54,6 +54,13 @@ namespace Server.Controllers.GroupManage
                 Group = group,
                 GroupId = group.Id,
                 Permission = PermissionBank.GroupOperationPermission(group.GroupName, "member", "add")
+            });
+
+            _databaseService.GroupsToPermissionsRelation.Add(new GroupToPermission()
+            {
+                Group = group,
+                GroupId = group.Id,
+                Permission = PermissionBank.GroupOperationPermission(group.GroupName, "member", "remove")
             });
 
             //find the grouptouser in the database
