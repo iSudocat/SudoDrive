@@ -79,6 +79,7 @@ namespace Client.Request
             {
                 fileList = null;
                 status = -1;
+                return;
             }
             fileList = new List<Response.FileListResponse.File>();
             int offset = 0;
@@ -224,6 +225,7 @@ namespace Client.Request
             {
                 fileList = null;
                 status = -1;
+                return;
             }
             fileList = new List<Response.FileListResponse.File>();
             int offset = 0;

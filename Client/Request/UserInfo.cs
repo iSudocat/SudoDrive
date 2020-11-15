@@ -10,5 +10,7 @@ namespace Client.Request
     {
         public static string UserName { get; set; } = "";
         public static string Token { get; set; } = "";
+        public static string Nickname { get; set; } = "";
+        public static List<Response.LoginResponse.Group> groups { get; set; } = new List<Response.LoginResponse.Group>();
     }
 }
