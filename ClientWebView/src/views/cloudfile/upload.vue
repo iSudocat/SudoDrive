@@ -6,7 +6,7 @@
           size="small"
           type="primary"
           style="display: flex;justify-content: center;align-items: center"
-          @click="handleUpload"
+          @click="handleMultipleUpload"
         >
           <svg-icon icon-class="zzupload" />
         </el-button>
@@ -90,6 +90,7 @@
       max-height="480"
       @current-change="handleCurrentChange"
       @row-click="handleRowClick"
+      @selection-change="handleSelectionChange"
     >
       <el-table-column
         type="selection"
@@ -188,6 +189,8 @@ export default {
       drives: ['A:', 'B:', 'C:', 'D:'],
       // 当前盘符
       currentDrive: '',
+      // 多选内容
+      multipleRow: [],
       // 当前选择文件的信息
       currentRow: {
         name: '',
@@ -220,19 +223,27 @@ export default {
     }
   },
   methods: {
-    // 上传方法
+    // 单个上传方法
     handleUpload() {
       const that = this
       if (typeof (CefSharp) === 'undefined') {
         console.log(that.currentRow)
       } else {
-        console.log('upload')
-        console.log(that.localPath)
-        console.log(that.cloudPath)
-        console.log(that.currentRow.name)
         window.cloudFileFunction.upload(String(that.localPath), String(that.cloudPath), String(that.currentRow.name)).then(function(ret) {
           console.log(ret)
-          that.$emit('afterUpload')
+        })
+      }
+    },
+    // 多个上传方法
+    handleMultipleUpload() {
+      const that = this
+      if (typeof (CefSharp) === 'undefined') {
+        console.log(that.currentRow)
+      } else {
+        that.multipleRow.forEach(row => {
+          window.cloudFileFunction.upload(String(that.localPath), String(that.cloudPath), String(row.name)).then(function(ret) {
+            console.log(ret)
+          })
         })
       }
     },
@@ -331,6 +342,10 @@ export default {
           that.parentPath()
         }
       }
+    },
+    // 多选事件
+    handleSelectionChange(val) {
+      this.multipleRow = val
     },
     // 重置选中行
     resetCurrentRow() {
