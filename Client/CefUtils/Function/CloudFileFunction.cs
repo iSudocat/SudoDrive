@@ -50,6 +50,29 @@ namespace Client.CefUtils.Function
             return currentPath;
         }
         /// <summary>
+        /// 直接跳转
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public string goPath(string path)
+        {
+            currentPath = path;
+            return getFileList();
+        }
+        /// <summary>
+        /// 父目录
+        /// </summary>
+        /// <returns></returns>
+        public string goParent()
+        {
+            string path = "";
+            string[] paths = currentPath.Split('/');
+            for (int i = 0; i < paths.Length - 1; i++)
+                path += "/" + paths[i];
+            currentPath = path;
+            return getFileList();
+        }
+        /// <summary>
         /// 获取云端文件信息
         /// </summary>
         /// <returns></returns>

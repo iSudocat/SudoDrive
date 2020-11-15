@@ -268,9 +268,15 @@ export default {
       }
     },
     handleDblclick(row) {
-      console.log(row)
-      this.dialogVisible = true
-      this.currentRow = row
+      const that = this
+      if (row.type === 'text/directory') {
+        window.cloudFileFunction.goPath(String(row.path)).then(function(ret) {
+          that.handleTableReturn(ret)
+        })
+      } else {
+        that.dialogVisible = true
+        that.currentRow = row
+      }
     },
     closeDialog(visible) {
       console.log('closeDialog')
@@ -287,9 +293,9 @@ export default {
       window.cloudFileFunction.getCurrentPath().then(function(ret) {
         that.cloudPath = ret
         that.currentPath = that.cloudPath.split('/')
+        that.$emit('changePath', that.cloudPath)
       })
       const retObject = JSON.parse(ret)
-      this.$emit('changePath', that.cloudPath)
       const cloudFileList = retObject.cloudFileList
       for (let i = 0; i < cloudFileList.length; i++) {
         table.push(cloudFileList[i])
@@ -299,7 +305,14 @@ export default {
     },
     // 返回父目录
     parentPath() {
-      return
+      const that = this
+      if (typeof (CefSharp) === 'undefined') {
+        return
+      } else {
+        window.cloudFileFunction.goParent().then(function(ret) {
+          that.handleTableReturn(ret)
+        })
+      }
     },
     // 刷新目录
     refreshPath() {

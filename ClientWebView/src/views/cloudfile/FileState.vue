@@ -283,19 +283,17 @@ export default {
         percentage: 100
       })
     } else {
-      const timer = setInterval(() => {
-        window.cloudFileFunction.getUploadList().then(function(ret) {
-          that.uploads = JSON.parse(ret)
-          console.log(that.uploads)
-        })
-        window.cloudFileFunction.getDownloadList().then(function(ret) {
-          that.downloads = JSON.parse(ret)
-          console.log(that.downloads)
-        })
-      }, 1000)
-      that.$once('hook:beforeDestroy', () => {
-        clearInterval(timer)
-      })
+      // const timer = setInterval(() => {
+      //   window.cloudFileFunction.getUploadList().then(function(ret) {
+      //     that.uploads = JSON.parse(ret)
+      //   })
+      //   window.cloudFileFunction.getDownloadList().then(function(ret) {
+      //     that.downloads = JSON.parse(ret)
+      //   })
+      // }, 1000)
+      // that.$once('hook:beforeDestroy', () => {
+      //   clearInterval(timer)
+      // })
     }
   },
   methods: {
