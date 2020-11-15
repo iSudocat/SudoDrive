@@ -4,22 +4,17 @@ using Server.Models.VO;
 
 namespace Server.Models.DTO
 {
-    public class LoginResultModel
+    public class CommonUserProfileResultModel
     {
-        public string Username { get; private set; }
-
-        public string Token { get; private set; }
-
         public UserModel User { get; private set; }
 
         public List<GroupModel> Groups { get; private set; }
 
-        public LoginResultModel(string username, string token, User user)
+        public CommonUserProfileResultModel(User user)
         {
-            this.Username = username;
-            this.Token = token;
-
             this.User = user.ToVO();
+
+            if (user.GroupToUser == null) return;
 
             Groups = new List<GroupModel>();
             foreach (var t in user.GroupToUser)

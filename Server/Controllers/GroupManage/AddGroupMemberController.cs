@@ -16,7 +16,7 @@ namespace Server.Controllers.GroupManage
 {
     [Route("api/group/{groupname}/member")]
     [ApiController]
-    [NeedPermission(PermissionBank.GroupManageGroupMemberAdd)]
+    [NeedPermission(PermissionBank.GroupManageGroupMemberAddBasic)]
     public class AddGroupMemberController : AbstractController
     {
         private IDatabaseService _databaseService;
@@ -26,7 +26,7 @@ namespace Server.Controllers.GroupManage
         }
 
         [HttpPost]
-        public IActionResult AddGroupMember([FromBody] AddGroupMemberRequestModel addGroupMemberRequestModel,string groupname)
+        public IActionResult AddGroupMember([FromBody] GroupAddMemberRequestModel addGroupMemberRequestModel, string groupname)
         {
             if (!Regex.IsMatch(groupname, @"^[a-zA-Z0-9-_]{4,16}$"))
             {
@@ -39,7 +39,7 @@ namespace Server.Controllers.GroupManage
             }
             string permission = PermissionBank.GroupOperationPermission(groupname, "member", "add");
             var user_actor = HttpContext.Items["actor"] as User;
-            if (!(bool)user_actor.HasPermission(permission))
+            if (user_actor.HasPermission(permission) != true)
             {
                 throw new AuthenticateFailedException("not has enough permission when trying to add a member to a group.");
             }
@@ -62,7 +62,7 @@ namespace Server.Controllers.GroupManage
             _databaseService.GroupsToUsersRelation.Add(grouptouser);
             _databaseService.SaveChanges();
 
-            return Ok(new AddGroupMemberResultModel(group, user));
+            return Ok(new GroupMemberAddResultModel(group, user));
         }
     }
 }

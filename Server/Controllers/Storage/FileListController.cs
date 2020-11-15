@@ -158,8 +158,6 @@ namespace Server.Controllers.Storage
                 result = result.Where(s => requestModel.Guid.Contains(s.Guid));
             }
 
-            // TODO 按照用户权限添加筛选
-
             // 添加其他的搜索条件
 
             result = result.Skip(requestModel.Offset);

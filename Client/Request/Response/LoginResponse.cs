@@ -18,5 +18,20 @@ namespace Client.Request.Response.LoginResponse
     {
         public string username { get; set; }
         public string token { get; set; }
+        public User user { get; set; }
+        public List<Group> groups { get; set; }
+    }
+
+    public class User
+    {
+        public string id { get; set; }
+        public string username { get; set; }
+        public string nickname { get; set; }
+    }
+
+    public class Group
+    {
+        public string id { get; set; }
+        public string groupName { get; set; }
     }
 }

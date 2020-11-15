@@ -6,17 +6,14 @@ using Server.Models.DTO;
 using Server.Models.Entities;
 using Server.Models.VO;
 using Server.Services;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Server.Controllers.GroupManage
 {
     [Route("api/group/{groupname}/member")]
     [ApiController]
-    [NeedPermission(PermissionBank.GroupManageGroupMemberDelete)]
+    [NeedPermission(PermissionBank.GroupManageGroupMemberRemoveBasic)]
     public class DeleteGroupMemberController : AbstractController
     {
         private IDatabaseService _databaseService;
@@ -32,9 +29,9 @@ namespace Server.Controllers.GroupManage
             {
                 throw new GroupnameInvalidException("The groupname you enter is invalid when trying to delete a member from it.");
             }
-            string permission = PermissionBank.GroupOperationPermission(groupname, "member", "delete");
+            string permission = PermissionBank.GroupOperationPermission(groupname, "member", "remove");
             var user_actor = HttpContext.Items["actor"] as User;
-            if (!(bool)user_actor.HasPermission(permission))
+            if (user_actor.HasPermission(permission) != true)
             {
                 throw new AuthenticateFailedException("not has enough permission when trying to delete a member from a group.");
             }
@@ -56,7 +53,7 @@ namespace Server.Controllers.GroupManage
             _databaseService.GroupsToUsersRelation.Remove(grouptouser);
             _databaseService.SaveChanges();
 
-            return Ok(new DeleteGroupMemberResultModel(group,user));
+            return Ok(new GroupMemberRemoveResultModel(group,user));
         }
     }
 }

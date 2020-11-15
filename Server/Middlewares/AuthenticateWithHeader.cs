@@ -1,8 +1,13 @@
 using System;
+using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Server.Exceptions;
+using Server.Models.DTO;
 using Server.Services;
 
 namespace Server.Middlewares
@@ -43,13 +48,31 @@ namespace Server.Middlewares
             }
 
             // 获取到当前的登录用户
-            var userEntity = databaseService.Users.Find(actor);
+            var userEntity = databaseService.Users
+                .Include(s => s.GroupToUser)
+                .ThenInclude(s => s.Group)
+                .ThenInclude(s => s.GroupToPermission)
+                .FirstOrDefault(s => s.Id == actor);
 
-            // 如果找不到， userEntity 会为 null
-            context.Items["actor"] = userEntity;
+            if (userEntity != null && userEntity.Status != 0)
+            {
+                var e = new BannedFromServerException();
+                var result = new ResultModel(e.Status, e.Message, e.ApiExceptionData);
+                byte[] buffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(result, Formatting.None));
 
-            // Call the next delegate/middleware in the pipeline
-            await _next(context);
+                context.Response.StatusCode = 403;
+                context.Response.ContentType = "application/json";
+                await context.Response.Body.WriteAsync(buffer);
+                context.Response.ContentLength = buffer.Length;
+            }
+            else
+            {       
+                // 如果找不到， userEntity 会为 null
+                context.Items["actor"] = userEntity;
+
+                // Call the next delegate/middleware in the pipeline
+                await _next(context);
+            }
         }
     }
 }

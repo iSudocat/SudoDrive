@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Server.Models.Entities;
 using Server.Models.VO;
 
@@ -29,7 +30,11 @@ namespace Server.Services.Implements
         public bool IsValid(LoginRequestModel req, out User loginUser)
         {
             // 从数据库中获取用户信息
-            loginUser = _databaseService.Users.FirstOrDefault(s => s.Username == req.Username);
+            loginUser = _databaseService.Users
+                .Include(s => s.GroupToUser)
+                .ThenInclude(s => s.Group)
+                .ThenInclude(s => s.GroupToPermission)
+                .FirstOrDefault(s => s.Username == req.Username);
 
             // 若该用户不存在
             if (loginUser == null)

@@ -75,7 +75,7 @@ namespace Server.Models.VO
             this.Path = file.Path;
             this.Guid = file.Guid;
             this.StorageName = file.StorageName;
-            this.User = file.User.ToVO();
+            this.User = file.User?.ToVO();
             this.Status = file.Status;
             this.Size = file.Size;
             this.Md5 = file.Md5;

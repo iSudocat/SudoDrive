@@ -17,7 +17,7 @@ namespace Server.Controllers.GroupManage
 {
     [Route("api/group/{groupname}")]
     [ApiController]
-    [NeedPermission(PermissionBank.GroupManageGroupDelete)]
+    [NeedPermission(PermissionBank.GroupManageGroupDeleteBasic)]
     public class DeleteGroupController : AbstractController
     {
         private IDatabaseService _databaseService;
@@ -35,7 +35,7 @@ namespace Server.Controllers.GroupManage
             }
             string permission = PermissionBank.GroupOperationPermission(groupname,"","delete");
             var user_actor = HttpContext.Items["actor"] as User;
-            if (!(bool)user_actor.HasPermission(permission))
+            if (user_actor.HasPermission(permission) != true)
             {
                 throw new AuthenticateFailedException("not has enough permission when trying to delete a group.");
             }
@@ -54,7 +54,7 @@ namespace Server.Controllers.GroupManage
             _databaseService.GroupsToUsersRelation.RemoveRange(grouptouser_db);
             _databaseService.Groups.Remove(group);
             _databaseService.SaveChanges();
-            return Ok(new DeleteGroupResultModel(group));
+            return Ok(new GroupDeleteResultModel(group));
         }
     }
 }

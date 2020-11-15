@@ -63,13 +63,6 @@ namespace Server.Middlewares
             {
                 foreach (var s in _permission)
                 {
-                    long userId = user.Id;
-                    user = databaseService.Users
-                        .Include(s => s.GroupToUser)
-                        .ThenInclude(s => s.Group)
-                        .ThenInclude(s => s.GroupToPermission)
-                        .FirstOrDefault(s => s.Id == userId);
-
                     var result = user.HasPermission(s);
                     if (result == false)
                     {

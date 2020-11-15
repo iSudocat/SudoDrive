@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Server.Exceptions;
 using Server.Libraries;
 using Server.Middlewares;
+using Server.Models.DTO;
 using Server.Models.Entities;
 using Server.Models.VO;
 using Server.Services;
@@ -14,7 +15,7 @@ namespace Server.Controllers.UserProfile
     [ApiController]
     [AllowAnonymous]
     [NeedPermission(PermissionBank.UserAuthRegister)]
-    public class RegisterController : Controller
+    public class RegisterController : AbstractController
     {
         private IDatabaseService _databaseService;
 
@@ -38,10 +39,11 @@ namespace Server.Controllers.UserProfile
             User user = new User();
             user.Username = registerRequestModel.Username;
             user.Password = BCrypt.Net.BCrypt.HashPassword(registerRequestModel.Password);
+            user.Nickname = registerRequestModel.Nickname;
             _databaseService.Users.Add(user);
             _databaseService.SaveChanges();
-            return Ok();
-        }
 
+            return Ok(new RegisterResultModel(user));
+        }
     }
 }

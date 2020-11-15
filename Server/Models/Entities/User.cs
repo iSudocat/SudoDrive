@@ -22,6 +22,10 @@ namespace Server.Models.Entities
 
         public DateTime UpdatedAt { get; set; }
 
+        public string Nickname { get; set; }
+
+        public int? Status { get; set; } = 0;
+
         /// <summary>
         /// 判断这个用户是否有某个权限
         /// </summary>

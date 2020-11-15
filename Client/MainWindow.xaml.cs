@@ -108,13 +108,18 @@ namespace Client
             UserRequest userService = new UserRequest();
             userService.Login("sudodog", "ssss11111", out _);
 
-            UploadTaskList.Add(new FileControlBlock
+            
+            for(int i = 206; i < 210; i++)
             {
-                FileName = "a.txt",
-                LocalPath = @"C:\Users\i\Desktop",
-                RemotePath = @"users\sudodog\测试数据\test",
-                Status = StatusType.Waiting
-            });
+                UploadTaskList.Add(new FileControlBlock
+                {
+                    FileName = i + ".txt",
+                    LocalPath = @"C:\Users\i\Desktop\测试数据\a lot of txt",
+                    RemotePath = @"/groups/Admin",
+                    Status = StatusType.Waiting
+                });
+            }
+            
 
         }
 
