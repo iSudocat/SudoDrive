@@ -18,6 +18,9 @@ namespace Client.CefUtils.Function
         public static UserRequest userService = null;
         public static LoginResponse loginResponse;
         public static string currentPath = @"/users/sudodog/测试数据/a lot of txt";
+
+        public DownloadTaskListVO downloadTaskListVO = new DownloadTaskListVO();
+        public UploadTaskListVO uploadTaskListVO = new UploadTaskListVO();
         /// <summary>
         /// 登录
         /// </summary>
@@ -131,6 +134,20 @@ namespace Client.CefUtils.Function
                 return status.ToString();
             }
             return null;
+        }
+        /// <summary>
+        /// 刷新并返回当前上传状态列表
+        /// </summary>
+        /// <returns></returns>
+        public string getUploadList()
+        {
+            uploadTaskListVO.refresh();
+            return uploadTaskListVO.GetUploadTaskListVO();
+        }
+        public string getDownloadList()
+        {
+            downloadTaskListVO.refresh();
+            return downloadTaskListVO.GetDownloadTaskListVO();
         }
     }
 }
