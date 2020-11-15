@@ -1,6 +1,7 @@
 using Client.CefUtils.VO.Cloud;
 using Client.Request;
 using Client.Request.Response.LoginResponse;
+using Client.Request.Response.UploadResponse;
 using Client.TencentCos.Task;
 using Client.TencentCos.Task.List;
 using Newtonsoft.Json;
@@ -87,6 +88,20 @@ namespace Client.CefUtils.Function
                 Status = StatusType.Waiting
             });
             return null;
+        }
+        /// <summary>
+        /// 新建文件夹
+        /// </summary>
+        /// <param name="folderName"></param>
+        /// <returns></returns>
+        public string newFolder(string folderName)
+        {
+            if (userService == null) return null;
+            FileRequest fileRequest = new FileRequest();
+            int status = fileRequest.NewFolder(currentPath + "/" + folderName, out UploadResponse result);
+            Console.WriteLine("NewFolder");
+            Console.WriteLine(result);
+            return result.status.ToString();
         }
     }
 }

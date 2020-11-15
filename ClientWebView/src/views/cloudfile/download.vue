@@ -16,6 +16,7 @@
           size="small"
           type="primary"
           style="display: flex;justify-content: center;align-items: center"
+          @click="newFolder"
         >
           <svg-icon icon-class="zznewfolder" />
         </el-button>
@@ -115,7 +116,9 @@
         align="center"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
+          <i v-if="scope.row.type==='text/directory'" class="el-icon-folder" />
+          <i v-else class="el-icon-tickets" />
+          <span>&nbsp;{{ scope.row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -316,6 +319,37 @@ export default {
         }
       })
       this.downloadTableData = table
+    },
+    // 新建文件夹
+    newFolder() {
+      const that = this
+      this.$prompt('请输入文件夹名', '新建文件夹', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /.*/,
+        inputErrorMessage: '文件夹名格式不正确'
+      }).then(({ value }) => {
+        window.cloudFileFunction.newFolder(String(value)).then(function(ret) {
+          console.log('newFolder')
+          console.log(ret)
+          if (ret === '101') {
+            that.$message({
+              type: 'success',
+              message: '新建文件夹: ' + value
+            })
+          } else {
+            that.$message({
+              type: 'error',
+              message: '新建失败'
+            })
+          }
+        })
+      }).catch(() => {
+        that.$message({
+          type: 'info',
+          message: '取消新建文件夹'
+        })
+      })
     }
   }
 }
