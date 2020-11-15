@@ -23,9 +23,9 @@ namespace Client.TencentCos.Task
         public string FileName { get; set; }
 
         /// <summary>
-        /// 文件标识
+        /// 文件id
         /// </summary>
-        public string Guid { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// 本地路径（不含文件名，路径最后无“\”）

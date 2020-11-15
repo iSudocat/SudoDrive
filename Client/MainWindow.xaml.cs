@@ -110,7 +110,7 @@ namespace Client
 
             UploadTaskList.Add(new FileControlBlock
             {
-                FileName = "delTest.txt",
+                FileName = "a.txt",
                 LocalPath = @"C:\Users\i\Desktop",
                 RemotePath = @"users\sudodog\测试数据\test",
                 Status = StatusType.Waiting
@@ -131,12 +131,6 @@ namespace Client
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            UserRequest userService = new UserRequest();
-            userService.Login("sudodog", "ssss11111", out _);
-            FileRequest fileRequest = new FileRequest();
-            fileRequest.GetFileList("/users/sudodog/测试数据",
-                out int status, out List<Client.Request.Response.FileListResponse.File> fileList);
-            Console.WriteLine("文件数： " + fileList.Count);
 
         }
 
@@ -147,8 +141,56 @@ namespace Client
 
             DownloadTaskList.Add(new FileControlBlock
             {
-                FileName = "Thomas Greenberg - Hopeful Hearts.mp3",
-                Guid = "3d04e25d-5a27-4fc2-a2c3-3d17f262df8d",
+                FileName = "1.txt",
+                Id = "335",
+                LocalPath = @"C:\Users\i\Desktop",
+                Status = StatusType.Waiting
+            });
+
+            DownloadTaskList.Add(new FileControlBlock
+            {
+                FileName = "2.txt",
+                Id = "336",
+                LocalPath = @"C:\Users\i\Desktop",
+                Status = StatusType.Waiting
+            });
+
+            DownloadTaskList.Add(new FileControlBlock
+            {
+                FileName = "3.txt",
+                Id = "337",
+                LocalPath = @"C:\Users\i\Desktop",
+                Status = StatusType.Waiting
+            });
+
+            DownloadTaskList.Add(new FileControlBlock
+            {
+                FileName = "4.txt",
+                Id = "338",
+                LocalPath = @"C:\Users\i\Desktop",
+                Status = StatusType.Waiting
+            });
+
+            DownloadTaskList.Add(new FileControlBlock
+            {
+                FileName = "5.txt",
+                Id = "339",
+                LocalPath = @"C:\Users\i\Desktop",
+                Status = StatusType.Waiting
+            });
+
+            DownloadTaskList.Add(new FileControlBlock
+            {
+                FileName = "6.txt",
+                Id = "340",
+                LocalPath = @"C:\Users\i\Desktop",
+                Status = StatusType.Waiting
+            });
+
+            DownloadTaskList.Add(new FileControlBlock
+            {
+                FileName = "7.txt",
+                Id = "341",
                 LocalPath = @"C:\Users\i\Desktop",
                 Status = StatusType.Waiting
             });
