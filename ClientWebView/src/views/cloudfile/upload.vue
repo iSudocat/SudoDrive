@@ -48,13 +48,14 @@
         </el-button>
       </el-col>
       <el-col :span="6">
-        <el-input size="mini" style="top:-2px"/>
+        <el-input v-model="searchText" size="mini" style="top:-2px"/>
       </el-col>
       <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
         <el-button
           size="small"
           type="primary"
           style="display: flex;justify-content: center;align-items: center;margin-left: 5px;"
+          @click="search"
         >
           <svg-icon icon-class="search" />
         </el-button>
@@ -185,6 +186,8 @@ export default {
         xs: 4,
         sm: 2
       },
+      // 搜索内容
+      searchText: '',
       // 是否第一次点击
       isFirstClick: true,
       // 文件信息弹窗
@@ -209,8 +212,10 @@ export default {
         size: 0,
         lastModified: ''
       },
-      // 存储所有本地信息
+      // 存储显示的本地信息
       uploadTableData: [],
+      // 所有本地信息
+      AllTableData: [],
       // 浏览器所用窗口（wpf无用
       dirHandle: null
     }
@@ -229,6 +234,7 @@ export default {
         }
       }
       this.uploadTableData = table
+      this.AllTableData = table
       // 初始化本地数据
     } else {
       this.InitPath()
@@ -283,6 +289,7 @@ export default {
         table.push(fileTable[i])
       }
       that.uploadTableData = table
+      this.AllTableData = table
     },
     // 初始化初始路径文件信息和盘符
     async InitPath() {
@@ -303,6 +310,7 @@ export default {
           }
         }
         this.uploadTableData = table
+        this.AllTableData = table
         console.log(table)
       } else {
         // 初始化路径为桌面
@@ -431,6 +439,16 @@ export default {
         })
       }
       that.driveDialogVisible = false
+    },
+    // 搜索
+    search() {
+      const table = []
+      this.AllTableData.forEach(data => {
+        if (data.name.includes(this.searchText)) {
+          table.push(data)
+        }
+      })
+      this.uploadTableData = table
     }
   }
 }
