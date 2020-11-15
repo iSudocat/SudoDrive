@@ -190,7 +190,8 @@ export default {
       currentRow: {
         name: '',
         size: 0,
-        updatedAt: '0'
+        updatedAt: '0',
+        id: ''
       }
     }
   },
@@ -222,10 +223,9 @@ export default {
         console.log('download')
         console.log(that.localPath)
         console.log(that.currentRow.name)
-        console.log(that.currentRow.guid)
-        window.cloudFileFunction.download(String(that.localPath), String(that.currentRow.name), String(that.currentRow.guid)).then(function(ret) {
+        console.log(that.currentRow.id)
+        window.cloudFileFunction.download(String(that.localPath), String(that.currentRow.name), String(that.currentRow.id)).then(function(ret) {
           console.log(ret)
-          that.$emit('afterDownload')
         })
       }
     },
@@ -236,7 +236,7 @@ export default {
         console.log(that.currentRow)
       } else {
         that.multipleRow.forEach(row => {
-          window.cloudFileFunction.download(String(that.localPath), String(row.name), String(row.guid)).then(function(ret) {
+          window.cloudFileFunction.download(String(that.localPath), String(row.name), String(row.id)).then(function(ret) {
             console.log(ret)
             that.$emit('afterDownload')
           })
@@ -255,6 +255,7 @@ export default {
     handleRowClick(row) {
       console.log(this.localPath)
       console.log(this.localFile)
+      console.log(this.currentRow)
       const that = this
       that.currentRow = row
       if (that.isFirstClick) {
