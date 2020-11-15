@@ -51,12 +51,12 @@ namespace Client.Request
             return res.status;
         }
 
-        public int Register(string username, string password, out RegisterResponse registerResponse)
+        public int Register(string username, string password, string nickname, out RegisterResponse registerResponse)
         {
             var client = new RestClient(ServerAddress.Address + "/api/register");
             var request = new RestRequest(Method.POST);
             request.AddHeader("Content-Type", "application/json");
-            var requestBody = new { username, password };
+            var requestBody = new { username, password, nickname };
             request.AddParameter("application/json", JsonConvert.SerializeObject(requestBody), ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             Console.WriteLine(response.Content);
