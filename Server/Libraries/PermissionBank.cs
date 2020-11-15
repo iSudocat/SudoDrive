@@ -6,11 +6,10 @@ namespace Server.Libraries
         public const string UserAuthLogin = "user.auth.login";
         public const string UserAuthRefresh = "user.auth.refresh";
         public const string UserAuthDelete = "user.auth.delete";
-        public const string UserAuthUpdateProfile = "user.auth.updateprofile";
-        public const string UserAuthGetAttributes = "user.auth.getattributes";
 
-        public const string UserAdminProfileUpdate = "user.admin.profile.update";
-
+        public const string UserProfileBasic = "user.profile.basic";
+        public const string UserProfileUpdateBasic = "user.profile.update.basic";
+        public const string UserProfileAdminUpdate = "user.profile.admin.update";
 
         public const string StorageFileUploadBasic = "storage.file.upload.basic";
         public const string StorageFileDeleteBase = "storage.file.delete.basic";

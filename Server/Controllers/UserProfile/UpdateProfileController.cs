@@ -18,7 +18,7 @@ namespace Server.Controllers.UserProfile
 {
     [Route("api/user/{username}")]
     [ApiController]
-    [NeedPermission(PermissionBank.UserAuthUpdateProfile)]
+    [NeedPermission(PermissionBank.UserProfileUpdateBasic)]
     public class UpdateProfileController : AbstractController
     {
         private IDatabaseService _databaseService;
@@ -61,7 +61,7 @@ namespace Server.Controllers.UserProfile
             var isSelf = loginUser.Id == beingOperator.Id;
 
             // 如果不是给自己更新信息就检查一下管理员权限
-            if (!isSelf && loginUser.HasPermission(PermissionBank.UserAdminProfileUpdate) != true)
+            if (!isSelf && loginUser.HasPermission(PermissionBank.UserProfileAdminUpdate) != true)
             {
                 throw new UnauthenticatedException();
             }
@@ -87,7 +87,7 @@ namespace Server.Controllers.UserProfile
                 }
 
                 // 管理员
-                var isadmin = loginUser.HasPermission(PermissionBank.UserAdminProfileUpdate); 
+                var isadmin = loginUser.HasPermission(PermissionBank.UserProfileAdminUpdate); 
                 // 旧密码
                 var oldpw = updateProfileRequestModel.OldPassword;
 
