@@ -53,5 +53,15 @@ namespace Client.Request.Tests
             int status = fileRequest.Delete(out _, "", "/users/sudodog/测试数据/test/delTest.txt");
             Assert.AreEqual(status, 0);
         }
+
+        [TestMethod()]
+        public void NewFolderTest()
+        {
+            UserRequest userService = new UserRequest();
+            userService.Login("sudodog", "ssss11111", out _);
+            FileRequest fileRequest = new FileRequest();
+            int status = fileRequest.NewFolder("/users/sudodog/defg", out _);
+            Assert.AreEqual(status, 101);
+        }
     }
 }

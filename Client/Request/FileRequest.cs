@@ -158,7 +158,6 @@ namespace Client.Request
                 return -1;
             }
             var client = new RestClient(ServerAddress.Address + "/api/storage/file");
-            client.Timeout = -1;
             var request = new RestRequest(Method.DELETE);
             request.AddHeader("Authorization", "Bearer " + UserInfo.Token);
             request.AddHeader("Content-Type", "application/json");
@@ -196,6 +195,35 @@ namespace Client.Request
                 return -20000;
             }
         }
+
+        public int NewFolder(string folderPath, out UploadResponse uploadResponse)
+        {
+            if (UserInfo.UserName == "")
+            {
+                uploadResponse = null;
+                return -1;
+            }
+            var client = new RestClient(ServerAddress.Address + "/api/storage/file");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Authorization", "Bearer " + UserInfo.Token);
+            request.AddHeader("Content-Type", "application/json");
+            var requestBody = new { type = "text/directory", path = folderPath, size = 0, md5 = "00000000000000000000000000000000" };
+            request.AddParameter("application/json", JsonConvert.SerializeObject(requestBody), ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            Console.WriteLine(response.Content);
+            uploadResponse = JsonConvert.DeserializeObject<UploadResponse>(response.Content);
+            if (uploadResponse != null)
+            {
+                return uploadResponse.status;
+            }
+            else
+            {
+                uploadResponse = null;
+                return -20000;
+            }
+
+        }
+
 
         private static string GetFileMD5(string filePath)
         {

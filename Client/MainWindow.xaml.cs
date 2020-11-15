@@ -103,7 +103,7 @@ namespace Client
 
             UploadTaskList.Add(new FileControlBlock
             {
-                FileName = "delTest.txt",
+                FileName = "a.txt",
                 LocalPath = @"C:\Users\i\Desktop",
                 RemotePath = @"users\sudodog\测试数据\test",
                 Status = StatusType.Waiting
@@ -124,12 +124,6 @@ namespace Client
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            UserRequest userService = new UserRequest();
-            userService.Login("sudodog", "ssss11111", out _);
-            FileRequest fileRequest = new FileRequest();
-            fileRequest.GetFileList("/users/sudodog/测试数据",
-                out int status, out List<Client.Request.Response.FileListResponse.File> fileList);
-            Console.WriteLine("文件数： " + fileList.Count);
 
         }
 
