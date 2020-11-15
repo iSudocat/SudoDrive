@@ -6,9 +6,9 @@
       :visible="dialogVisible"
       :show-close="true"
       :modal-append-to-body="false"
-      @close="$emit('close')"
       width="30%"
       style="z-index: 100"
+      @close="$emit('close')"
     >
       <el-form ref="ruleForm" label-position="left" :model="ruleForm" status-icon :rules="rules" label-width="100px" class="demo-ruleForm">
         <el-form-item label="账号" prop="age">
@@ -21,7 +21,7 @@
           <el-input v-model="ruleForm.checkPass" type="password" autocomplete="off" />
         </el-form-item>
         <el-row>
-          <el-col :span="6"><el-button style="visibility: hidden"/></el-col>
+          <el-col :span="6"><el-button style="visibility: hidden" /></el-col>
           <el-col :span="6">
             <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
           </el-col>

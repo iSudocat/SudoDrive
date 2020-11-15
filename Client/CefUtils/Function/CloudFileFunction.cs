@@ -1,6 +1,7 @@
 using Client.CefUtils.VO.Cloud;
 using Client.Request;
 using Client.Request.Response.LoginResponse;
+using Client.Request.Response.UploadResponse;
 using Client.TencentCos.Task;
 using Client.TencentCos.Task.List;
 using Newtonsoft.Json;
@@ -16,6 +17,7 @@ namespace Client.CefUtils.Function
     {
         public static UserRequest userService = null;
         public static LoginResponse loginResponse;
+        public static string currentPath = @"/users/sudodog/测试数据/a lot of txt";
         /// <summary>
         /// 登录
         /// </summary>
@@ -44,7 +46,7 @@ namespace Client.CefUtils.Function
         {
             if (userService == null) return null;
             FileRequest fileRequest = new FileRequest();
-            fileRequest.GetFileList("/users/sudodog/测试数据/a lot of txt",
+            fileRequest.GetFileList(currentPath,
                 out int status, out List<Client.Request.Response.FileListResponse.File> fileList);
             CloudFileListVO cloudFileListVO = new CloudFileListVO(fileList);
             return JsonConvert.SerializeObject(cloudFileListVO);
@@ -75,17 +77,31 @@ namespace Client.CefUtils.Function
         /// <param name="fileName"></param>
         /// <param name="guid"></param>
         /// <returns></returns>
-        public string download(string localPath, string fileName, string guid)
+        public string download(string localPath, string fileName, string id)
         {
             if (userService == null) return null;
             DownloadTaskList.Add(new FileControlBlock
             {
                 FileName = fileName,
-                Guid = guid,
+                Id = id,
                 LocalPath = localPath,
                 Status = StatusType.Waiting
             });
             return null;
+        }
+        /// <summary>
+        /// 新建文件夹
+        /// </summary>
+        /// <param name="folderName"></param>
+        /// <returns></returns>
+        public string newFolder(string folderName)
+        {
+            if (userService == null) return null;
+            FileRequest fileRequest = new FileRequest();
+            int status = fileRequest.NewFolder(currentPath + "/" + folderName, out UploadResponse result);
+            Console.WriteLine("NewFolder");
+            Console.WriteLine(result);
+            return result.status.ToString();
         }
     }
 }

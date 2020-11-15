@@ -16,6 +16,7 @@
           size="small"
           type="primary"
           style="display: flex;justify-content: center;align-items: center"
+          @click="newFolder"
         >
           <svg-icon icon-class="zznewfolder" />
         </el-button>
@@ -115,7 +116,9 @@
         align="center"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
+          <i v-if="scope.row.type==='text/directory'" class="el-icon-folder" />
+          <i v-else class="el-icon-tickets" />
+          <span>&nbsp;{{ scope.row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -190,7 +193,8 @@ export default {
       currentRow: {
         name: '',
         size: 0,
-        updatedAt: '0'
+        updatedAt: '0',
+        id: ''
       }
     }
   },
@@ -222,10 +226,9 @@ export default {
         console.log('download')
         console.log(that.localPath)
         console.log(that.currentRow.name)
-        console.log(that.currentRow.guid)
-        window.cloudFileFunction.download(String(that.localPath), String(that.currentRow.name), String(that.currentRow.guid)).then(function(ret) {
+        console.log(that.currentRow.id)
+        window.cloudFileFunction.download(String(that.localPath), String(that.currentRow.name), String(that.currentRow.id)).then(function(ret) {
           console.log(ret)
-          that.$emit('afterDownload')
         })
       }
     },
@@ -236,7 +239,7 @@ export default {
         console.log(that.currentRow)
       } else {
         that.multipleRow.forEach(row => {
-          window.cloudFileFunction.download(String(that.localPath), String(row.name), String(row.guid)).then(function(ret) {
+          window.cloudFileFunction.download(String(that.localPath), String(row.name), String(row.id)).then(function(ret) {
             console.log(ret)
             that.$emit('afterDownload')
           })
@@ -255,6 +258,7 @@ export default {
     handleRowClick(row) {
       console.log(this.localPath)
       console.log(this.localFile)
+      console.log(this.currentRow)
       const that = this
       that.currentRow = row
       if (that.isFirstClick) {
@@ -315,6 +319,37 @@ export default {
         }
       })
       this.downloadTableData = table
+    },
+    // 新建文件夹
+    newFolder() {
+      const that = this
+      this.$prompt('请输入文件夹名', '新建文件夹', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /.*/,
+        inputErrorMessage: '文件夹名格式不正确'
+      }).then(({ value }) => {
+        window.cloudFileFunction.newFolder(String(value)).then(function(ret) {
+          console.log('newFolder')
+          console.log(ret)
+          if (ret === '101') {
+            that.$message({
+              type: 'success',
+              message: '新建文件夹: ' + value
+            })
+          } else {
+            that.$message({
+              type: 'error',
+              message: '新建失败'
+            })
+          }
+        })
+      }).catch(() => {
+        that.$message({
+          type: 'info',
+          message: '取消新建文件夹'
+        })
+      })
     }
   }
 }
