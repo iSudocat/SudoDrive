@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Server.Models.Entities;
 using Server.Models.VO;
 
@@ -7,9 +8,17 @@ namespace Server.Models.DTO
     {
         public UserModel User { get; private set; }
 
+        public List<GroupModel> Groups { get; private set; }
+
         public UpdateProfileResultModel(User user)
         {
-            User = user.ToVO();
+            this.User = user.ToVO();
+
+            Groups = new List<GroupModel>();
+            foreach (var t in user.GroupToUser)
+            {
+                Groups.Add(t.Group.ToVO());
+            }
         }
 
     }

@@ -11,6 +11,6 @@ namespace Server.Services
     {
         public string GetNewToken(User loginUser);
 
-        bool IsAuthenticated(LoginRequestModel requestModel, out string token);
+        public bool IsAuthenticated(LoginRequestModel requestModel, out string token, out User loginUser);
     }
 }

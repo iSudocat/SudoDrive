@@ -28,7 +28,7 @@ namespace Server.Controllers.UserProfile
             }
 
             var token = _authService.GetNewToken(loginUser);
-            return Ok(new LoginResultModel(loginUser.Username, token));
+            return Ok(new LoginResultModel(loginUser.Username, token, loginUser));
         }
     }
 }

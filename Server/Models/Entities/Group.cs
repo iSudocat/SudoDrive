@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Server.Models.VO;
 
 namespace Server.Models.Entities
 {
@@ -91,5 +92,8 @@ namespace Server.Models.Entities
         {
             return this.HasPermission(permission.Split('.'));
         }
+
+        public GroupModel ToVO()
+            => new GroupModel(this);
     }
 }
