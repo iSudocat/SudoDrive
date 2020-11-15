@@ -145,12 +145,11 @@ namespace Client.Request
 
 
         /// <summary>
-        /// 删除文件（文件夹） 只需传入一个路径，另一个传入空串即可
+        /// 删除文件（夹）
         /// </summary>
-        /// <param name="folderPath">欲删除的文件夹路径</param>
-        /// <param name="filePath">欲删除的文件路径</param>
+        /// <param name="folderPath">欲删除的文件(夹)路径</param>
         /// <returns>状态码</returns>
-        public int Delete(out DeleteResponse deleteResponse, string folderPath, string filePath)
+        public int Delete(out DeleteResponse deleteResponse, string Path)
         {
             if (UserInfo.UserName == "")
             {
@@ -161,14 +160,9 @@ namespace Client.Request
             var request = new RestRequest(Method.DELETE);
             request.AddHeader("Authorization", "Bearer " + UserInfo.Token);
             request.AddHeader("Content-Type", "application/json");
-            if (folderPath != "")
+            if (Path != "")
             {
-                var requestBody = new { folder = folderPath };
-                request.AddParameter("application/json", JsonConvert.SerializeObject(requestBody), ParameterType.RequestBody);
-            }
-            else if (filePath != "")
-            {
-                var requestBody = new { path = new string[] { filePath } };
+                var requestBody = new { path = new string[] { Path } };
                 request.AddParameter("application/json", JsonConvert.SerializeObject(requestBody), ParameterType.RequestBody);
             }
             else

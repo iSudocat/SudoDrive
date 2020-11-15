@@ -49,8 +49,8 @@ namespace Client.Request.Tests
             UserRequest userService = new UserRequest();
             userService.Login("sudodog", "ssss11111", out _);
             FileRequest fileRequest = new FileRequest();
-            //int status = fileRequest.Delete(out _, "/users/sudodog/测试数据/test", "");
-            int status = fileRequest.Delete(out _, "", "/users/sudodog/测试数据/test/delTest.txt");
+            int status = fileRequest.Delete(out _, "/users/sudodog/defg", "");
+            //int status = fileRequest.Delete(out _, "", "/users/sudodog/测试数据/test/delTest.txt");
             Assert.AreEqual(status, 0);
         }
 
