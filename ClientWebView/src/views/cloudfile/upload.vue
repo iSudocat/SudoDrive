@@ -47,6 +47,18 @@
           <svg-icon icon-class="zzshare" />
         </el-button>
       </el-col>
+      <el-col :span="6">
+        <el-input size="mini" style="top:-2px"/>
+      </el-col>
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center;margin-left: 5px;"
+        >
+          <svg-icon icon-class="search" />
+        </el-button>
+      </el-col>
     </el-row>
     <el-row style="margin: 15px 10px 15px 20px;">
       <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
