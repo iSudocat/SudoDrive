@@ -26,7 +26,7 @@
                   <el-progress
                     :text-inside="true"
                     :stroke-width="16"
-                    :percentage="scope.row.completed === 0 ? 0 : 100 * scope.row.completed/scope.row.total"
+                    :percentage="scope.row.completed === 0 ? 0 : Math.round((100 * scope.row.completed/scope.row.total) * 100) / 100"
                   />
                 </template>
               </el-table-column>
@@ -54,7 +54,7 @@
                   <el-progress
                     :text-inside="true"
                     :stroke-width="16"
-                    :percentage="scope.row.completed === 0 ? 0 : 100 * scope.row.completed/scope.row.total"
+                    :percentage="scope.row.completed === 0 ? 0 : Math.round((100 * scope.row.completed/scope.row.total) * 100) / 100"
                   />
                 </template>
               </el-table-column>
@@ -83,7 +83,7 @@
                     :text-inside="true"
                     :stroke-width="16"
                     status="success"
-                    :percentage="scope.row.completed === 0 ? 0 : 100 * scope.row.completed/scope.row.total"
+                    :percentage="scope.row.completed === 0 ? 0 : Math.round((100 * scope.row.completed/scope.row.total) * 100) / 100"
                   />
                 </template>
               </el-table-column>
@@ -112,7 +112,7 @@
                     :text-inside="true"
                     :stroke-width="16"
                     status="exception"
-                    :percentage="scope.row.completed === 0 ? 0 : 100 * scope.row.completed/scope.row.total"
+                    :percentage="scope.row.completed === 0 ? 0 : Math.round((100 * scope.row.completed/scope.row.total) * 100) / 100"
                   />
                 </template>
               </el-table-column>
@@ -144,7 +144,7 @@
                   <el-progress
                     :text-inside="true"
                     :stroke-width="16"
-                    :percentage="scope.row.completed === 0 ? 0 : 100 * scope.row.completed/scope.row.total"
+                    :percentage="scope.row.completed === 0 ? 0 : Math.round((100 * scope.row.completed/scope.row.total) * 100) / 100"
                   />
                 </template>
               </el-table-column>
@@ -172,7 +172,7 @@
                   <el-progress
                     :text-inside="true"
                     :stroke-width="16"
-                    :percentage="scope.row.completed === 0 ? 0 : 100 * scope.row.completed/scope.row.total"
+                    :percentage="scope.row.completed === 0 ? 0 : Math.round((100 * scope.row.completed/scope.row.total) * 100) / 100"
                   />
                 </template>
               </el-table-column>
@@ -201,7 +201,7 @@
                     :text-inside="true"
                     :stroke-width="16"
                     status="success"
-                    :percentage="scope.row.completed === 0 ? 0 : 100 * scope.row.completed/scope.row.total"
+                    :percentage="scope.row.completed === 0 ? 0 : Math.round((100 * scope.row.completed/scope.row.total) * 100) / 100"
                   />
                 </template>
               </el-table-column>
@@ -230,7 +230,7 @@
                     :text-inside="true"
                     :stroke-width="16"
                     status="exception"
-                    :percentage="scope.row.completed === 0 ? 0 : 100 * scope.row.completed/scope.row.total"
+                    :percentage="scope.row.completed === 0 ? 0 : Math.round((100 * scope.row.completed/scope.row.total) * 100) / 100"
                   />
                 </template>
               </el-table-column>
