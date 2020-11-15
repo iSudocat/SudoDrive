@@ -45,7 +45,7 @@ namespace Server.Controllers.UserProfile
                 throw new UserNotExistException("The username given is not found.");
             }
 
-            return Ok(new GetAttributesResultModel(user_db));
+            return Ok(new UserProfileResultModel(user_db));
         }
     }
 }

@@ -2,11 +2,11 @@ using Server.Models.Entities;
 
 namespace Server.Models.DTO
 {
-    public class AddGroupResultModel
+    public class GroupCreateResultModel
     {
         public Group Group { get; private set; }
 
-        public AddGroupResultModel( Group group)
+        public GroupCreateResultModel( Group group)
         {
             this.Group = group;
         }

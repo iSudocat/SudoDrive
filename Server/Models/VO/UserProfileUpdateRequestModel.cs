@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Server.Models.VO
 {
-    public class UpdateProfileRequestModel
+    public class UserProfileUpdateRequestModel
     {
         [JsonProperty("nickname")]
         [RegularExpression(@"^[a-zA-Z0-9-_]{4,16}$")]

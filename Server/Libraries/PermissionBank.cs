@@ -39,6 +39,11 @@ namespace Server.Libraries
         /// </summary>
         public const string UserProfileAdminUpdate = "user.profile.admin.update";
 
+        /// <summary>
+        /// 管理员更新他人信息
+        /// 默认组：管理员用户组
+        /// </summary>
+        public const string UserProfileAdminList = "user.profile.admin.list";
 
         /// <summary>
         /// 存储系统上传文件

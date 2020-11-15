@@ -25,7 +25,7 @@ namespace Server.Controllers.GroupManage
         }
 
         [HttpPost]
-        public IActionResult AddGroup([FromBody] AddGroupRequestModel addGroupRequestModel)
+        public IActionResult AddGroup([FromBody] GroupCreateRequestModel addGroupRequestModel)
         {
             //use groupname to identify group,because the id is invisible to user
             if (_databaseService.Groups.FirstOrDefault(t => t.GroupName == addGroupRequestModel.GroupName) != null)
@@ -72,7 +72,7 @@ namespace Server.Controllers.GroupManage
             
             _databaseService.SaveChanges();
             
-            return Ok(new AddGroupResultModel(group));
+            return Ok(new GroupCreateResultModel(group));
         }
     }
 }

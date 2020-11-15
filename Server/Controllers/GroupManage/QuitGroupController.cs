@@ -47,7 +47,7 @@ namespace Server.Controllers.GroupManage
             _databaseService.GroupsToUsersRelation.Remove(grouptouser);
             _databaseService.SaveChanges();
 
-            return Ok(new QuitGroupResultModel(group,user));
+            return Ok(new GroupQuitResultModel(group,user));
         }
     }
 }

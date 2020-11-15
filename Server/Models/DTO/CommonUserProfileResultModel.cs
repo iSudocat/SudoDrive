@@ -1,25 +1,27 @@
-using System;
 using System.Collections.Generic;
 using Server.Models.Entities;
 using Server.Models.VO;
 
 namespace Server.Models.DTO
 {
-    public class GetAttributesResultModel
+    public class CommonUserProfileResultModel
     {
         public UserModel User { get; private set; }
 
         public List<GroupModel> Groups { get; private set; }
 
-        public GetAttributesResultModel(User p)
+        public CommonUserProfileResultModel(User user)
         {
-            User = p.ToVO();
+            this.User = user.ToVO();
+
+            if (user.GroupToUser == null) return;
 
             Groups = new List<GroupModel>();
-            foreach (var t in p.GroupToUser)
+            foreach (var t in user.GroupToUser)
             {
                 Groups.Add(t.Group.ToVO());
             }
         }
+
     }
 }

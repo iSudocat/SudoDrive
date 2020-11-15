@@ -53,7 +53,7 @@ namespace Server.Controllers.GroupManage
             _databaseService.GroupsToUsersRelation.Remove(grouptouser);
             _databaseService.SaveChanges();
 
-            return Ok(new DeleteGroupMemberResultModel(group,user));
+            return Ok(new GroupMemberRemoveResultModel(group,user));
         }
     }
 }

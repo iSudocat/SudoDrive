@@ -5,13 +5,9 @@ using Server.Middlewares;
 using Server.Models.Entities;
 using Server.Models.VO;
 using Server.Services;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Query.ExpressionTranslators.Internal;
 using Server.Models.DTO;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 
 namespace Server.Controllers.UserProfile
@@ -38,7 +34,7 @@ namespace Server.Controllers.UserProfile
         /// <param name="updateProfileRequestModel"></param>
         /// <returns></returns>
         [HttpPatch]
-        public IActionResult UpdateProfile([FromBody] UpdateProfileRequestModel updateProfileRequestModel, string username)
+        public IActionResult UpdateProfile([FromBody] UserProfileUpdateRequestModel updateProfileRequestModel, string username)
         {
             if (!(HttpContext.Items["actor"] is User loginUser))
             {
@@ -117,7 +113,7 @@ namespace Server.Controllers.UserProfile
             }
 
             _databaseService.SaveChanges();
-            return Ok(new UpdateProfileResultModel(beingOperator));
+            return Ok(new UserProfileUpdateResultModel(beingOperator));
         }
     }
 }
