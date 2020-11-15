@@ -13,7 +13,7 @@ namespace Server.Controllers.UserProfile
     [ApiController]
     [AllowAnonymous]
     [NeedPermission(PermissionBank.UserAuthLogin)]
-    public class LoginController : Controller
+    public class LoginController : AbstractController
     {
         private readonly IAuthenticateService _authService;
 

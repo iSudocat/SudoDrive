@@ -15,7 +15,7 @@ namespace Server.Controllers.UserProfile
     [ApiController]
     [AllowAnonymous]
     [NeedPermission(PermissionBank.UserAuthRegister)]
-    public class RegisterController : Controller
+    public class RegisterController : AbstractController
     {
         private IDatabaseService _databaseService;
 

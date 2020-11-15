@@ -11,7 +11,7 @@ namespace Server.Controllers.UserProfile
     [Route("api/refreshlogintoken")]
     [ApiController]
     [NeedPermission(PermissionBank.UserAuthRefresh)]
-    public class RefreshLoginToken : Controller
+    public class RefreshLoginToken : AbstractController
     {
         private readonly IAuthenticateService _authService;
 
