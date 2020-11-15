@@ -4,11 +4,14 @@ namespace Server.Models.DTO
 {
     public class UpdateProfileResultModel
     {
-        public User User { get; private set; }
+        public long UpdateUserId { get; private set; }
 
-        public UpdateProfileResultModel(User user)
+        public string UpdateUserUsername { get; private set; }
+
+        public UpdateProfileResultModel(long updateUserId,string updateUserUsername)
         {
-            User = user;
+            UpdateUserId = updateUserId;
+            UpdateUserUsername = updateUserUsername;
         }
 
     }

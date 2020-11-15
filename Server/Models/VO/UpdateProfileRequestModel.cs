@@ -14,9 +14,9 @@ namespace Server.Models.VO
         public string Username { get; set; }      
 
         
-        [JsonProperty("nickname")]
+        [JsonProperty("newnickname")]
         [RegularExpression(@"^[a-zA-Z0-9-_]{4,16}$")]
-        public string Nickname { get; set; }
+        public string NewNickname { get; set; }
 
         [JsonProperty("oldpassword")]
         public string OldPassword { get; set; }
@@ -24,11 +24,6 @@ namespace Server.Models.VO
         [JsonProperty("newpassword")]
         [RegularExpression(@"^[^\n\r]{8,}$")]
         public string NewPassword { get; set; }
-
-        /*用户头像
-        [JsonProperty("photo")]
-        public string Photo { get; set; }
-        */
 
     }
 }

@@ -8,11 +8,12 @@ namespace Server.Models.DTO
 {
     public class DeleteUserResultModel
     {
-        public User User { get; private set; }
-
-        public DeleteUserResultModel(User user)
+        public long DeletedUserId { get; private set; }
+        public string DeletedUserUsername { get;private set; }
+        public DeleteUserResultModel(long deletedUserId,string deletedUserUsername)
         {
-            User = user;
+            DeletedUserId = deletedUserId;
+            DeletedUserUsername = deletedUserUsername;
         }
     }
 }

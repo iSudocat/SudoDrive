@@ -16,10 +16,10 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.UserProfile
 {
-    [Route("api/auth/{username}")]
+    [Route("api/user/{username}")]
     [ApiController]
-    [NeedPermission(PermissionBank.UserAuthGetAttributes)]
-    public class GetAttributesController : AbstractController
+    [NeedPermission(PermissionBank.UserAuthGetProfile)]
+    public class GetProfileController : AbstractController
     {
         private IDatabaseService _databaseService;
 
@@ -27,7 +27,7 @@ namespace Server.Controllers.UserProfile
         /// 构造函数
         /// </summary>
         /// <param name="databaseService">通过依赖注入获得数据库对象</param>
-        public GetAttributesController(IDatabaseService databaseService)
+        public GetProfileController(IDatabaseService databaseService)
         {
             _databaseService = databaseService;
         }
@@ -38,29 +38,37 @@ namespace Server.Controllers.UserProfile
         /// <param name="username"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult GetAttributes(string username)
+        public IActionResult GetUserProfile(string username)
         {
+            //判断用户名合法
             if (!Regex.IsMatch(username, @"^[a-zA-Z0-9-_]{4,16}$"))
             {
                 throw new UsernameInvalidException(
-                    "The username you enter is invalid when trying to get user's attributes.");
+                    "The username you enter is invalid when trying to get the its profile.");
             }
-
+            //判断用户存在，并获取数据库中的该用户
             var user_db = _databaseService.Users.FirstOrDefault(t => t.Username == username);
             if (user_db == null)
             {
-                throw new UserNotExistException("Username Does Not Exist when trying to get user's attributes.");
+                throw new UserNotExistException("Username Does Not Exist when trying to get its profile.");
             }
-
-            string permission = PermissionBank.UserOperationPermission(username, "attribute", "get");
+            //判断权限
+            string permission = PermissionBank.UserOperationPermission(username, "profile", "get");
             var user_actor = HttpContext.Items["actor"] as User;
-            if (!(bool) user_actor.HasPermission(permission))
+            if (user_actor.HasPermission(permission) != true)
             {
                 throw new AuthenticateFailedException(
                     "not has enough permission when trying to get other user's attributes.");
             }
-
-            return Ok(new GetAttributesResultModel(user_db));
+            //执行查询
+            long GotId = user_db.Id;
+            string GotUsername = user_db.Username;
+            ICollection<GroupToUser> GotGroupToUser = user_db.GroupToUser;
+            DateTime GotCreatedAt = user_db.CreatedAt;
+            DateTime GotUpdatedAt = user_db.UpdatedAt;
+            string GotNickname = user_db.Nickname;
+            //返回结果
+            return Ok(new GetUserProfileControllerResultModel(GotId, GotUsername, GotGroupToUser, GotCreatedAt, GotUpdatedAt, GotNickname));
         }
     }
 }
