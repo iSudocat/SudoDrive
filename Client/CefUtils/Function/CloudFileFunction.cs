@@ -164,5 +164,13 @@ namespace Client.CefUtils.Function
             downloadTaskListVO.refresh();
             return downloadTaskListVO.GetDownloadTaskListVO();
         }
+        public string search(string text)
+        {
+            FileRequest fileRequest = new FileRequest();
+            fileRequest.SearchFile(text,
+                out _, out List<Client.Request.Response.FileListResponse.File> fileList);
+            CloudFileListVO cloudFileListVO = new CloudFileListVO(fileList);
+            return JsonConvert.SerializeObject(cloudFileListVO);
+        }
     }
 }

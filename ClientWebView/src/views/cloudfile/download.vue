@@ -328,13 +328,20 @@ export default {
     },
     // 搜索
     search() {
-      const table = []
-      this.AllTableData.forEach(data => {
-        if (data.name.includes(this.searchText)) {
-          table.push(data)
-        }
-      })
-      this.downloadTableData = table
+      const that = this
+      if (typeof (CefSharp) === 'undefined') {
+        const table = []
+        this.AllTableData.forEach(data => {
+          if (data.name.includes(this.searchText)) {
+            table.push(data)
+          }
+        })
+        that.downloadTableData = table
+      } else {
+        window.cloudFileFunction.search(that.searchText).then(function(ret) {
+          that.handleTableReturn(ret)
+        })
+      }
     },
     // 新建文件夹
     newFolder() {
