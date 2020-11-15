@@ -17,6 +17,15 @@ export default {
       result: 0
     }
   },
+  created() {
+    if (typeof (CefSharp) === 'undefined') {
+      return
+    } else {
+      window.cloudFileFunction.login(String('sudodog'), String('ssss11111')).then(function(ret) {
+        console.log(ret)
+      })
+    }
+  },
   methods: {
     async testFolder() {
       window.fileFunction.showAllInfo().then(function(ret) {
@@ -42,7 +51,7 @@ export default {
       })
     },
     async testList() {
-      window.fileFunction.getFileList().then(function(ret) {
+      window.cloudFileFunction.getFileList().then(function(ret) {
         console.log(ret)
       })
     },
