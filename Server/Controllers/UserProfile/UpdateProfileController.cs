@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.UserProfile
 {
-    [Route("api/{username}")]
+    [Route("api/user/{username}")]
     [ApiController]
     [NeedPermission(PermissionBank.UserAuthUpdateProfile)]
     public class UpdateProfileController : AbstractController
@@ -40,78 +40,88 @@ namespace Server.Controllers.UserProfile
         [HttpPatch]
         public IActionResult UpdateProfile([FromBody] UpdateProfileRequestModel updateProfileRequestModel)
         {
-            //验证username合法且存在
+            if (!(HttpContext.Items["actor"] is User loginUser))
+            {
+                throw new UnexpectedException();
+            }
+
+            // 检索被操作的用户名
             if (!Regex.IsMatch(updateProfileRequestModel.Username, @"^[a-zA-Z0-9-_]{4,16}$"))
             {
-                throw new UsernameInvalidException("The username you enter is invalid when trying to update password.");
+                throw new UsernameInvalidException("The username given is invalid.");
             }
-
-            var user_db =
-                _databaseService.Users.FirstOrDefault(testc => testc.Username == updateProfileRequestModel.Username);
-            if (user_db == null)
+            var beingOperator =
+                _databaseService.Users.FirstOrDefault(s => s.Username == updateProfileRequestModel.Username);
+            if (beingOperator == null)
             {
-                throw new UserNotExistException("Username Does Not Exist when trying to update password.");
+                throw new UserNotExistException("User given is not exist.");
             }
 
-            //update nickname
+            // 是否为自己更新
+            var isSelf = loginUser.Id == beingOperator.Id;
+
+            // 如果不是给自己更新信息就检查一下管理员权限
+            if (!isSelf && loginUser.HasPermission(PermissionBank.UserAdminProfileUpdate) != true)
+            {
+                throw new UnauthenticatedException();
+            }
+
+            // 更新昵称
             if (updateProfileRequestModel.Nickname != null)
             {
-                if (!Regex.IsMatch(updateProfileRequestModel.Nickname, @"^[a-zA-Z0-9-_]{4,16}$"))
+
+                if (updateProfileRequestModel.Nickname.Length < 4 || updateProfileRequestModel.Nickname.Length > 16)
                 {
-                    throw new NicknameInvalidException(
-                        "The nickname you enter is invalid when trying to  change nickname.");
+                    throw new NicknameInvalidException("The new nickname is invalid.");
                 }
 
-                if (user_db.Nickname == updateProfileRequestModel.Nickname)
-                {
-                    throw new NicknameDuplicatedException(
-                        "The nickname you enter is duplicated when trying to update nickname");
-                }
-
-                string permission =
-                    PermissionBank.UserOperationPermission(updateProfileRequestModel.Username, "attribute", "update");
-                var user_actor = HttpContext.Items["actor"] as User;
-                if (!(bool) user_actor.HasPermission(permission))
-                {
-                    throw new AuthenticateFailedException("not has enough permission when trying to update nickname.");
-                }
-
-                user_db.Nickname = updateProfileRequestModel.Nickname;
+                beingOperator.Nickname = updateProfileRequestModel.Nickname;
             }
 
-            //update password
             if (updateProfileRequestModel.NewPassword != null)
             {
                 if (!Regex.IsMatch(updateProfileRequestModel.NewPassword, (@"^[^\n\r]{8,}$")))
                 {
-                    throw new PasswordNotMatchException(
-                        "The password you enter is invalid when trying to update password.");
+                    throw new PasswordInvalidException(
+                        "The new password is invalid.");
                 }
 
-                string permission =
-                    PermissionBank.UserOperationPermission(updateProfileRequestModel.Username, "attribute", "update");
-                var user_actor = HttpContext.Items["actor"] as User;
-                if (!(bool) user_actor.HasPermission(permission))
-                {
-                    throw new AuthenticateFailedException("not has enough permission when trying to update password.");
-                }
+                // 管理员
+                var isadmin = loginUser.HasPermission(PermissionBank.UserAdminProfileUpdate); 
+                // 旧密码
+                var oldpw = updateProfileRequestModel.OldPassword;
 
-                if (BCrypt.Net.BCrypt.Verify(updateProfileRequestModel.OldPassword, user_db.Password))
+                if (isSelf && isadmin != true || isSelf && isadmin == true && oldpw == null)
                 {
-                    user_db.Password = BCrypt.Net.BCrypt.HashPassword(updateProfileRequestModel.NewPassword);
+                    if (!Regex.IsMatch(oldpw, (@"^[^\n\r]{8,}$")))
+                    {
+                        throw new PasswordInvalidException(
+                            "The new password is invalid.");
+                    }
+
+                    // 不是管理员 自己更新自己密码的时候
+                    // 是管理员 自己更新自己密码的时候携带上了旧的密码
+
+                    if (BCrypt.Net.BCrypt.Verify(updateProfileRequestModel.OldPassword, beingOperator.Password))
+                    {
+                        beingOperator.Password = BCrypt.Net.BCrypt.HashPassword(updateProfileRequestModel.NewPassword);
+                    }
+                    else
+                    {
+                        throw new AuthenticateFailedException("The old password is not correct!");
+                    }
                 }
                 else
                 {
-                    throw new AuthenticateFailedException("The old password is not correct!");
+                    // 是管理员 更新密码的时候
+                    beingOperator.Password = BCrypt.Net.BCrypt.HashPassword(updateProfileRequestModel.NewPassword);
                 }
+
             }
 
-            //update photo
 
-
-            //保存更改并返回结果
             _databaseService.SaveChanges();
-            return Ok(new UpdateProfileResultModel(user_db));
+            return Ok(new UpdateProfileResultModel(beingOperator));
         }
     }
 }
