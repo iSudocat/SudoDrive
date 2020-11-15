@@ -48,7 +48,7 @@
         </el-button>
       </el-col>
       <el-col :span="6">
-        <el-input v-model="searchText" size="mini" style="top:-2px"/>
+        <el-input v-model="searchText" size="mini" style="top:-2px" @keyup.enter.native="search" />
       </el-col>
       <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
         <el-button
@@ -186,7 +186,7 @@ export default {
         xs: 4,
         sm: 2
       },
-      // 搜索内容
+      // 搜索框内容
       searchText: '',
       // 是否第一次点击
       isFirstClick: true,
