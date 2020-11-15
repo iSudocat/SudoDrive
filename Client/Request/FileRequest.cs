@@ -224,6 +224,45 @@ namespace Client.Request
 
         }
 
+        public void SearchFile(string sth, out int status, out List<Response.FileListResponse.File> fileList)
+        {
+            if (UserInfo.UserName == "")
+            {
+                fileList = null;
+                status = -1;
+            }
+            fileList = new List<Response.FileListResponse.File>();
+            int offset = 0;
+            int currentAmount;
+            do
+            {
+                var client = new RestClient(ServerAddress.Address + "/api/storage/file?offset=" + offset + "&amount=100&nameContains=" + sth);
+                var request = new RestRequest(Method.GET);
+                request.AddHeader("Authorization", "Bearer " + UserInfo.Token);
+                request.AddHeader("Content-Type", "application/json");
+                IRestResponse response = client.Execute(request);
+                Console.WriteLine(response.Content);
+                FileListResponse fileListResponse = JsonConvert.DeserializeObject<FileListResponse>(response.Content);
+                if (fileListResponse != null)
+                {
+                    currentAmount = fileListResponse.data.amount;
+                    if (currentAmount != 0)
+                    {
+                        fileList.AddRange(fileListResponse.data.files);
+                    }
+
+                    offset = offset + currentAmount;  // 下一次请求用
+                }
+                else
+                {
+                    status = -20000;
+                    return;
+                }
+            } while (currentAmount != 0);
+
+            status = 0;
+        }
+
 
         private static string GetFileMD5(string filePath)
         {

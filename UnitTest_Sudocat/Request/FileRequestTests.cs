@@ -63,5 +63,18 @@ namespace Client.Request.Tests
             int status = fileRequest.NewFolder("/users/sudodog/defg", out _);
             Assert.AreEqual(status, 101);
         }
+
+        [TestMethod()]
+        public void SearchFileTest()
+        {
+            UserRequest userService = new UserRequest();
+            userService.Login("sudodog", "ssss11111", out _);
+            FileRequest fileRequest = new FileRequest();
+            fileRequest.SearchFile("1",
+                out _, out List<Response.FileListResponse.File> fileList);
+            Console.WriteLine("文件数： " + fileList.Count);
+            Assert.AreEqual(fileList.Count, 140);
+
+        }
     }
 }
