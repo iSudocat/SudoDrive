@@ -6,7 +6,7 @@
           size="small"
           type="primary"
           style="display: flex;justify-content: center;align-items: center"
-          @click="handleDownload"
+          @click="handleMultipleDownload"
         >
           <svg-icon icon-class="zzdownload" />
         </el-button>
@@ -90,6 +90,7 @@
       @current-change="handleCurrentChange"
       @row-click="handleRowClick"
       @cell-dblclick="handleDblclick"
+      @selection-change="handleSelectionChange"
     >
       <el-table-column
         type="selection"
@@ -165,6 +166,7 @@ export default {
       cloudPath: '',
       // 云端数组
       currentPath: ['xx', 'xxx', 'xxxx'],
+      multipleRow: [],
       currentRow: {
         name: '',
         size: 0,
@@ -206,6 +208,24 @@ export default {
           that.$emit('afterDownload')
         })
       }
+    },
+    // 处理批量下载
+    handleMultipleDownload() {
+      const that = this
+      if (typeof (CefSharp) === 'undefined') {
+        console.log(that.currentRow)
+      } else {
+        that.multipleRow.forEach(row => {
+          window.cloudFileFunction.download(String(that.localPath), String(row.name), String(row.guid)).then(function(ret) {
+            console.log(ret)
+            that.$emit('afterDownload')
+          })
+        })
+      }
+    },
+    // 多选事件
+    handleSelectionChange(val) {
+      this.multipleRow = val
     },
     // 第一次单击某行
     handleCurrentChange(row) {
