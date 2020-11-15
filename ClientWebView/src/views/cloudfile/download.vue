@@ -310,6 +310,7 @@ export default {
         return
       } else {
         window.cloudFileFunction.goParent().then(function(ret) {
+          console.log(ret)
           that.handleTableReturn(ret)
         })
       }

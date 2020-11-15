@@ -67,7 +67,7 @@ namespace Client.CefUtils.Function
         {
             string path = "";
             string[] paths = currentPath.Split('/');
-            for (int i = 0; i < paths.Length - 1; i++)
+            for (int i = 1; i < paths.Length - 1; i++)
                 path += "/" + paths[i];
             currentPath = path;
             return getFileList();
