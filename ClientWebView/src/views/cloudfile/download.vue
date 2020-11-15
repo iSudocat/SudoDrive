@@ -353,20 +353,15 @@ export default {
         })
       })
     },
+    // 删除
     handleDelete() {
       const that = this
       that.multipleRow.forEach(row => {
         console.log('delete')
         console.log(row.path)
-        if (row.type === 'text/directory') {
-          window.cloudFileFunction.deleteFile(String(row.path), String('')).then(function(ret) {
-            console.log(ret)
-          })
-        } else {
-          window.cloudFileFunction.deleteFile(String(''), String(row.path)).then(function(ret) {
-            console.log(ret)
-          })
-        }
+        window.cloudFileFunction.deleteFile(String(row.path)).then(function(ret) {
+          console.log(ret)
+        })
       })
     }
   }

@@ -119,20 +119,12 @@ namespace Client.CefUtils.Function
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public string deleteFile(string folderName, string fileName)
+        public string deleteFile(string fileName)
         {
             if (userService == null) return null;
             FileRequest fileRequest = new FileRequest();
-            if (folderName == "")
-            {
-                int status = fileRequest.Delete(out _, "", fileName);
-                return status.ToString();
-            }
-            else
-            {
-                int status = fileRequest.Delete(out _, folderName, "");
-                return status.ToString();
-            }
+            int status = fileRequest.Delete(out _, fileName);
+            return status.ToString();
             return null;
         }
         /// <summary>
