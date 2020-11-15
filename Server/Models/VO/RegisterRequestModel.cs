@@ -17,7 +17,12 @@ namespace Server.Models.VO
 
         [Required]
         [JsonProperty("password")]
-        [RegularExpression(@"^(.?){8,}$")]
+        [RegularExpression(@"^[^\n\r]{8,}$")]
         public string Password { get; set; }
+
+
+        [JsonProperty("nickname")]
+        [RegularExpression(@"^[^\n\r]{4,16}$")]
+        public string Nickname { get; set; }
     }
 }

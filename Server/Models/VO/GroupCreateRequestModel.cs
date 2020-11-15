@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace Server.Models.VO
 {
-    public class QuitGroupRequestModel
+    public class GroupCreateRequestModel
     {
         [Required]
         [JsonProperty("groupname")]
-        public string GroupName { get;private set; }
+        [RegularExpression(@"^[a-zA-Z0-9-_]{4,16}$")]
+        public string GroupName { get;  set; }
+
     }
 }

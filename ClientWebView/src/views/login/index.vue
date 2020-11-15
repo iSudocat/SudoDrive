@@ -59,19 +59,22 @@
       </el-button>
 
       <div style="display: flex">
-        <el-button type="text" style="flex-grow: 0">注册</el-button>
+        <el-button type="text" style="flex-grow: 0" @click="registerDialogVisible=true">注册</el-button>
         <div style="flex-grow: 1" />
         <el-button type="text" style="flex-grow: 0">忘记密码</el-button>
       </div>
     </el-form>
+    <RegisterDialog :dialog-visible="registerDialogVisible" @close="closeRegisterDialog"/>
   </div>
 </template>
 
 <script>
 import { validUsername } from '@/utils/validate'
+import RegisterDialog from '@/views/login/registerDialog'
 
 export default {
   name: 'Login',
+  components: { RegisterDialog },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
@@ -91,8 +94,8 @@ export default {
       // form头像地址
       head_img: 'https://avatars3.githubusercontent.com/u/42528067?s=400&u=375133832a4d631e7a1be26aa764b0ff91565f7f&v=4',
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: 'sudodog',
+        password: 'ssss11111'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -100,7 +103,8 @@ export default {
       },
       loading: false,
       passwordType: 'password',
-      redirect: undefined
+      redirect: undefined,
+      registerDialogVisible: false
     }
   },
   watch: {
@@ -121,6 +125,9 @@ export default {
       this.$nextTick(() => {
         this.$refs.password.focus()
       })
+    },
+    closeRegisterDialog() {
+      this.registerDialogVisible = false
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {

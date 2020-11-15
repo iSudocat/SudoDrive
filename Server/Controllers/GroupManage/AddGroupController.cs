@@ -15,7 +15,7 @@ namespace Server.Controllers.GroupManage
 {
     [Route("api/group")]
     [ApiController]
-    [NeedPermission(PermissionBank.GroupManageGroupAdd)]
+    [NeedPermission(PermissionBank.GroupManageGroupCreateBasic)]
     public class AddGroupController : AbstractController
     {
         private IDatabaseService _databaseService;
@@ -25,7 +25,7 @@ namespace Server.Controllers.GroupManage
         }
 
         [HttpPost]
-        public IActionResult AddGroup([FromBody] AddGroupRequestModel addGroupRequestModel)
+        public IActionResult AddGroup([FromBody] GroupCreateRequestModel addGroupRequestModel)
         {
             //use groupname to identify group,because the id is invisible to user
             if (_databaseService.Groups.FirstOrDefault(t => t.GroupName == addGroupRequestModel.GroupName) != null)
@@ -48,6 +48,21 @@ namespace Server.Controllers.GroupManage
             groupToUser.UserId = user_db.Id;
             _databaseService.GroupsToUsersRelation.Add(groupToUser);
 
+            // initial group permission to the new group
+            _databaseService.GroupsToPermissionsRelation.Add(new GroupToPermission()
+            {
+                Group = group,
+                GroupId = group.Id,
+                Permission = PermissionBank.GroupOperationPermission(group.GroupName, "member", "add")
+            });
+
+            _databaseService.GroupsToPermissionsRelation.Add(new GroupToPermission()
+            {
+                Group = group,
+                GroupId = group.Id,
+                Permission = PermissionBank.GroupOperationPermission(group.GroupName, "member", "remove")
+            });
+
             //find the grouptouser in the database
             //below is how to input parameters when the entity has composite key values:
             //"The ordering of composite key values is as defined in the EDM, which is in turn as defined in the designer, by the Code First fluent API, or by the DataMember attribute."
@@ -57,7 +72,7 @@ namespace Server.Controllers.GroupManage
             
             _databaseService.SaveChanges();
             
-            return Ok(new AddGroupResultModel(group));
+            return Ok(new GroupCreateResultModel(group));
         }
     }
 }

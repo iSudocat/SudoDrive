@@ -9,13 +9,14 @@ using Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.GroupManage
 {
-    [Route("api/group/member")]
+    [Route("api/group/{groupname}/member")]
     [ApiController]
-    [NeedPermission(PermissionBank.GroupManageGroupMemberAdd)]
+    [NeedPermission(PermissionBank.GroupManageGroupMemberAddBasic)]
     public class AddGroupMemberController : AbstractController
     {
         private IDatabaseService _databaseService;
@@ -25,12 +26,22 @@ namespace Server.Controllers.GroupManage
         }
 
         [HttpPost]
-        public IActionResult AddGroupMember([FromBody] AddGroupMemberRequestModel addGroupMemberRequestModel)
+        public IActionResult AddGroupMember([FromBody] GroupAddMemberRequestModel addGroupMemberRequestModel, string groupname)
         {
-            var group = _databaseService.Groups.FirstOrDefault(t => t.GroupName == addGroupMemberRequestModel.GroupName);
+            if (!Regex.IsMatch(groupname, @"^[a-zA-Z0-9-_]{4,16}$"))
+            {
+                throw new GroupnameInvalidException("The groupname you enter is invalid when trying to add a member to it.");
+            }
+            var group = _databaseService.Groups.FirstOrDefault(t => t.GroupName == groupname);
             if (group == null)
             {
                 throw new GroupNotExistException("The groupname you enter does not exsit actually when trying to add a grouptouser.");
+            }
+            string permission = PermissionBank.GroupOperationPermission(groupname, "member", "add");
+            var user_actor = HttpContext.Items["actor"] as User;
+            if (user_actor.HasPermission(permission) != true)
+            {
+                throw new AuthenticateFailedException("not has enough permission when trying to add a member to a group.");
             }
             var user = _databaseService.Users.FirstOrDefault(t => t.Username == addGroupMemberRequestModel.UserName);
             if (user == null)
@@ -51,7 +62,7 @@ namespace Server.Controllers.GroupManage
             _databaseService.GroupsToUsersRelation.Add(grouptouser);
             _databaseService.SaveChanges();
 
-            return Ok(new AddGroupMemberResultModel(grouptouser.GroupId, grouptouser.UserId));
+            return Ok(new GroupMemberAddResultModel(group, user));
         }
     }
 }

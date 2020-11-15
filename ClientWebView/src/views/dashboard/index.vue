@@ -4,6 +4,8 @@
     <el-button @click="testFolderInfo">FolderInfo</el-button>
     <el-button @click="testFileInfo">FileInfo</el-button>
     <el-button @click="testDriver">DriverInfo</el-button>
+    <el-button @click="testList">List</el-button>
+    <el-button @click="testCloud">Cloud</el-button>
   </div>
 </template>
 
@@ -13,6 +15,15 @@ export default {
   data() {
     return {
       result: 0
+    }
+  },
+  created() {
+    if (typeof (CefSharp) === 'undefined') {
+      return
+    } else {
+      window.cloudFileFunction.login(String('sudodog'), String('ssss11111')).then(function(ret) {
+        console.log(ret)
+      })
     }
   },
   methods: {
@@ -36,6 +47,16 @@ export default {
         console.log(ret)
       })
       window.fileFunction.switchDriver('D:\\').then(function(ret) {
+        console.log(ret)
+      })
+    },
+    async testList() {
+      window.cloudFileFunction.getFileList().then(function(ret) {
+        console.log(ret)
+      })
+    },
+    async testCloud() {
+      window.cloudFileFunction.test().then(function(ret) {
         console.log(ret)
       })
     }

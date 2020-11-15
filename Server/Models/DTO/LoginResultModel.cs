@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using Server.Models.Entities;
+using Server.Models.VO;
+
 namespace Server.Models.DTO
 {
     public class LoginResultModel
@@ -6,10 +10,22 @@ namespace Server.Models.DTO
 
         public string Token { get; private set; }
 
-        public LoginResultModel(string username, string token)
+        public UserModel User { get; private set; }
+
+        public List<GroupModel> Groups { get; private set; }
+
+        public LoginResultModel(string username, string token, User user)
         {
             this.Username = username;
             this.Token = token;
+
+            this.User = user.ToVO();
+
+            Groups = new List<GroupModel>();
+            foreach (var t in user.GroupToUser)
+            {
+                Groups.Add(t.Group.ToVO());
+            }
         }
 
     }

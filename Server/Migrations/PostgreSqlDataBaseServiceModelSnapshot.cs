@@ -109,23 +109,23 @@ namespace Server.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2020, 11, 8, 16, 33, 42, 850, DateTimeKind.Local).AddTicks(1558),
+                            CreatedAt = new DateTime(2020, 11, 15, 18, 23, 9, 342, DateTimeKind.Local).AddTicks(7060),
                             GroupName = "Admin",
-                            UpdatedAt = new DateTime(2020, 11, 8, 16, 33, 42, 850, DateTimeKind.Local).AddTicks(1558)
+                            UpdatedAt = new DateTime(2020, 11, 15, 18, 23, 9, 342, DateTimeKind.Local).AddTicks(7060)
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2020, 11, 8, 16, 33, 42, 850, DateTimeKind.Local).AddTicks(1558),
+                            CreatedAt = new DateTime(2020, 11, 15, 18, 23, 9, 342, DateTimeKind.Local).AddTicks(7060),
                             GroupName = "User",
-                            UpdatedAt = new DateTime(2020, 11, 8, 16, 33, 42, 850, DateTimeKind.Local).AddTicks(1558)
+                            UpdatedAt = new DateTime(2020, 11, 15, 18, 23, 9, 342, DateTimeKind.Local).AddTicks(7060)
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2020, 11, 8, 16, 33, 42, 850, DateTimeKind.Local).AddTicks(1558),
+                            CreatedAt = new DateTime(2020, 11, 15, 18, 23, 9, 342, DateTimeKind.Local).AddTicks(7060),
                             GroupName = "Guest",
-                            UpdatedAt = new DateTime(2020, 11, 8, 16, 33, 42, 850, DateTimeKind.Local).AddTicks(1558)
+                            UpdatedAt = new DateTime(2020, 11, 15, 18, 23, 9, 342, DateTimeKind.Local).AddTicks(7060)
                         });
                 });
 
@@ -156,7 +156,12 @@ namespace Server.Migrations
                         new
                         {
                             GroupId = 2L,
-                            Permission = "user.auth.updatepassword"
+                            Permission = "user.profile.basic"
+                        },
+                        new
+                        {
+                            GroupId = 2L,
+                            Permission = "user.profile.update.basic"
                         },
                         new
                         {
@@ -172,6 +177,31 @@ namespace Server.Migrations
                         {
                             GroupId = 2L,
                             Permission = "storage.file.delete.basic"
+                        },
+                        new
+                        {
+                            GroupId = 2L,
+                            Permission = "groupmanager.group.create.basic"
+                        },
+                        new
+                        {
+                            GroupId = 2L,
+                            Permission = "groupmanager.group.delete.basic"
+                        },
+                        new
+                        {
+                            GroupId = 2L,
+                            Permission = "groupmanager.group.quit.basic"
+                        },
+                        new
+                        {
+                            GroupId = 2L,
+                            Permission = "groupmanager.group.member.add.basic"
+                        },
+                        new
+                        {
+                            GroupId = 2L,
+                            Permission = "groupmanager.group.member.remove.basic"
                         },
                         new
                         {
@@ -217,9 +247,15 @@ namespace Server.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<string>("Nickname")
+                        .HasColumnType("text");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
@@ -238,9 +274,9 @@ namespace Server.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2020, 11, 8, 16, 33, 42, 850, DateTimeKind.Local).AddTicks(1558),
-                            Password = "$2a$11$X.zD2cmCAI9hUm22571DKOXnyzuBqQ6y425Ex4Hm1HyE08X2CXzMC",
-                            UpdatedAt = new DateTime(2020, 11, 8, 16, 33, 42, 850, DateTimeKind.Local).AddTicks(1558),
+                            CreatedAt = new DateTime(2020, 11, 15, 18, 23, 9, 342, DateTimeKind.Local).AddTicks(7060),
+                            Password = "$2a$11$O9XLi4NEO0FbQ8vv9Hh8yuL1D88CT8SQvVsjGejJm3jc55RL3h7He",
+                            UpdatedAt = new DateTime(2020, 11, 15, 18, 23, 9, 342, DateTimeKind.Local).AddTicks(7060),
                             Username = "admin"
                         });
                 });

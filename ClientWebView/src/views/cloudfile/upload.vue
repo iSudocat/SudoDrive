@@ -1,17 +1,86 @@
 <template>
   <div id="leftBox">
     <el-row style="margin: 15px 10px 15px 20px;">
-      <el-col :span="21" />
-      <el-col :span="3">
-        <el-button size="small" type="primary" style="height: 24px; line-height: 4px;">上传</el-button>
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center"
+          @click="handleMultipleUpload"
+        >
+          <svg-icon icon-class="zzupload" />
+        </el-button>
+      </el-col>
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center"
+        >
+          <svg-icon icon-class="zznewfolder" />
+        </el-button>
+      </el-col>
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center"
+        >
+          <svg-icon icon-class="zzdelete" />
+        </el-button>
+      </el-col>
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center"
+        >
+          <svg-icon icon-class="zzmore" />
+        </el-button>
+      </el-col>
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center"
+        >
+          <svg-icon icon-class="zzshare" />
+        </el-button>
+      </el-col>
+      <el-col :span="6">
+        <el-input v-model="searchText" size="mini" style="top:-2px" @keyup.enter.native="search" />
+      </el-col>
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center;margin-left: 5px;"
+          @click="search"
+        >
+          <svg-icon icon-class="search" />
+        </el-button>
       </el-col>
     </el-row>
-    <el-row>
-      <el-col :span="2">
-        <el-button size="small" type="primary" @click="parentPath">返回</el-button>
+    <el-row style="margin: 15px 10px 15px 20px;">
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center;"
+          @click="parentPath"
+        >
+          <svg-icon icon-class="return" />
+        </el-button>
       </el-col>
-      <el-col :span="2">
-        <el-button size="small" type="primary">刷新</el-button>
+      <el-col :sm="buttonConfig.sm" :xs="buttonConfig.xs">
+        <el-button
+          size="small"
+          type="primary"
+          style="display: flex;justify-content: center;align-items: center;"
+          @click="refreshPath"
+        >
+          <svg-icon icon-class="refresh" />
+        </el-button>
       </el-col>
       <el-col :span="14">
         <el-breadcrumb separator="/" style="margin: 0px 10px 10px 20px;">
@@ -27,10 +96,14 @@
     </el-row>
     <hr style="border:0; background-color: #f1f1f1; height: 1px">
     <el-table
+      ref="uploadTable"
       highlight-current-row
       :data="uploadTableData"
       style="width: 100%"
-      @cell-dblclick="handleDblclick"
+      max-height="480"
+      @current-change="handleCurrentChange"
+      @row-click="handleRowClick"
+      @selection-change="handleSelectionChange"
     >
       <el-table-column
         type="selection"
@@ -67,10 +140,10 @@
         label="操作"
         align="center"
       >
-        <template slot-scope="scope">
+        <template>
           <el-button
             size="mini"
-            @click="handleUpload(scope.$index, scope.row)"
+            @click="handleUpload"
           >上传</el-button>
         </template>
       </el-table-column>
@@ -87,8 +160,7 @@
           :key="item"
           :label="item.label"
           :value="item"
-        >
-        </el-option>
+        />
       </el-select>
       <el-button type="primary" style="margin-left: 5px;position: relative;top: 2px" @click="changeDrive">确认</el-button>
     </el-dialog>
@@ -101,28 +173,49 @@ import InfoDialog from '@/views/cloudfile/infoDialog'
 export default {
   name: 'Upload',
   components: { InfoDialog },
+  props: {
+    cloudPath: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
+      // 按钮响应式大小绑定
+      buttonConfig: {
+        xs: 4,
+        sm: 2
+      },
+      // 搜索框内容
+      searchText: '',
+      // 是否第一次点击
+      isFirstClick: true,
       // 文件信息弹窗
       infoDialogVisible: false,
       // 盘符切换弹窗
       driveDialogVisible: false,
       // 是否第一次切换盘符
       showSwitchDrive: 0,
-      // 初始本地路径
+      // 初始本地路径分割数组
       currentPath: ['C:', 'hel', 'llo', 'iii'],
+      // 本地路径
+      localPath: '',
       // 本地盘符
       drives: ['A:', 'B:', 'C:', 'D:'],
       // 当前盘符
       currentDrive: '',
+      // 多选内容
+      multipleRow: [],
       // 当前选择文件的信息
       currentRow: {
         name: '',
         size: 0,
         lastModified: ''
       },
-      // 存储所有本地信息
+      // 存储显示的本地信息
       uploadTableData: [],
+      // 所有本地信息
+      AllTableData: [],
       // 浏览器所用窗口（wpf无用
       dirHandle: null
     }
@@ -131,7 +224,7 @@ export default {
     // 浏览器状态下随机生成数据
     if (typeof (CefSharp) === 'undefined') {
       const table = []
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 20; i++) {
         table[i] = {
           name: '文件' + i,
           size: Math.floor(Math.random() * 1000000),
@@ -141,21 +234,44 @@ export default {
         }
       }
       this.uploadTableData = table
+      this.AllTableData = table
       // 初始化本地数据
     } else {
       this.InitPath()
     }
   },
   methods: {
-    // 上传方法
-    handleUpload(index, row) {
-      console.log(index, row)
+    // 单个上传方法
+    handleUpload() {
+      const that = this
+      if (typeof (CefSharp) === 'undefined') {
+        console.log(that.currentRow)
+      } else {
+        window.cloudFileFunction.upload(String(that.localPath), String(that.cloudPath), String(that.currentRow.name)).then(function(ret) {
+          console.log(ret)
+        })
+      }
+    },
+    // 多个上传方法
+    handleMultipleUpload() {
+      const that = this
+      if (typeof (CefSharp) === 'undefined') {
+        console.log(that.currentRow)
+      } else {
+        that.multipleRow.forEach(row => {
+          window.cloudFileFunction.upload(String(that.localPath), String(that.cloudPath), String(row.name)).then(function(ret) {
+            console.log(ret)
+          })
+        })
+      }
     },
     // 将C#传来的本地json数据转换为table显示里的数据
     handleTableReturn(ret) {
       const that = this
       const table = []
       const retObject = JSON.parse(ret)
+      this.localPath = retObject.currentPath
+      this.$emit('changePath', this.localPath)
       this.currentPath = retObject.currentPath.split('\\')
       // 去除不知道哪冒出来的最后一个空白
       const index = this.currentPath.indexOf('')
@@ -173,6 +289,7 @@ export default {
         table.push(fileTable[i])
       }
       that.uploadTableData = table
+      this.AllTableData = table
     },
     // 初始化初始路径文件信息和盘符
     async InitPath() {
@@ -193,14 +310,15 @@ export default {
           }
         }
         this.uploadTableData = table
+        this.AllTableData = table
         console.log(table)
       } else {
         // 初始化路径为桌面
-        window.fileFunction.showAllInfo().then(function(ret) {
+        window.localFileFunction.showAllInfo().then(function(ret) {
           that.handleTableReturn(ret)
         })
         // 初始化盘符
-        window.fileFunction.showAllDrives().then(function(ret) {
+        window.localFileFunction.showAllDrives().then(function(ret) {
           that.drives = JSON.parse(ret)
           that.currentDrive = that.drives[0]
         })
@@ -209,21 +327,30 @@ export default {
     // 返回父目录
     parentPath() {
       const that = this
+      // 重置选中行
+      that.resetCurrentRow()
       if (typeof (CefSharp) === 'undefined') {
         return
       } else {
         // 阻止在盘符根目录下回到父目录
         if (that.currentPath.length > 1) {
-          window.fileFunction.toParent().then(function(ret) {
+          window.localFileFunction.toParent().then(function(ret) {
             that.handleTableReturn(ret)
           })
         }
       }
     },
+    // 刷新本地文件信息
+    refreshPath() {
+      // 重置选中行
+      this.resetCurrentRow()
+      this.InitPath()
+    },
     // 面包屑跳转
     handleJump(num) {
       const that = this
-      console.log(num)
+      // 重置选中行
+      that.resetCurrentRow()
       // 点击当前目录名则啥也不做
       if (num === that.currentPath.length - 1) {
         // 点击盘符则显示盘符信息
@@ -236,18 +363,46 @@ export default {
         }
       }
     },
+    // 多选事件
+    handleSelectionChange(val) {
+      this.multipleRow = val
+    },
+    // 重置选中行
+    resetCurrentRow() {
+      this.$refs.uploadTable.setCurrentRow(undefined)
+      this.currentRow = undefined
+    },
+    // 第一次单击某行
+    handleCurrentChange(row) {
+      this.isFirstClick = true
+    },
+    // 单击某行
+    handleRowClick(row) {
+      const that = this
+      that.currentRow = row
+      that.$emit('changeFile', that.currentRow)
+      console.log(this.cloudPath)
+      if (that.isFirstClick) {
+        that.isFirstClick = false
+      } else {
+        that.handleDblclick(row)
+      }
+    },
     // 双击table的处理
     handleDblclick(row) {
-      console.log(row)
       const that = this
       if (typeof (CefSharp) === 'undefined') {
+        if (row.isFile) {
+          this.infoDialogVisible = true
+          this.currentRow = row
+        }
         return
       } else {
         if (row.isFile) {
           this.infoDialogVisible = true
           this.currentRow = row
         } else {
-          window.fileFunction.toChild(String(row.name)).then(function(ret) {
+          window.localFileFunction.toChild(String(row.name)).then(function(ret) {
             that.handleTableReturn(ret)
           })
         }
@@ -255,7 +410,6 @@ export default {
     },
     // 关闭对话框
     closeDialog(visible) {
-      console.log('closeDialog')
       this.infoDialogVisible = visible
     },
     // 点击盘符面包屑时 第一次显示提示，第二次以及之后直接打开切换对话框
@@ -268,23 +422,33 @@ export default {
           position: 'top-left'
         })
         that.showSwitchDrive++
-        console.log(that.showSwitchDrive)
       } else {
         that.driveDialogVisible = true
-        console.log(that.drives)
       }
     },
     // 切换盘符
     changeDrive() {
       const that = this
+      // 重置选中行
+      that.resetCurrentRow()
       if (typeof (CefSharp) === 'undefined') {
         return
       } else {
-        window.fileFunction.switchDriver(that.currentDrive).then(function(ret) {
+        window.localFileFunction.switchDriver(that.currentDrive).then(function(ret) {
           that.handleTableReturn(ret)
         })
       }
       that.driveDialogVisible = false
+    },
+    // 搜索
+    search() {
+      const table = []
+      this.AllTableData.forEach(data => {
+        if (data.name.includes(this.searchText)) {
+          table.push(data)
+        }
+      })
+      this.uploadTableData = table
     }
   }
 }
@@ -304,7 +468,13 @@ export default {
   #rightBox {
   }
 }
+.el-button:has(.svg-icon) {
+  display: flex;justify-content: center;align-items: center;
+}
 .el-button {
   height: 24px; line-height: 4px;
+}
+.el-table {
+  user-select:none;
 }
 </style>
