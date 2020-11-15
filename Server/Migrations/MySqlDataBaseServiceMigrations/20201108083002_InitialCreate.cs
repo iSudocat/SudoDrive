@@ -32,7 +32,9 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                     Username = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: false),
                     Password = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Nickname = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: false)
+
                 },
                 constraints: table =>
                 {
@@ -126,8 +128,8 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "CreatedAt", "Password", "UpdatedAt", "Username" },
-                values: new object[] { 1L, now, BCrypt.Net.BCrypt.HashPassword("adminadmin"), now, "admin" });
+                columns: new[] { "Id", "CreatedAt", "Password", "UpdatedAt", "Username","Nickname" },
+                values: new object[] { 1L, now, BCrypt.Net.BCrypt.HashPassword("adminadmin"), now, "admin","admin" });
 
             migrationBuilder.InsertData(
                 table: "GroupsToPermissionsRelation",

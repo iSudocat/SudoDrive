@@ -56,7 +56,8 @@ namespace Server.Migrations
                     Username = table.Column<string>(nullable: false),
                     Password = table.Column<string>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false)
+                    UpdatedAt = table.Column<DateTime>(nullable: false),
+                    Nickname = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {

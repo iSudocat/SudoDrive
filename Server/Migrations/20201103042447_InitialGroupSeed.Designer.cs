@@ -172,6 +172,9 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Nickname")
+                       .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
@@ -183,7 +186,8 @@ namespace Server.Migrations
                             CreatedAt = new DateTime(2020, 11, 3, 12, 24, 45, 646, DateTimeKind.Local).AddTicks(3415),
                             Password = "$2a$11$kQr902mf7nWrCWdeHzquL.ZrnklghVT79tzne9GSSt8rxGSCrZNhG",
                             UpdatedAt = new DateTime(2020, 11, 3, 12, 24, 45, 646, DateTimeKind.Local).AddTicks(3415),
-                            Username = "admin"
+                            Username = "admin",
+                            Nickname="admin"
                         });
                 });
 

@@ -6,7 +6,7 @@ using Server.Models.Entities;
 
 namespace Server.Models.DTO
 {
-    public class GetAttributesResultModel
+    public class GetUserProfileResultModel
     {
         public long Id { get; private set; }
 
@@ -20,7 +20,7 @@ namespace Server.Models.DTO
 
         public DateTime UpdatedAt { get; private set; }
 
-        public GetAttributesResultModel(User p)
+        public GetUserProfileResultModel(User p)
         {
             Id = p.Id;
             Username = p.Username;

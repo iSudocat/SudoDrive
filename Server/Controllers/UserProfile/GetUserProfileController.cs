@@ -60,7 +60,7 @@ namespace Server.Controllers.UserProfile
                     "not has enough permission when trying to get other user's attributes.");
             }
 
-            return Ok(new GetAttributesResultModel(user_db));
+            return Ok(new GetUserProfileResultModel(user_db));
         }
     }
 }
