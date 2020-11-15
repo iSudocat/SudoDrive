@@ -4,8 +4,35 @@
       <el-tab-pane label="" name="" />
       <el-tab-pane label="上传" name="upload">
         <el-tabs v-model="uploadActiveName" @tab-click="handleUploadClick">
-          <el-tab-pane label="" name="" />
-          <el-tab-pane label="传输中" name="running">
+          <el-tab-pane label="等待" name="waiting">
+            <el-table
+              :data="uploads.waiting"
+              style="width: 100%;height: 78vh;overflow:auto;"
+              :border="true"
+            >
+              <el-table-column
+                label="文件名"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <span style="margin-left: 10px">{{ scope.row.name }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="进度"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <el-progress
+                    :text-inside="true"
+                    :stroke-width="16"
+                    :percentage="scope.row.percentage"
+                  />
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
+          <el-tab-pane label="传输" name="running">
             <el-table
               :data="uploads.running"
               style="width: 100%;height: 78vh;overflow:auto;"
@@ -95,8 +122,35 @@
       </el-tab-pane>
       <el-tab-pane label="下载" name="download">
         <el-tabs v-model="downloadActiveName" @tab-click="handleDownloadClick">
-          <el-tab-pane label="" name="" />
-          <el-tab-pane label="传输中" name="running">
+          <el-tab-pane label="等待" name="waiting">
+            <el-table
+              :data="downloads.waiting"
+              style="width: 100%;height: 78vh;overflow:auto;"
+              :border="true"
+            >
+              <el-table-column
+                label="文件名"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <span style="margin-left: 10px">{{ scope.row.name }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="进度"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <el-progress
+                    :text-inside="true"
+                    :stroke-width="16"
+                    :percentage="scope.row.percentage"
+                  />
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
+          <el-tab-pane label="传输" name="running">
             <el-table
               :data="downloads.running"
               style="width: 100%;height: 78vh;overflow:auto;"
@@ -195,18 +249,20 @@ export default {
   data() {
     return {
       uploads: {
+        waiting: [],
         running: [],
         success: [],
         fail: []
       },
       downloads: {
+        waiting: [],
         running: [],
         success: [],
         fail: []
       },
       firstActiveName: 'download',
-      uploadActiveName: 'running',
-      downloadActiveName: 'running'
+      uploadActiveName: 'waiting',
+      downloadActiveName: 'waiting'
     }
   },
   created() {
