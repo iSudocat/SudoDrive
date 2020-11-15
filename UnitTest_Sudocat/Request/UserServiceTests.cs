@@ -35,7 +35,7 @@ namespace Client.Request.Tests
         public void RegisterTest()
         {
             UserRequest userService = new UserRequest();
-            var status = userService.Register("sudobird", "ssss11111", "Haha", out RegisterResponse res);
+            var status = userService.Register("dzylsp", "dzylsp123", "lsplsp", out RegisterResponse res);
             Console.WriteLine(res);
             Assert.AreEqual(status, 0);
         }

@@ -27,7 +27,7 @@ namespace Server.Controllers.UserProfile
         }
 
         /// <summary>
-        /// 改变用户信息
+        /// 列出所有用户
         /// </summary>
         /// <param name="updateProfileRequestModel"></param>
         /// <returns></returns>
