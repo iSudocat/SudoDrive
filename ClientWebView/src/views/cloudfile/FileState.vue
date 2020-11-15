@@ -26,7 +26,7 @@
                   <el-progress
                     :text-inside="true"
                     :stroke-width="16"
-                    :percentage="scope.row.percentage"
+                    :percentage="scope.row.completed === 0 ? 0 : 100 * scope.row.completed/scope.row.total"
                   />
                 </template>
               </el-table-column>
@@ -54,7 +54,7 @@
                   <el-progress
                     :text-inside="true"
                     :stroke-width="16"
-                    :percentage="scope.row.percentage"
+                    :percentage="scope.row.completed === 0 ? 0 : 100 * scope.row.completed/scope.row.total"
                   />
                 </template>
               </el-table-column>
@@ -83,7 +83,7 @@
                     :text-inside="true"
                     :stroke-width="16"
                     status="success"
-                    :percentage="scope.row.percentage"
+                    :percentage="scope.row.completed === 0 ? 0 : 100 * scope.row.completed/scope.row.total"
                   />
                 </template>
               </el-table-column>
@@ -112,7 +112,7 @@
                     :text-inside="true"
                     :stroke-width="16"
                     status="exception"
-                    :percentage="scope.row.percentage"
+                    :percentage="scope.row.completed === 0 ? 0 : 100 * scope.row.completed/scope.row.total"
                   />
                 </template>
               </el-table-column>
@@ -144,7 +144,7 @@
                   <el-progress
                     :text-inside="true"
                     :stroke-width="16"
-                    :percentage="scope.row.percentage"
+                    :percentage="scope.row.completed === 0 ? 0 : 100 * scope.row.completed/scope.row.total"
                   />
                 </template>
               </el-table-column>
@@ -172,7 +172,7 @@
                   <el-progress
                     :text-inside="true"
                     :stroke-width="16"
-                    :percentage="scope.row.percentage"
+                    :percentage="scope.row.completed === 0 ? 0 : 100 * scope.row.completed/scope.row.total"
                   />
                 </template>
               </el-table-column>
@@ -201,7 +201,7 @@
                     :text-inside="true"
                     :stroke-width="16"
                     status="success"
-                    :percentage="scope.row.percentage"
+                    :percentage="scope.row.completed === 0 ? 0 : 100 * scope.row.completed/scope.row.total"
                   />
                 </template>
               </el-table-column>
@@ -230,7 +230,7 @@
                     :text-inside="true"
                     :stroke-width="16"
                     status="exception"
-                    :percentage="scope.row.percentage"
+                    :percentage="scope.row.completed === 0 ? 0 : 100 * scope.row.completed/scope.row.total"
                   />
                 </template>
               </el-table-column>
@@ -266,20 +266,37 @@ export default {
     }
   },
   created() {
-    for (let i = 0; i < 9; i++) {
-      this.uploads.running.push({
-        name: '传输中文件' + i,
-        percentage: i * 10
+    const that = this
+    if (typeof (CefSharp) === 'undefined') {
+      for (let i = 0; i < 9; i++) {
+        that.uploads.running.push({
+          name: '传输中文件' + i,
+          percentage: i * 10
+        })
+        that.uploads.fail.push({
+          name: '失败文件' + i,
+          percentage: 90 - i * 10
+        })
+      }
+      that.uploads.success.push({
+        name: '成功文件',
+        percentage: 100
       })
-      this.uploads.fail.push({
-        name: '失败文件' + i,
-        percentage: 90 - i * 10
+    } else {
+      const timer = setInterval(() => {
+        window.cloudFileFunction.getUploadList().then(function(ret) {
+          that.uploads = JSON.parse(ret)
+          console.log(that.uploads)
+        })
+        window.cloudFileFunction.getDownloadList().then(function(ret) {
+          that.downloads = JSON.parse(ret)
+          console.log(that.downloads)
+        })
+      }, 1000)
+      that.$once('hook:beforeDestroy', () => {
+        clearInterval(timer)
       })
     }
-    this.uploads.success.push({
-      name: '成功文件',
-      percentage: 100
-    })
   },
   methods: {
     handleFirstClick(tab, event) {
