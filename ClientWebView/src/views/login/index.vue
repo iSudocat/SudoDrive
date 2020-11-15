@@ -64,7 +64,7 @@
         <el-button type="text" style="flex-grow: 0">忘记密码</el-button>
       </div>
     </el-form>
-    <RegisterDialog :dialog-visible="registerDialogVisible" @close="closeRegisterDialog"/>
+    <RegisterDialog :dialog-visible="registerDialogVisible" @close="closeRegisterDialog" />
   </div>
 </template>
 

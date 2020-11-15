@@ -16,6 +16,7 @@
           size="small"
           type="primary"
           style="display: flex;justify-content: center;align-items: center"
+          @click="newFolder"
         >
           <svg-icon icon-class="zznewfolder" />
         </el-button>
@@ -25,6 +26,7 @@
           size="small"
           type="primary"
           style="display: flex;justify-content: center;align-items: center"
+          @click="handleDelete"
         >
           <svg-icon icon-class="zzdelete" />
         </el-button>
@@ -115,7 +117,9 @@
         align="center"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
+          <i v-if="scope.row.type==='text/directory'" class="el-icon-folder" />
+          <i v-else class="el-icon-tickets" />
+          <span>&nbsp;{{ scope.row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -190,7 +194,8 @@ export default {
       currentRow: {
         name: '',
         size: 0,
-        updatedAt: '0'
+        updatedAt: '0',
+        id: ''
       }
     }
   },
@@ -222,10 +227,9 @@ export default {
         console.log('download')
         console.log(that.localPath)
         console.log(that.currentRow.name)
-        console.log(that.currentRow.guid)
-        window.cloudFileFunction.download(String(that.localPath), String(that.currentRow.name), String(that.currentRow.guid)).then(function(ret) {
+        console.log(that.currentRow.id)
+        window.cloudFileFunction.download(String(that.localPath), String(that.currentRow.name), String(that.currentRow.id)).then(function(ret) {
           console.log(ret)
-          that.$emit('afterDownload')
         })
       }
     },
@@ -235,10 +239,9 @@ export default {
       if (typeof (CefSharp) === 'undefined') {
         console.log(that.currentRow)
       } else {
-        that.multipleRow.forEach(row => {
-          window.cloudFileFunction.download(String(that.localPath), String(row.name), String(row.guid)).then(function(ret) {
+        that.multipleRow.forEach(async row => {
+          await window.cloudFileFunction.download(String(that.localPath), String(row.name), String(row.id)).then(function(ret) {
             console.log(ret)
-            that.$emit('afterDownload')
           })
         })
       }
@@ -255,6 +258,7 @@ export default {
     handleRowClick(row) {
       console.log(this.localPath)
       console.log(this.localFile)
+      console.log(this.currentRow)
       const that = this
       that.currentRow = row
       if (that.isFirstClick) {
@@ -264,9 +268,15 @@ export default {
       }
     },
     handleDblclick(row) {
-      console.log(row)
-      this.dialogVisible = true
-      this.currentRow = row
+      const that = this
+      if (row.type === 'text/directory') {
+        window.cloudFileFunction.goPath(String(row.path)).then(function(ret) {
+          that.handleTableReturn(ret)
+        })
+      } else {
+        that.dialogVisible = true
+        that.currentRow = row
+      }
     },
     closeDialog(visible) {
       console.log('closeDialog')
@@ -280,10 +290,12 @@ export default {
     handleTableReturn(ret) {
       const that = this
       const table = []
+      window.cloudFileFunction.getCurrentPath().then(function(ret) {
+        that.cloudPath = ret
+        that.currentPath = that.cloudPath.split('/')
+        that.$emit('changePath', that.cloudPath)
+      })
       const retObject = JSON.parse(ret)
-      that.cloudPath = retObject.cloudFileList[0].folder
-      this.$emit('changePath', that.cloudPath)
-      that.currentPath = that.cloudPath.split('/')
       const cloudFileList = retObject.cloudFileList
       for (let i = 0; i < cloudFileList.length; i++) {
         table.push(cloudFileList[i])
@@ -293,7 +305,15 @@ export default {
     },
     // 返回父目录
     parentPath() {
-      return
+      const that = this
+      if (typeof (CefSharp) === 'undefined') {
+        return
+      } else {
+        window.cloudFileFunction.goParent().then(function(ret) {
+          console.log(ret)
+          that.handleTableReturn(ret)
+        })
+      }
     },
     // 刷新目录
     refreshPath() {
@@ -315,6 +335,48 @@ export default {
         }
       })
       this.downloadTableData = table
+    },
+    // 新建文件夹
+    newFolder() {
+      const that = this
+      this.$prompt('请输入文件夹名', '新建文件夹', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /.*/,
+        inputErrorMessage: '文件夹名格式不正确'
+      }).then(({ value }) => {
+        window.cloudFileFunction.newFolder(String(value)).then(function(ret) {
+          console.log('newFolder')
+          console.log(ret)
+          if (ret === '101') {
+            that.$message({
+              type: 'success',
+              message: '新建文件夹: ' + value
+            })
+          } else {
+            that.$message({
+              type: 'error',
+              message: '新建失败'
+            })
+          }
+        })
+      }).catch(() => {
+        that.$message({
+          type: 'info',
+          message: '取消新建文件夹'
+        })
+      })
+    },
+    // 删除
+    handleDelete() {
+      const that = this
+      that.multipleRow.forEach(row => {
+        console.log('delete')
+        console.log(row.path)
+        window.cloudFileFunction.deleteFile(String(row.path)).then(function(ret) {
+          console.log(ret)
+        })
+      })
     }
   }
 }

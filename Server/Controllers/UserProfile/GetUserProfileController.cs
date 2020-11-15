@@ -44,6 +44,7 @@ namespace Server.Controllers.UserProfile
                 .Include(s => s.GroupToUser)
                 .ThenInclude(s => s.Group)
                 .FirstOrDefault(t => t.Username == username);
+
             if (user_db == null)
             {
                 throw new UserNotExistException("The username given is not found.");

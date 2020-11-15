@@ -106,6 +106,7 @@
     <Compile Include="CefUtils\Function\CloudFileFunction.cs" />
     <Compile Include="CefUtils\Function\LocalFileFunction.cs" />
     <Compile Include="CefUtils\VO\Cloud\CloudFileListVO.cs" />
+    <Compile Include="CefUtils\VO\Cloud\TaskListVO.cs" />
     <Compile Include="CefUtils\VO\Local\AllInfoVO.cs" />
     <Compile Include="CefUtils\VO\Local\FileInfoVO.cs" />
     <Compile Include="CefUtils\VO\Local\DirectoryInfoVO.cs" />

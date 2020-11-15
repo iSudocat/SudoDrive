@@ -1,6 +1,7 @@
 using Client.CefUtils.VO.Cloud;
 using Client.Request;
 using Client.Request.Response.LoginResponse;
+using Client.Request.Response.UploadResponse;
 using Client.TencentCos.Task;
 using Client.TencentCos.Task.List;
 using Newtonsoft.Json;
@@ -16,6 +17,10 @@ namespace Client.CefUtils.Function
     {
         public static UserRequest userService = null;
         public static LoginResponse loginResponse;
+        public static string currentPath = @"/users/sudodog/测试数据/a lot of txt";
+
+        public DownloadTaskListVO downloadTaskListVO = new DownloadTaskListVO();
+        public UploadTaskListVO uploadTaskListVO = new UploadTaskListVO();
         /// <summary>
         /// 登录
         /// </summary>
@@ -37,6 +42,37 @@ namespace Client.CefUtils.Function
             return JsonConvert.SerializeObject(loginResponse);
         }
         /// <summary>
+        /// 获取当前路径
+        /// </summary>
+        /// <returns></returns>
+        public string getCurrentPath()
+        {
+            return currentPath;
+        }
+        /// <summary>
+        /// 直接跳转
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public string goPath(string path)
+        {
+            currentPath = path;
+            return getFileList();
+        }
+        /// <summary>
+        /// 父目录
+        /// </summary>
+        /// <returns></returns>
+        public string goParent()
+        {
+            string path = "";
+            string[] paths = currentPath.Split('/');
+            for (int i = 1; i < paths.Length - 1; i++)
+                path += "/" + paths[i];
+            currentPath = path;
+            return getFileList();
+        }
+        /// <summary>
         /// 获取云端文件信息
         /// </summary>
         /// <returns></returns>
@@ -44,7 +80,7 @@ namespace Client.CefUtils.Function
         {
             if (userService == null) return null;
             FileRequest fileRequest = new FileRequest();
-            fileRequest.GetFileList("/users/sudodog/测试数据/a lot of txt",
+            fileRequest.GetFileList(currentPath,
                 out int status, out List<Client.Request.Response.FileListResponse.File> fileList);
             CloudFileListVO cloudFileListVO = new CloudFileListVO(fileList);
             return JsonConvert.SerializeObject(cloudFileListVO);
@@ -75,17 +111,58 @@ namespace Client.CefUtils.Function
         /// <param name="fileName"></param>
         /// <param name="guid"></param>
         /// <returns></returns>
-        public string download(string localPath, string fileName, string guid)
+        public string download(string localPath, string fileName, string id)
         {
             if (userService == null) return null;
             DownloadTaskList.Add(new FileControlBlock
             {
                 FileName = fileName,
-                Guid = guid,
+                Id = id,
                 LocalPath = localPath,
                 Status = StatusType.Waiting
             });
             return null;
+        }
+        /// <summary>
+        /// 新建文件夹
+        /// </summary>
+        /// <param name="folderName"></param>
+        /// <returns></returns>
+        public string newFolder(string folderName)
+        {
+            if (userService == null) return null;
+            FileRequest fileRequest = new FileRequest();
+            int status = fileRequest.NewFolder(currentPath + "/" + folderName, out UploadResponse result);
+            Console.WriteLine("NewFolder");
+            Console.WriteLine(result);
+            return result.status.ToString();
+        }
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public string deleteFile(string fileName)
+        {
+            if (userService == null) return null;
+            FileRequest fileRequest = new FileRequest();
+            int status = fileRequest.Delete(out _, fileName);
+            return status.ToString();
+            return null;
+        }
+        /// <summary>
+        /// 刷新并返回当前上传状态列表
+        /// </summary>
+        /// <returns></returns>
+        public string getUploadList()
+        {
+            uploadTaskListVO.refresh();
+            return uploadTaskListVO.GetUploadTaskListVO();
+        }
+        public string getDownloadList()
+        {
+            downloadTaskListVO.refresh();
+            return downloadTaskListVO.GetDownloadTaskListVO();
         }
     }
 }

@@ -6,6 +6,7 @@
     <el-button @click="testDriver">DriverInfo</el-button>
     <el-button @click="testList">List</el-button>
     <el-button @click="testCloud">Cloud</el-button>
+    <el-button @click="testTaskList">Task</el-button>
   </div>
 </template>
 
@@ -57,6 +58,16 @@ export default {
     },
     async testCloud() {
       window.cloudFileFunction.test().then(function(ret) {
+        console.log(ret)
+      })
+    },
+    async testTaskList() {
+      window.cloudFileFunction.getUploadList().then(function(ret) {
+        console.log('upload')
+        console.log(ret)
+      })
+      window.cloudFileFunction.getDownloadList().then(function(ret) {
+        console.log('download')
         console.log(ret)
       })
     }
