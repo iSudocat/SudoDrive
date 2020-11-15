@@ -13,16 +13,12 @@ namespace Server.Models.VO
 
         public DateTime UpdatedAt { get; set; }
 
-        public string Nickname { get; set; }
-
-
         public UserModel(User user)
         {
             this.Id = user.Id;
             this.Username = user.Username;
             this.CreatedAt = user.CreatedAt;
             this.UpdatedAt = user.UpdatedAt;
-            this.Nickname = user.Nickname;
         }
     }
 }

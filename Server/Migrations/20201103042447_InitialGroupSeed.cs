@@ -21,8 +21,8 @@ namespace Server.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "CreatedAt", "Password", "UpdatedAt", "Username","Nickname" },
-                values: new object[] { 1L, now, BCrypt.Net.BCrypt.HashPassword("admin"), now, "admin" ,"admin"});
+                columns: new[] { "Id", "CreatedAt", "Password", "UpdatedAt", "Username" },
+                values: new object[] { 1L, now, BCrypt.Net.BCrypt.HashPassword("admin"), now, "admin" });
 
             migrationBuilder.InsertData(
                 table: "GroupsToPermissionsRelation",
