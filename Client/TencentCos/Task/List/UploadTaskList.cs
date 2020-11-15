@@ -114,6 +114,7 @@ namespace Client.TencentCos.Task.List
             while (true)
             {
                 waitinglistMutex.WaitOne();
+                runninglistMutex.WaitOne();
                 if (waitingList.Count != 0)
                 {
                     IList<long> waitingListkeys = waitingList.Keys;
@@ -124,15 +125,13 @@ namespace Client.TencentCos.Task.List
                     {
                         if (waitingList.Count > 0)
                         {
-                            runninglistMutex.WaitOne();
                             runningList.Add(waitingListkeys[0], waitingListValues[0]);
-                            runninglistMutex.ReleaseMutex();
-
                             waitingList.RemoveAt(0);
                         }
                         else break;
                     }
                 }
+                runninglistMutex.ReleaseMutex();
                 waitinglistMutex.ReleaseMutex();
 
                 runninglistMutex.WaitOne();

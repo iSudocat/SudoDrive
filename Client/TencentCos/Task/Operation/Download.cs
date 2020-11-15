@@ -33,7 +33,7 @@ namespace Client.TencentCos.Task.Operation
         public void Run()
         {
             FileRequest fileRequest = new FileRequest();
-            int status = fileRequest.Download(File.Guid, out FileListResponse res);
+            int status = fileRequest.Download(File.Id, out FileListResponse res);
 
             switch (status)
             {
