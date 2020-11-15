@@ -31,7 +31,7 @@ namespace Client.Request
                     UserInfo.UserName = loginResponse.data.username;
                     UserInfo.Token = loginResponse.data.token;
                     UserInfo.Nickname = loginResponse.data.user.nickname;
-                    UserInfo.groups = loginResponse.data.groups;
+                    UserInfo.Groups = loginResponse.data.groups;
                 }
                 return loginResponse.status;
             }
