@@ -6,6 +6,7 @@ using Server.Services;
 using Server.Models.DTO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Server.Controllers.UserProfile
 {
@@ -39,7 +40,10 @@ namespace Server.Controllers.UserProfile
                     "The username given is invalid.");
             }
 
-            var user_db = _databaseService.Users.FirstOrDefault(t => t.Username == username);
+            var user_db = _databaseService.Users
+                .Include(s => s.GroupToUser)
+                .ThenInclude(s => s.Group)
+                .FirstOrDefault(t => t.Username == username);
             if (user_db == null)
             {
                 throw new UserNotExistException("The username given is not found.");

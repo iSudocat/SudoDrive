@@ -36,8 +36,7 @@ namespace Server.Controllers.UserProfile
         {
             var result = _databaseService.Users
                 .Include(s => s.GroupToUser)
-                .ThenInclude(s => s.Group)
-                .ThenInclude(s => s.GroupToPermission).AsSingleQuery();
+                .ThenInclude(s => s.Group).AsSingleQuery();
 
             // 按用户名关键字匹配
             if (requestModel.Username?.Length > 0)
