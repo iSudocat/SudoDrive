@@ -110,8 +110,10 @@
     <Compile Include="CefUtils\VO\Local\FileInfoVO.cs" />
     <Compile Include="CefUtils\VO\Local\DirectoryInfoVO.cs" />
     <Compile Include="Request\FileRequest.cs" />
+    <Compile Include="Request\Response\DeleteResponse.cs" />
     <Compile Include="Request\Response\FileListResponse.cs" />
-    <Compile Include="Request\Response\refreshTokenResponse.cs" />
+    <Compile Include="Request\Response\RefreshTokenResponse.cs" />
+    <Compile Include="Request\Response\RegisterResponse.cs" />
     <Compile Include="Request\ServerAddress.cs" />
     <Compile Include="Request\UserInfo.cs" />
     <Compile Include="TencentCos\CosService.cs" />

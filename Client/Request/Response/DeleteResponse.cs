@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client.Request.Response.RefreshTokenResponse
+namespace Client.Request.Response.DeleteResponse
 {
-    public class RefreshTokenResponse
+    public class DeleteResponse
     {
         public int status { get; set; }
         public string message { get; set; }
@@ -15,7 +15,6 @@ namespace Client.Request.Response.RefreshTokenResponse
 
     public class Data
     {
-        public string username { get; set; }
-        public string token { get; set; }
+        public int count { get; set; }
     }
 }
