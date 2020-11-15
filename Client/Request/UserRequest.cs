@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Client.Request.Response.refreshToken;
+using Client.Request.Response.RefreshTokenResponse;
+using Client.Request.Response.RegisterResponse;
+using Client.Request.Response.LoginResponse;
 using Client.TencentCos;
 using Newtonsoft.Json;
 using RestSharp;
@@ -17,14 +19,14 @@ namespace Client.Request
             var client = new RestClient(ServerAddress.Address + "/api/login");
             var request = new RestRequest(Method.POST);
             request.AddHeader("Content-Type", "application/json");
-            var requestBody = new {username, password};
+            var requestBody = new { username, password };
             request.AddParameter("application/json", JsonConvert.SerializeObject(requestBody), ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             Console.WriteLine(response.Content);
             loginResponse = JsonConvert.DeserializeObject<LoginResponse>(response.Content);
             if (loginResponse != null)
             {
-                if(loginResponse.status == 0)
+                if (loginResponse.status == 0)
                 {
                     UserInfo.UserName = loginResponse.data.username;
                     UserInfo.Token = loginResponse.data.token;
@@ -38,15 +40,36 @@ namespace Client.Request
             }
         }
 
-        public int refreshToken()
+        public int RefreshToken()
         {
             var client = new RestClient(ServerAddress.Address + "/api/profile/refreshlogintoken");
             var request = new RestRequest(Method.POST);
             request.AddHeader("Authorization", "Bearer " + UserInfo.Token);
             IRestResponse response = client.Execute(request);
             Console.WriteLine(response.Content);
-            refreshTokenResponse res = JsonConvert.DeserializeObject<refreshTokenResponse>(response.Content);
+            RefreshTokenResponse res = JsonConvert.DeserializeObject<RefreshTokenResponse>(response.Content);
             return res.status;
+        }
+
+        public int Register(string username, string password, out RegisterResponse registerResponse)
+        {
+            var client = new RestClient(ServerAddress.Address + "/api/register");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Content-Type", "application/json");
+            var requestBody = new { username, password };
+            request.AddParameter("application/json", JsonConvert.SerializeObject(requestBody), ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            Console.WriteLine(response.Content);
+            registerResponse = JsonConvert.DeserializeObject<RegisterResponse>(response.Content);
+            if (registerResponse != null)
+            {
+                return registerResponse.status;
+            }
+            else
+            {
+                registerResponse = null;
+                return -20000;
+            }
         }
 
     }
