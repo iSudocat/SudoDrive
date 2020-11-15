@@ -13,7 +13,7 @@ namespace Server.Controllers.GroupManage
 {
     [Route("api/group/{groupname}/member")]
     [ApiController]
-    [NeedPermission(PermissionBank.GroupManageGroupMemberDeleteBasic)]
+    [NeedPermission(PermissionBank.GroupManageGroupMemberRemoveBasic)]
     public class DeleteGroupMemberController : AbstractController
     {
         private IDatabaseService _databaseService;
