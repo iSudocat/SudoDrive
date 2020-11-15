@@ -1,10 +1,13 @@
 using System;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Server.Exceptions;
+using Server.Models.DTO;
 using Server.Services;
 
 namespace Server.Middlewares
@@ -53,14 +56,23 @@ namespace Server.Middlewares
 
             if (userEntity != null && userEntity.Status != 0)
             {
-                throw new BannedFromServerException();
+                var e = new BannedFromServerException();
+                var result = new ResultModel(e.Status, e.Message, e.ApiExceptionData);
+                byte[] buffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(result, Formatting.None));
+
+                context.Response.StatusCode = 403;
+                context.Response.ContentType = "application/json";
+                await context.Response.Body.WriteAsync(buffer);
+                context.Response.ContentLength = buffer.Length;
             }
+            else
+            {       
+                // 如果找不到， userEntity 会为 null
+                context.Items["actor"] = userEntity;
 
-            // 如果找不到， userEntity 会为 null
-            context.Items["actor"] = userEntity;
-
-            // Call the next delegate/middleware in the pipeline
-            await _next(context);
+                // Call the next delegate/middleware in the pipeline
+                await _next(context);
+            }
         }
     }
 }
