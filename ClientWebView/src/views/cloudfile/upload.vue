@@ -100,7 +100,7 @@
       highlight-current-row
       :data="uploadTableData"
       style="width: 100%"
-      max-height="480"
+      max-height="782"
       @current-change="handleCurrentChange"
       @row-click="handleRowClick"
       @selection-change="handleSelectionChange"

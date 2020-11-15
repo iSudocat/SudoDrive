@@ -45,6 +45,7 @@
           size="small"
           type="primary"
           style="display: flex;justify-content: center;align-items: center"
+          @click="getGroupFile"
         >
           <svg-icon icon-class="zzshare" />
         </el-button>
@@ -100,7 +101,7 @@
     <el-table
       :data="downloadTableData"
       style="width: 100%"
-      max-height="480"
+      max-height="782"
       highlight-current-row
       @current-change="handleCurrentChange"
       @row-click="handleRowClick"
@@ -384,6 +385,17 @@ export default {
           console.log(ret)
         })
       })
+    },
+    // 获取共享文件
+    getGroupFile() {
+      const that = this
+      if (typeof (CefSharp) === 'undefined') {
+        return
+      } else {
+        window.cloudFileFunction.getGroupFileList().then(function(ret) {
+          that.handleTableReturn(ret)
+        })
+      }
     }
   }
 }

@@ -131,7 +131,7 @@ namespace Server.Controllers.Storage
             if (requestModel.NameContains?.Length > 0)
             {
                 result = requestModel.NameContains.Aggregate(result,
-                    (current, t) => current.Where(s => s.Path.Contains(t)));
+                    (current, t) => current.Where(s => s.Name.Contains(t)));
             }
 
             // 按照文件类型查找

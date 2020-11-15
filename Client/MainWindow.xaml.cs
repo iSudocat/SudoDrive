@@ -106,7 +106,7 @@ namespace Client
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             UserRequest userService = new UserRequest();
-            userService.Login("sudodog", "ssss11111", out _);
+            userService.Login("sudocat", "ssss11111", out _);
 
             
             for(int i = 206; i < 210; i++)
@@ -115,7 +115,7 @@ namespace Client
                 {
                     FileName = i + ".txt",
                     LocalPath = @"C:\Users\i\Desktop\测试数据\a lot of txt",
-                    RemotePath = @"/groups/Admin",
+                    RemotePath = @"/user/sudocat",
                     Status = StatusType.Waiting
                 });
             }

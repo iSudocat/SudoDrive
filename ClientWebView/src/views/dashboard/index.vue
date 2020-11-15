@@ -22,9 +22,12 @@ export default {
     if (typeof (CefSharp) === 'undefined') {
       return
     } else {
+      /*
       window.cloudFileFunction.login(String('sudodog'), String('ssss11111')).then(function(ret) {
         console.log(ret)
       })
+
+       */
     }
   },
   methods: {

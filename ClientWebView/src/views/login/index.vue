@@ -94,8 +94,8 @@ export default {
       // form头像地址
       head_img: 'https://avatars3.githubusercontent.com/u/42528067?s=400&u=375133832a4d631e7a1be26aa764b0ff91565f7f&v=4',
       loginForm: {
-        username: 'sudodog',
-        password: 'ssss11111'
+        username: '',
+        password: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -202,7 +202,7 @@ $bg: #A3E7FC;
 $dark_gray: #444444;
 $light_gray: #444444;
 $form_color: #ffffff;
-$back_url: "https://github.com/A-Salty-Fish/WindowHomework/blob/main/42528067.png?raw=true";
+$back_url: "https://sudocat-me-1251910132.file.myqcloud.com/5896f7d1d7bc0.jpg";
 
 .login-container {
   min-height: 100%;

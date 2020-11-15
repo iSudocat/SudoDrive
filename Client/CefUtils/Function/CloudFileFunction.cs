@@ -17,7 +17,7 @@ namespace Client.CefUtils.Function
     {
         public static UserRequest userService = null;
         public static LoginResponse loginResponse;
-        public static string currentPath = @"/users/sudodog/测试数据/a lot of txt";
+        public static string currentPath = @"/users/";
 
         public DownloadTaskListVO downloadTaskListVO = new DownloadTaskListVO();
         public UploadTaskListVO uploadTaskListVO = new UploadTaskListVO();
@@ -29,8 +29,10 @@ namespace Client.CefUtils.Function
         /// <returns></returns>
         public string login(string userName, string password)
         {
+            Console.WriteLine(userName);
             userService = new UserRequest();
             userService.Login(userName, password, out loginResponse);
+            currentPath = @"/users/" + loginResponse.data.username;
             return JsonConvert.SerializeObject(loginResponse);
         }
         /// <summary>
@@ -69,7 +71,15 @@ namespace Client.CefUtils.Function
             string[] paths = currentPath.Split('/');
             for (int i = 1; i < paths.Length - 1; i++)
                 path += "/" + paths[i];
-            currentPath = path;
+            if(path != "")
+            {
+                currentPath = path;
+            }
+            else
+            {
+                currentPath = "/";
+            }
+            
             return getFileList();
         }
         /// <summary>
@@ -83,6 +93,20 @@ namespace Client.CefUtils.Function
             fileRequest.GetFileList(currentPath,
                 out int status, out List<Client.Request.Response.FileListResponse.File> fileList);
             CloudFileListVO cloudFileListVO = new CloudFileListVO(fileList);
+            return JsonConvert.SerializeObject(cloudFileListVO);
+        }
+        /// <summary>
+        /// 获取共享文件
+        /// </summary>
+        /// <returns></returns>
+        public string getGroupFileList()
+        {
+            if (userService == null) return null;
+            FileRequest fileRequest = new FileRequest();
+            fileRequest.GetFileList("/groups",
+                out int status, out List<Client.Request.Response.FileListResponse.File> fileList);
+            CloudFileListVO cloudFileListVO = new CloudFileListVO(fileList);
+            currentPath = "/groups";
             return JsonConvert.SerializeObject(cloudFileListVO);
         }
         /// <summary>
