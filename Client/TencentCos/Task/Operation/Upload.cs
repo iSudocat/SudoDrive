@@ -51,6 +51,7 @@ namespace Client.TencentCos.Task.Operation
                     break;
                 case 101:
                     TaskStatusDetectionThread.Abort();
+                    UploadTaskList.SetProgress(File.Key, 1, 1);
                     UploadTaskList.SetSuccess(File.Key);
                     break;
                 case 100:
