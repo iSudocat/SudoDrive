@@ -118,12 +118,10 @@
     <Compile Include="Request\ServerAddress.cs" />
     <Compile Include="Request\UserInfo.cs" />
     <Compile Include="TencentCos\CosService.cs" />
-    <Compile Include="TencentCos\Task\Operation\Delete.cs" />
     <Compile Include="TencentCos\Task\Operation\Download.cs" />
     <Compile Include="TencentCos\Task\FileControlBlock.cs" />
     <Compile Include="TencentCos\Task\List\DownloadTaskList.cs" />
     <Compile Include="TencentCos\Task\List\UploadTaskList.cs" />
-    <Compile Include="TencentCos\Task\OperationType.cs" />
     <Compile Include="TencentCos\Task\StatusType.cs" />
     <Compile Include="Request\Response\LoginResponse.cs" />
     <Compile Include="Request\Response\UploadResponse.cs" />
