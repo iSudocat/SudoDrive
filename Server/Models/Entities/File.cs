@@ -87,11 +87,14 @@ namespace Server.Models.Entities
         [Column("storage_name")]
         public string StorageName { get; set; }
 
+        [Required]
+        [Column("user_id")]
+        public long UserId { get; set; }
+
         /// <summary>
         /// 上传本文件的用户
         /// </summary>
         [Required]
-        [Column("user_id")]
         public User User { get; set; }
         
         /// <summary>
