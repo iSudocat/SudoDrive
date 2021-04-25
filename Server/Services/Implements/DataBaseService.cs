@@ -1,9 +1,7 @@
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Server.Libraries;
-using Server.Models.VO;
 using Server.Models.Entities;
 
 namespace Server.Services.Implements
@@ -58,7 +56,7 @@ namespace Server.Services.Implements
                 .HasIndex(s => new {s.Status});
 
             // 初始化数据
-            var now = DateTime.Now;
+            var now = new DateTime(1970, 1, 1, 0, 0, 0, 0);
 
             modelBuilder.Entity<Group>()
                 .HasData(
@@ -67,9 +65,10 @@ namespace Server.Services.Implements
                     new {Id = Group.GroupID.GUEST, GroupName = "Guest", CreatedAt = now, UpdatedAt = now }
                 );
 
+            // default password : adminadmin
             modelBuilder.Entity<User>()
                 .HasData(
-                    new {Id = 1L, Username = "admin", Password = BCrypt.Net.BCrypt.HashPassword("adminadmin"), CreatedAt = now, UpdatedAt = now}
+                    new {Id = 1L, Username = "admin", Password = "$2a$11$j9IgiAd3G7ZZKHF1vlr9M.dBnz0gzLNgO1M0ttnzbzn5QkdQpQ9Ga", CreatedAt = now, UpdatedAt = now}
                 );
 
             modelBuilder.Entity<GroupToUser>()
