@@ -70,28 +70,21 @@ namespace Server
             services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddScoped<IUserService, UserService>();
 
-            IDatabaseService databaseService = null;
             switch (databaseConfig.Type.ToLower())
             {
                 case "postgresql":
                 case "pgsql":
                     services.AddDbContext<IDatabaseService, PostgreSqlDataBaseService>();
-                    databaseService = new PostgreSqlDataBaseService(databaseConfig);
                     break;
 
                 case "mariadb":
                 case "mysql":
                     services.AddDbContext<IDatabaseService, MySqlDataBaseService> ();
-                    databaseService = new MySqlDataBaseService(databaseConfig);
                     break;
 
                 default :
                     throw new InvalidArgumentException();
             }
-
-            // 数据库初始化
-            databaseService.Database.Migrate();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -101,7 +94,18 @@ namespace Server
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            
+            // 获取服务容器
+            var serviceProvider = app.ApplicationServices;
+            
+            // 数据库初始化
+            var scopeFactory = serviceProvider.GetService<IServiceScopeFactory>();
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var databaseService = scope.ServiceProvider.GetService<IDatabaseService>();
+                databaseService.Database.Migrate();
+            }
+            
             // app.UseHttpsRedirection();
 
             app.UseMiddleware<AuthenticateFailed>();
