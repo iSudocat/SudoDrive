@@ -4,7 +4,7 @@ namespace Server.Controllers
 {
     public abstract class AbstractController : Controller
     {
-        public void SetApiResultStatus(int? status, string? message = null)
+        public void SetApiResultStatus(int? status, string message = null)
         {
             if (status != null)
                 this.HttpContext.Items["status"] = status;
