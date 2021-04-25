@@ -1,14 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Server.Models.VO;
 
 namespace Server.Models.Entities
 {
+    [Table("groups")]
     public class Group : ICreateTimeStampedModel, IUpdateTimeStampedModel
     {
         public class GroupID
@@ -19,15 +18,20 @@ namespace Server.Models.Entities
         }
 
         [Key]
+        [Column("id")]
         public long Id { get; set; }
 
         [Required]
+        [Column("group_name")]
         public string GroupName { get; set; }
 
         public ICollection<GroupToUser> GroupToUser { get; set; }
 
+        [Column("create_at")]
         public DateTime CreatedAt { get; set; }
 
+        
+        [Column("update_at")]
         public DateTime UpdatedAt { get; set; }
 
         public ICollection<GroupToPermission> GroupToPermission { get; set; }

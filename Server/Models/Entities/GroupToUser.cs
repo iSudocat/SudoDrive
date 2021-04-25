@@ -1,20 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Server.Models.Entities
 {
+    [Table("group_user")]
     public class GroupToUser
     {
-        [Key]
+        [Column("group_id")]
         public long GroupId { get; set; }
 
         public Group Group { get; set; }
 
-        [Key]
+        [Column("user_id")]
         public long UserId { get; set; }
 
         public User User { get; set; }

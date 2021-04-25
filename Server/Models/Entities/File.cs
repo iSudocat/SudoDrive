@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Server.Models.VO;
@@ -38,30 +35,35 @@ namespace Server.Models.Entities
     /// permission: 权限
     /// 
     /// </summary>
+    [Table("files")]
     public class File : ICreateTimeStampedModel, IUpdateTimeStampedModel
     {
         /// <summary>
         /// 文件编号，自增
         /// </summary>
         [Key]
+        [Column("id")]
         public long Id { get; set; }
 
         /// <summary>
         /// 文件名
         /// </summary>
         [Required]
+        [Column("name")]
         public string Name { get; set; }
 
         /// <summary>
         /// 文件 MIME 类型
         /// </summary>
         [Required]
+        [Column("type")]
         public string Type { get; set; }
 
         /// <summary>
         /// 文件的存储文件夹
         /// </summary>
         [Required]
+        [Column("folder")]
         public string Folder { get; set; }
 
         /// <summary>
@@ -70,38 +72,45 @@ namespace Server.Models.Entities
         /// Path = Folder + Name
         /// </summary>
         [Required]
+        [Column("path")]
         public string Path { get; set; }
 
         /// <summary>
         /// 随机编号
         /// </summary>
+        [Column("guid")]
         public string Guid { get; set; }
 
         /// <summary>
         /// 存储文件名
         /// </summary>
+        [Column("storage_name")]
         public string StorageName { get; set; }
 
         /// <summary>
         /// 上传本文件的用户
         /// </summary>
         [Required]
+        [Column("user_id")]
         public User User { get; set; }
         
         /// <summary>
         /// 文件状态
         /// </summary>
         [Required]
+        [Column("status")]
         public FileStatus Status { get; set; }
 
         /// <summary>
         /// 文件大小
         /// </summary>
+        [Column("size")]
         public long Size { get; set; }
 
         /// <summary>
         /// 文件哈希值
         /// </summary>
+        [Column("md5")]
         public string Md5 { get; set; }
         
         /// <summary>
@@ -111,6 +120,7 @@ namespace Server.Models.Entities
         /// groups.{GROUPNAME}
         /// root
         /// </summary>
+        [Column("permission")]
         public string Permission { get; set; }
 
         public string GetPermission()
@@ -154,8 +164,11 @@ namespace Server.Models.Entities
             return Permission = $"{type}.{name}";
         }
 
+        
+        [Column("create_at")]
         public DateTime CreatedAt { get; set; }
-
+        
+        [Column("update_at")]
         public DateTime UpdatedAt { get; set; }
 
         public enum FileStatus
