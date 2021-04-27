@@ -17,7 +17,7 @@ namespace Server.Models.VO
 
         public TencentCosModel TencentCos { get; private set; }
 
-        public TencentCosTokenType Token { get; private set; }
+        public TencentCosTokenModel Token { get; private set; }
 
         public FileListResultModel(IEnumerable<File> files, int amount, int offset, Dictionary<string, object> token, TencentCosManagementModel tencentCos)
         {
@@ -65,7 +65,7 @@ namespace Server.Models.VO
                 throw new UnexpectedException();
             }
 
-            this.Token = new TencentCosTokenType(tencentCosCredentials, expiredTime, expiration, requestId, startTime);
+            this.Token = new TencentCosTokenModel(tencentCosCredentials, expiredTime, expiration, requestId, startTime);
         }
     }
 }

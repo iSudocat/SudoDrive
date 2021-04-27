@@ -11,7 +11,7 @@ namespace Server.Models.VO
     {
         public FileModel File { get; private set; }
 
-        public TencentCosTokenType Token {get; private set;}
+        public TencentCosTokenModel Token {get; private set;}
 
         public TencentCosModel TencentCos { get; private set; }
 
@@ -52,7 +52,7 @@ namespace Server.Models.VO
                 throw new UnexpectedException();
             }
 
-            this.Token = new TencentCosTokenType(tencentCosCredentials, expiredTime, expiration, requestId, startTime);
+            this.Token = new TencentCosTokenModel(tencentCosCredentials, expiredTime, expiration, requestId, startTime);
         }
 
     }

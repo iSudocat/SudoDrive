@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Models.VO
 {
-    public class TencentCosTokenType
+    public class TencentCosTokenModel
     {
         public TencentCosCredentialsModel Credentials { get; private set; }
         public long ExpiredTime { get; private set; }
@@ -10,7 +10,7 @@ namespace Server.Models.VO
         public string RequestId { get; private set; }
         public long StartTime { get; private set; }
 
-        public TencentCosTokenType(TencentCosCredentialsModel credentials, long expiredTime, DateTime expiration, string requestId, long startTime)
+        public TencentCosTokenModel(TencentCosCredentialsModel credentials, long expiredTime, DateTime expiration, string requestId, long startTime)
         {
             this.Credentials = credentials;
             this.ExpiredTime = expiredTime;
