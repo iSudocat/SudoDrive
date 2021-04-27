@@ -1,20 +1,17 @@
 using Server.Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Server.Models.VO;
 
 namespace Server.Models.DTO
 {
     public class GroupMemberAddResultModel
     {
-        public Group Group { get; private set; }
-        public User User { get; private set; }
+        public GroupModel Group { get; init; }
+        public UserModel User { get; init; }
         
         public GroupMemberAddResultModel(Group group,User user)
         {
-            Group = group;
-            User = user;
+            Group = group.ToVO();
+            User = user.ToVO();
         }
     }
 }

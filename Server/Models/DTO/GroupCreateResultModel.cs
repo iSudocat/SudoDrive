@@ -1,14 +1,15 @@
 using Server.Models.Entities;
+using Server.Models.VO;
 
 namespace Server.Models.DTO
 {
     public class GroupCreateResultModel
     {
-        public Group Group { get; private set; }
+        public GroupModel Group { get; init; }
 
-        public GroupCreateResultModel( Group group)
+        public GroupCreateResultModel(Group group)
         {
-            this.Group = group;
+            this.Group = group.ToVO();
         }
     }
 }
