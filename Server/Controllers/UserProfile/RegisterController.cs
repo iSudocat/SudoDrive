@@ -43,6 +43,14 @@ namespace Server.Controllers.UserProfile
             _databaseService.Users.Add(user);
             _databaseService.SaveChanges();
 
+            GroupToUser groupToUser = new GroupToUser()
+            {
+                GroupId = Group.GroupID.DEFAULT,
+                UserId = user.Id
+            };
+            _databaseService.GroupsToUsersRelation.Add(groupToUser);
+            _databaseService.SaveChanges();
+
             return Ok(new RegisterResultModel(user));
         }
     }
