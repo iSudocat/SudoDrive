@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Server.Exceptions;
 using Server.Models;
 using Server.Models.DTO;
+using Server.Models.VO;
 
 namespace Server.Middlewares
 {

@@ -5,6 +5,7 @@ using Server.Middlewares;
 using Server.Models.DTO;
 using Server.Services;
 using Server.Models.Entities;
+using Server.Models.VO;
 
 namespace Server.Controllers.UserProfile
 {

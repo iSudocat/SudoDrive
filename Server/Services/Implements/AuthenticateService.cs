@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Server.Models;
+using Server.Models.DTO;
 using Server.Models.Entities;
 using Server.Models.VO;
 

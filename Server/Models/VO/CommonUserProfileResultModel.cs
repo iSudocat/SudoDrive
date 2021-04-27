@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using Server.Models.Entities;
-using Server.Models.VO;
 
-namespace Server.Models.DTO
+namespace Server.Models.VO
 {
     public class CommonUserProfileResultModel
     {

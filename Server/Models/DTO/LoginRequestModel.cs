@@ -1,13 +1,9 @@
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
-namespace Server.Models.VO
+namespace Server.Models.DTO
 {
-    public class RegisterRequestModel
+    public class LoginRequestModel
     {
         [Required]
         [JsonProperty("username")]
@@ -19,10 +15,5 @@ namespace Server.Models.VO
         [JsonProperty("password")]
         [RegularExpression(@"^[^\n\r]{8,}$")]
         public string Password { get; set; }
-
-
-        [JsonProperty("nickname")]
-        [RegularExpression(@"^[^\n\r]{4,16}$")]
-        public string Nickname { get; set; }
     }
 }

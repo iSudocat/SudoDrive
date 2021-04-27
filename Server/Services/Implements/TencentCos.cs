@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using COSSTS;
 using Microsoft.Extensions.Options;
+using Server.Models.DTO;
 using EntityFile = Server.Models.Entities.File;
 using Server.Models.VO;
 

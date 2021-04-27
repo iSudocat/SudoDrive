@@ -1,4 +1,4 @@
-namespace Server.Models.DTO
+namespace Server.Models.VO
 {
     public class ResultModel
     {

@@ -1,4 +1,6 @@
-namespace Server.Models.VO
+using Server.Models.VO;
+
+namespace Server.Models.DTO
 {
     public class TencentCosModel
     {

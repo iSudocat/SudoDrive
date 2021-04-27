@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace Server.Models.VO
+namespace Server.Models.DTO
 {
-    public class LoginRequestModel
+    public class RegisterRequestModel
     {
         [Required]
         [JsonProperty("username")]
@@ -15,5 +15,10 @@ namespace Server.Models.VO
         [JsonProperty("password")]
         [RegularExpression(@"^[^\n\r]{8,}$")]
         public string Password { get; set; }
+
+
+        [JsonProperty("nickname")]
+        [RegularExpression(@"^[^\n\r]{4,16}$")]
+        public string Nickname { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 using System;
 
-namespace Server.Models.DTO
+namespace Server.Models.VO
 {
     public class TencentCosTokenType
     {

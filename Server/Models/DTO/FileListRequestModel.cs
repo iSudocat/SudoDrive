@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Server.Models.VO
+namespace Server.Models.DTO
 {
     public class FileListRequestModel
     {

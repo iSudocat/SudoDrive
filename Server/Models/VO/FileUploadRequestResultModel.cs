@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Server.Exceptions;
+using Server.Models.DTO;
 using Server.Models.Entities;
-using Server.Models.VO;
 
-namespace Server.Models.DTO
+namespace Server.Models.VO
 {
     public class FileUploadRequestResultModel
     {

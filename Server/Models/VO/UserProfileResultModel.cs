@@ -1,6 +1,6 @@
 using Server.Models.Entities;
 
-namespace Server.Models.DTO
+namespace Server.Models.VO
 {
     public class UserProfileResultModel : CommonUserProfileResultModel
     {

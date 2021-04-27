@@ -7,6 +7,7 @@ using Server.Models.DTO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
+using Server.Models.VO;
 
 namespace Server.Controllers.UserProfile
 {

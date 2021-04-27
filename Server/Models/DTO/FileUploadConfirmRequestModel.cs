@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace Server.Models.VO
+namespace Server.Models.DTO
 {
     public class FileUploadConfirmRequestModel
     {

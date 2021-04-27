@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Server.Models.Entities;
 
-namespace Server.Models.DTO
+namespace Server.Models.VO
 {
     class UserListResultModel
     {
