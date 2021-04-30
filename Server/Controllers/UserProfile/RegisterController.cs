@@ -8,6 +8,7 @@ using Server.Models.DTO;
 using Server.Models.Entities;
 using Server.Models.VO;
 using Server.Services;
+using EntityFile = Server.Models.Entities.File;
 
 namespace Server.Controllers.UserProfile
 {
@@ -36,6 +37,7 @@ namespace Server.Controllers.UserProfile
                 throw new UsernameDuplicatedException("Username duplicated.");
             }
 
+            // 创建用户
             User user = new User();
             user.Username = registerRequestModel.Username;
             user.Password = BCrypt.Net.BCrypt.HashPassword(registerRequestModel.Password);
@@ -43,12 +45,18 @@ namespace Server.Controllers.UserProfile
             _databaseService.Users.Add(user);
             _databaseService.SaveChanges();
 
+            // 创建用户组信息
             GroupToUser groupToUser = new GroupToUser()
             {
                 GroupId = Group.GroupID.DEFAULT,
                 UserId = user.Id
             };
             _databaseService.GroupsToUsersRelation.Add(groupToUser);
+            
+            // 创建用户目录
+            var groupDirectory = EntityFile.CreateDirectoryRecord(user.Username, "/users", $"/users/{user.Username}", user);
+            _databaseService.Files.Add(groupDirectory);
+
             _databaseService.SaveChanges();
 
             return Ok(new RegisterResultModel(user));
