@@ -1,5 +1,7 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Server.Exceptions;
 using Server.Models.VO;
 
 namespace Server.Services.Implements
@@ -19,6 +21,17 @@ namespace Server.Services.Implements
         }
         
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseMySql(_connectionInfo.ConnectionInformation);
+        {
+            if (_connectionInfo.Type.ToLower() == "mysql")
+            {
+                options.UseMySql(_connectionInfo.ConnectionInformation,
+                    new MySqlServerVersion(new Version(_connectionInfo.ServerVersion)));
+            } else if (_connectionInfo.Type.ToLower() == "mariadb")
+            {
+                options.UseMySql(_connectionInfo.ConnectionInformation,
+                    new MariaDbServerVersion(new Version(_connectionInfo.ServerVersion)));
+            }
+            else throw new InvalidArgumentException();
+        } 
     }
 }

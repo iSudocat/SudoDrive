@@ -10,5 +10,8 @@ namespace Server.Models.VO
 
         [JsonProperty("ConnectionInformation")]
         public string ConnectionInformation { get; set; }
+
+        [JsonProperty("ServerVersion")]
+        public string ServerVersion { get; set; }
     }
 }
