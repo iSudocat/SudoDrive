@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Server.Controllers;
+using Server.Exceptions;
 using Server.Libraries;
 using Server.Middlewares;
 using Server.Models.DTO;
@@ -14,7 +14,7 @@ using Server.Models.VO;
 using Server.Services;
 using EntityFile = Server.Models.Entities.File;
 
-namespace Server.Exceptions
+namespace Server.Controllers.Storage
 {
     [Route("api/storage/file")]
     [ApiController]
@@ -44,6 +44,7 @@ namespace Server.Exceptions
 
             var splitsPath = path.Split("/");
 
+            // "/分类/名字/扩展" => ["", "分类", "名字", "扩展"]
             if ((uploadType == "text/directory" && splitsPath.Length >= 3) || (splitsPath.Length >= 4))
             {
                 // 获取上传路径的第一季第二级目录名
