@@ -23,7 +23,7 @@ namespace Server.Controllers.GroupManage
         }
 
         [HttpGet]
-        public IActionResult ListGroup([FromBody] GroupListRequestModel requestModel)
+        public IActionResult ListGroup([FromQuery] GroupListRequestModel requestModel)
         {
             if (!(HttpContext.Items["actor"] is User loginUser))
             {

@@ -25,7 +25,7 @@ namespace Server.Controllers.GroupManage
         }
 
         [HttpGet]
-        public IActionResult ListGroupMember([FromBody] GroupMemberListRequestModel requestModel, string groupname)
+        public IActionResult ListGroupMember([FromQuery] GroupMemberListRequestModel requestModel, string groupname)
         {
             if (!Regex.IsMatch(groupname, @"^[a-zA-Z0-9-_]{4,16}$"))
             {
@@ -45,7 +45,7 @@ namespace Server.Controllers.GroupManage
             // 开始查找
             var result = _databaseService.GroupsToUsersRelation
                 .Include(s => s.User).AsSingleQuery()
-                .Where(s => s.GroupId == group.Id)
+                .Where(s => s.GroupId == group.Id);
             
             
             // 按用户名关键字匹配
