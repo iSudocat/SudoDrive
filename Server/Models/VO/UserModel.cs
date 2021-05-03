@@ -15,7 +15,7 @@ namespace Server.Models.VO
 
         public DateTime UpdatedAt { get; set; }
 
-        public int Status { get; set; }
+        public int? Status { get; set; }
 
         public UserModel(User user)
         {
@@ -24,7 +24,7 @@ namespace Server.Models.VO
             this.Nickname = user.Nickname;
             this.CreatedAt = user.CreatedAt;
             this.UpdatedAt = user.UpdatedAt;
-            this.Status = (int)user.Status;
+            this.Status = user.Status;
         }
 
     }

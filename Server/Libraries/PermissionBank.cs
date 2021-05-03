@@ -63,6 +63,11 @@ namespace Server.Libraries
         /// </summary>
         public const string StorageFileListBasic = "storage.file.list.basic";
 
+        /// <summary>
+        /// 用户组管理创建新用户组（基本权限）
+        /// 默认组：默认用户组
+        /// </summary>
+        public const string GroupManageGroupAdminBasic = "groupmanager.group.admin.basic";
 
         /// <summary>
         /// 用户组管理创建新用户组（基本权限）
