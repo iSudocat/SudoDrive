@@ -6,7 +6,7 @@ namespace Server.Models.VO
 {
     class UserListResultModel
     {
-        public List<CommonUserProfileResultModel> Users { get; private set; }
+        public List<DetailedUserProfileResultModel> Users { get; private set; }
 
         public int Amount { get; private set; }
 
@@ -17,10 +17,10 @@ namespace Server.Models.VO
             this.Amount = users.Count();
             this.Offset = offset;
 
-            this.Users = new List<CommonUserProfileResultModel>();
+            this.Users = new List<DetailedUserProfileResultModel>();
             foreach (var p in users)
             {
-                this.Users.Add(new CommonUserProfileResultModel(p));
+                this.Users.Add(new DetailedUserProfileResultModel(p));
             }
         }
     }
