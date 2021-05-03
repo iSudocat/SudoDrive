@@ -22,7 +22,7 @@ namespace Server.Controllers.GroupManage
             _databaseService = databaseService;
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult ListGroup([FromBody] GroupListRequestModel requestModel)
         {
             if (!(HttpContext.Items["actor"] is User loginUser))
