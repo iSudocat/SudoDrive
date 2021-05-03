@@ -5,12 +5,12 @@ namespace Server.Models.VO
 {
     public class GroupModel
     {
-        public long Id { get; private set; }
-        public string GroupName { get; private set; }
+        public long Id { get; private init; }
+        public string GroupName { get; private init; }
 
-        public DateTime CreatedAt { get; private set; }
+        public DateTime CreatedAt { get; private init; }
 
-        public DateTime UpdatedAt { get; private set; }
+        public DateTime UpdatedAt { get; private init; }
 
         public GroupModel(Group group)
         {

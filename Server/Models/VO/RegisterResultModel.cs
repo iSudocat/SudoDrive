@@ -4,7 +4,7 @@ namespace Server.Models.VO
 {
     public class RegisterResultModel
     {
-        public UserModel User { get; private set; }
+        public UserModel User { get; private init; }
 
         public RegisterResultModel(User user)
         {

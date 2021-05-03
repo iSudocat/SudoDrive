@@ -9,11 +9,11 @@ namespace Server.Models.VO
 {
     public class FileUploadRequestResultModel
     {
-        public FileModel File { get; private set; }
+        public FileModel File { get; private init; }
 
-        public TencentCosTokenModel Token {get; private set;}
+        public TencentCosTokenModel Token {get; private init;}
 
-        public TencentCosModel TencentCos { get; private set; }
+        public TencentCosModel TencentCos { get; private init; }
 
 
         public FileUploadRequestResultModel(File file, Dictionary<string, object> token, TencentCosManagementModel tencentCos)

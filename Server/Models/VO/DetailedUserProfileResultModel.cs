@@ -5,9 +5,9 @@ namespace Server.Models.VO
 {
     public class DetailedUserProfileResultModel
     {
-        public UserModel User { get; private set; }
+        public UserModel User { get; private init; }
 
-        public List<GroupModel> Groups { get; private set; }
+        public List<GroupModel> Groups { get; private init; }
 
         public DetailedUserProfileResultModel(User user)
         {

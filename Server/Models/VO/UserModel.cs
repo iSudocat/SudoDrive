@@ -5,17 +5,17 @@ namespace Server.Models.VO
 {
     public class UserModel
     {
-        public long Id { get; set; }
+        public long Id { get; init; }
 
-        public string Username { get; set; }
+        public string Username { get; init; }
 
-        public string Nickname { get; set; }
+        public string Nickname { get; init; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; init; }
 
-        public DateTime UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; init; }
 
-        public int? Status { get; set; }
+        public int? Status { get; init; }
 
         public UserModel(User user)
         {

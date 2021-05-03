@@ -6,10 +6,10 @@ namespace Server.Models.VO
 {
     public class GroupMemberListResultModel
     {
-        public Group Group { get; set; }
-        public List<UserModel> Users { get; set; }
-        public int RequestModelAmount { get; set; }
-        public int RequestModelOffset { get; set; }
+        public Group Group { get; init; }
+        public List<UserModel> Users { get; init; }
+        public int RequestModelAmount { get; init; }
+        public int RequestModelOffset { get; init; }
 
         public GroupMemberListResultModel(Group group, List<GroupToUser> users, int requestModelAmount, int requestModelOffset)
         {

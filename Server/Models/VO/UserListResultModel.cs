@@ -6,11 +6,11 @@ namespace Server.Models.VO
 {
     class UserListResultModel
     {
-        public List<DetailedUserProfileResultModel> Users { get; private set; }
+        public List<DetailedUserProfileResultModel> Users { get; private init; }
 
-        public int Amount { get; private set; }
+        public int Amount { get; private init; }
 
-        public int Offset { get; private set; }
+        public int Offset { get; private init; }
 
         public UserListResultModel(IEnumerable<User> users, int amount, int offset)
         {

@@ -6,12 +6,12 @@ namespace Server.Models.VO
     {
 
         [JsonProperty("Type")]
-        public string Type { get; set; }
+        public string Type { get; init; }
 
         [JsonProperty("ConnectionInformation")]
-        public string ConnectionInformation { get; set; }
+        public string ConnectionInformation { get; init; }
 
         [JsonProperty("ServerVersion")]
-        public string ServerVersion { get; set; }
+        public string ServerVersion { get; init; }
     }
 }

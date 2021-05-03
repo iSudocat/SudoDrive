@@ -2,11 +2,11 @@ namespace Server.Models.VO
 {
     public class ResultModel
     {
-        public int? Status { get; private set; }
+        public int? Status { get; private init; }
 
-        public string Message { get; private set; }
+        public string Message { get; private init; }
 
-        public object Data { get; private set; }
+        public object Data { get; private init; }
 
 
         public ResultModel(int? status, string message, object data)

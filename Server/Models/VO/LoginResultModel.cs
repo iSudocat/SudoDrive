@@ -5,13 +5,13 @@ namespace Server.Models.VO
 {
     public class LoginResultModel
     {
-        public string Username { get; private set; }
+        public string Username { get; private init; }
 
-        public string Token { get; private set; }
+        public string Token { get; private init; }
 
-        public UserModel User { get; private set; }
+        public UserModel User { get; private init; }
 
-        public List<GroupModel> Groups { get; private set; }
+        public List<GroupModel> Groups { get; private init; }
 
         public LoginResultModel(string username, string token, User user)
         {

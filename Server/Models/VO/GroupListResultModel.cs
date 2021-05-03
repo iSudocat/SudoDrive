@@ -6,11 +6,11 @@ namespace Server.Models.VO
 {
     class GroupListResultModel
     {
-        public List<GroupModel> Users { get; private set; }
+        public List<GroupModel> Users { get; private init; }
 
-        public int Amount { get; private set; }
+        public int Amount { get; private init; }
 
-        public int Offset { get; private set; }
+        public int Offset { get; private init; }
 
         public GroupListResultModel(IEnumerable<Group> groups, int amount, int offset)
         {

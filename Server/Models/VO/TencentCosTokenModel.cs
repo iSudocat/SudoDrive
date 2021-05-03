@@ -4,11 +4,11 @@ namespace Server.Models.VO
 {
     public class TencentCosTokenModel
     {
-        public TencentCosCredentialsModel Credentials { get; private set; }
-        public long ExpiredTime { get; private set; }
-        public DateTime Expiration { get; private set; }
-        public string RequestId { get; private set; }
-        public long StartTime { get; private set; }
+        public TencentCosCredentialsModel Credentials { get; private init; }
+        public long ExpiredTime { get; private init; }
+        public DateTime Expiration { get; private init; }
+        public string RequestId { get; private init; }
+        public long StartTime { get; private init; }
 
         public TencentCosTokenModel(TencentCosCredentialsModel credentials, long expiredTime, DateTime expiration, string requestId, long startTime)
         {

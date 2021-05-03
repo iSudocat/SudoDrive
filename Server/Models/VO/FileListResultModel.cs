@@ -9,15 +9,15 @@ namespace Server.Models.VO
 {
     public class FileListResultModel
     {
-        public List<FileModel> Files { get; private set; }
+        public List<FileModel> Files { get; private init; }
 
-        public int Amount { get; private set; }
+        public int Amount { get; private init; }
 
-        public int Offset { get; private set; }
+        public int Offset { get; private init; }
 
-        public TencentCosModel TencentCos { get; private set; }
+        public TencentCosModel TencentCos { get; private init; }
 
-        public TencentCosTokenModel Token { get; private set; }
+        public TencentCosTokenModel Token { get; private init; }
 
         public FileListResultModel(IEnumerable<File> files, int amount, int offset, Dictionary<string, object> token, TencentCosManagementModel tencentCos)
         {

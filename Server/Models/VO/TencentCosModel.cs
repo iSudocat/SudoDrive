@@ -4,9 +4,9 @@ namespace Server.Models.DTO
 {
     public class TencentCosModel
     {
-        public string Region { get; set; }
+        public string Region { get; init; }
 
-        public string Bucket { get; set; }
+        public string Bucket { get; init; }
 
         public TencentCosModel(TencentCosManagementModel tencentCos)
         {
