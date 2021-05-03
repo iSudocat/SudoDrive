@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Server.Models.Entities;
 
 namespace Server.Models.VO
@@ -13,7 +14,7 @@ namespace Server.Models.VO
 
         public UserListResultModel(IEnumerable<User> users, int amount, int offset)
         {
-            this.Amount = amount;
+            this.Amount = users.Count();
             this.Offset = offset;
 
             this.Users = new List<CommonUserProfileResultModel>();
