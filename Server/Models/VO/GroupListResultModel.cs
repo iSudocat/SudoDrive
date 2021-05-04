@@ -6,7 +6,7 @@ namespace Server.Models.VO
 {
     class GroupListResultModel
     {
-        public List<GroupModel> Users { get; private init; }
+        public List<GroupModel> Groups { get; private init; }
 
         public int Amount { get; private init; }
 
@@ -17,10 +17,10 @@ namespace Server.Models.VO
             this.Amount = groups.Count();
             this.Offset = offset;
 
-            this.Users = new List<GroupModel>();
+            this.Groups = new List<GroupModel>();
             foreach (var p in groups)
             {
-                this.Users.Add(new GroupModel(p));
+                this.Groups.Add(new GroupModel(p));
             }
         }
     }
