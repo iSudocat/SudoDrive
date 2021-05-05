@@ -7,7 +7,7 @@ namespace Server.Models.VO
     {
         public UserModel User { get; private init; }
 
-        public List<GroupModel> Groups { get; private init; }
+        public List<GroupAccessModel> Groups { get; private init; }
 
         public DetailedUserProfileResultModel(User user)
         {
@@ -15,10 +15,10 @@ namespace Server.Models.VO
 
             if (user.GroupToUser == null) return;
 
-            Groups = new List<GroupModel>();
+            Groups = new List<GroupAccessModel>();
             foreach (var t in user.GroupToUser)
             {
-                Groups.Add(t.Group.ToVO());
+                Groups.Add(new GroupAccessModel(t.Group, user));
             }
         }
 
