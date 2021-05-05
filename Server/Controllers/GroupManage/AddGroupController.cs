@@ -59,6 +59,13 @@ namespace Server.Controllers.GroupManage
                 GroupId = group.Id,
                 Permission = PermissionBank.GroupOperationPermission(group.GroupName, "member", "remove")
             });
+            
+            _databaseService.GroupsToPermissionsRelation.Add(new GroupToPermission()
+            {
+                Group = group,
+                GroupId = group.Id,
+                Permission = PermissionBank.GroupOperationPermission(group.GroupName, "member", "list")
+            });
 
             //find the grouptouser in the database
             //below is how to input parameters when the entity has composite key values:

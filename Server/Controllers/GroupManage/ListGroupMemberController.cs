@@ -27,6 +27,13 @@ namespace Server.Controllers.GroupManage
         [HttpGet]
         public IActionResult ListGroupMember([FromQuery] GroupMemberListRequestModel requestModel, string groupname)
         {
+            string permission = PermissionBank.GroupOperationPermission(groupname, "member", "list");
+            var user_actor = HttpContext.Items["actor"] as User;
+            if (user_actor.HasPermission(permission) != true)
+            {
+                throw new AuthenticateFailedException("not has enough permission when trying to list members to a group.");
+            }
+            
             if (!Regex.IsMatch(groupname, @"^[a-zA-Z0-9-_]{4,16}$"))
             {
                 throw new GroupnameInvalidException("The groupname you enter is invalid when trying to add a member to it.");

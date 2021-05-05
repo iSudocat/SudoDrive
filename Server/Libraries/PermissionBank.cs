@@ -65,7 +65,7 @@ namespace Server.Libraries
 
         /// <summary>
         /// 用户组管理创建新用户组（基本权限）
-        /// 默认组：默认用户组
+        /// 默认组：管理员用户组
         /// </summary>
         public const string GroupManageGroupAdminBasic = "groupmanager.group.admin.basic";
 
