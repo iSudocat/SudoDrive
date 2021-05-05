@@ -27,13 +27,6 @@ namespace Server.Controllers.GroupManage
         [HttpGet]
         public IActionResult ListGroupMember([FromQuery] GroupMemberListRequestModel requestModel, string groupname)
         {
-            string permission = PermissionBank.GroupOperationPermission(groupname, "member", "list");
-            var user_actor = HttpContext.Items["actor"] as User;
-            if (user_actor.HasPermission(permission) != true)
-            {
-                throw new AuthenticateFailedException("not has enough permission when trying to list members to a group.");
-            }
-            
             if (!Regex.IsMatch(groupname, @"^[a-zA-Z0-9-_]{4,16}$"))
             {
                 throw new GroupnameInvalidException("The groupname you enter is invalid when trying to add a member to it.");
@@ -44,9 +37,14 @@ namespace Server.Controllers.GroupManage
                 throw new GroupNotExistException("The groupname you enter does not exsit actually when trying to add a grouptouser.");
             }
             
+            string permission = PermissionBank.GroupOperationPermission(group.GroupName, "member", "list");
             if (!(HttpContext.Items["actor"] is User loginUser))
             {
                 throw new UnexpectedException();
+            }
+            if (loginUser.HasPermission(permission) != true)
+            {
+                throw new AuthenticateFailedException("not has enough permission when trying to list members to a group.");
             }
 
             // 开始查找
