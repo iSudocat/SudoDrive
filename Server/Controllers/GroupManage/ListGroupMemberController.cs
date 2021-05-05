@@ -15,7 +15,6 @@ namespace Server.Controllers.GroupManage
 {
     [Route("api/group/{groupname}/member")]
     [ApiController]
-    [NeedPermission(PermissionBank.GroupManageGroupAdminBasic)]
     public class ListGroupMemberController : AbstractController
     {
         private IDatabaseService _databaseService;
