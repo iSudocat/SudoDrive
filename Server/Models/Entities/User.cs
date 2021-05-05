@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using Server.Libraries;
 using Server.Models.VO;
 
 namespace Server.Models.Entities
@@ -35,6 +37,8 @@ namespace Server.Models.Entities
         [Column("status")]
         public int? Status { get; set; } = 0;
 
+        public ICollection<UserToPermission> UserToPermission { get; set; }
+
         /// <summary>
         /// 判断这个用户是否有某个权限
         /// </summary>
@@ -42,10 +46,21 @@ namespace Server.Models.Entities
         /// <returns></returns>
         public bool? HasPermission(string[] permission)
         {
-            var groupToUser = this.GroupToUser;
-           
             bool? ret = null;
 
+            var permissions = this.UserToPermission;
+            if (permissions != null)
+            {
+                var hold = permissions.Select(s => s.Permission).ToList();
+                ret = PermissionUtil.HasPermissionIn(hold, permission);
+            }
+
+            if (ret != null)
+            {
+                return ret;
+            }
+
+            var groupToUser = this.GroupToUser;
             foreach (var group in groupToUser)
             {
                 var result = group.Group.HasPermission(permission);

@@ -13,6 +13,7 @@ namespace Server.Services.Implements
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupToUser> GroupsToUsersRelation { get; set; }
         public DbSet<GroupToPermission> GroupsToPermissionsRelation { get; set; }
+        public DbSet<UserToPermission> UserToPermission { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,7 +25,14 @@ namespace Server.Services.Implements
                 .HasOne(s => s.Group)
                 .WithMany(s => s.GroupToPermission)
                 .HasForeignKey(sc => sc.GroupId);
+            
+            modelBuilder.Entity<UserToPermission>()
+                .HasKey(c => new {c.UserId, c.Permission});
 
+            modelBuilder.Entity<UserToPermission>()
+                .HasOne(s => s.User)
+                .WithMany(s => s.UserToPermission)
+                .HasForeignKey(sc => sc.UserId);
 
             modelBuilder.Entity<GroupToUser>()
                 .HasKey(c => new {c.UserId, c.GroupId});
@@ -91,6 +99,7 @@ namespace Server.Services.Implements
                     new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.GroupManageGroupQuitBasic },
                     new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.GroupManageGroupMemberAddBasic },
                     new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.GroupManageGroupMemberRemoveBasic },
+                    new { GroupId = Group.GroupID.DEFAULT, Permission = PermissionBank.GroupManageGroupMemberListBasic },
 
                     new { GroupId = Group.GroupID.GUEST, Permission = PermissionBank.UserAuthRegister },
                     new { GroupId = Group.GroupID.GUEST, Permission = PermissionBank.UserAuthLogin }

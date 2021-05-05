@@ -102,6 +102,13 @@ namespace Server.Libraries
         /// </summary>
         public const string GroupManageGroupMemberRemoveBasic = "groupmanager.group.member.remove.basic";
 
+        /// <summary>
+        /// 用户组管理列出成员（基本权限）
+        /// 受到：groupmanager.group.operation.组名.member.list 权限限制
+        /// 默认组：默认用户组
+        /// </summary>
+        public const string GroupManageGroupMemberListBasic = "groupmanager.group.member.list.basic";
+
 
         /// <summary>
         /// 生成文件访问权限（用来判断存储系统的文件结构）
