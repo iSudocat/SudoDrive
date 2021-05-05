@@ -8,8 +8,8 @@ namespace Server.Models.VO
     {
         public long Id { get; private init; }
         public string GroupName { get; private init; }
-        public bool? AddAccess { get; private init;}
-        public bool? RemoveAccess { get; private init;}
+        public bool CanAddMember { get; private init;}
+        public bool CanRemoveMember  { get; private init;}
 
         public DateTime CreatedAt { get; private init; }
 
@@ -24,16 +24,16 @@ namespace Server.Models.VO
 
             string addPermission = PermissionBank.GroupOperationPermission(group.GroupName, "member", "add");
             if (user.HasPermission(addPermission) != true) {
-                this.AddAccess = false;
+                this.CanAddMember = false;
             } else {
-                this.AddAccess = true;
+                this.CanAddMember = true;
             }
             
             string removePermission = PermissionBank.GroupOperationPermission(group.GroupName, "member", "remove");
             if (user.HasPermission(removePermission) != true) {
-                this.RemoveAccess = false;
+                this.CanRemoveMember = false;
             } else {
-                this.RemoveAccess = true;
+                this.CanRemoveMember = true;
             }
         }
     }
