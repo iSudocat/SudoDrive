@@ -35,6 +35,7 @@ namespace Server.Services.Implements
                 .Include(s => s.GroupToUser)
                 .ThenInclude(s => s.Group)
                 .ThenInclude(s => s.GroupToPermission)
+                .Include(s => s.UserToPermission)
                 .FirstOrDefault(s => s.Username == req.Username);
 
             // 若该用户不存在

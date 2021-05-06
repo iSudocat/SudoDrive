@@ -42,6 +42,7 @@ namespace Server.Controllers.UserProfile
             user.Username = registerRequestModel.Username;
             user.Password = BCrypt.Net.BCrypt.HashPassword(registerRequestModel.Password);
             user.Nickname = registerRequestModel.Nickname;
+            user.Status = 0;
             _databaseService.Users.Add(user);
             _databaseService.SaveChanges();
 
