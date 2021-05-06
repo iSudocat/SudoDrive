@@ -13,7 +13,7 @@ namespace Server.Services.Implements
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupToUser> GroupsToUsersRelation { get; set; }
         public DbSet<GroupToPermission> GroupsToPermissionsRelation { get; set; }
-        public DbSet<UserToPermission> UserToPermission { get; set; }
+        public DbSet<UserToPermission> UserToPermissionRelation { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

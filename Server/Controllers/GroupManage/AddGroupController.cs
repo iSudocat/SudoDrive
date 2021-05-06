@@ -46,24 +46,24 @@ namespace Server.Controllers.GroupManage
             _databaseService.GroupsToUsersRelation.Add(groupToUser);
 
             // initial group permission to the new group
-            _databaseService.GroupsToPermissionsRelation.Add(new GroupToPermission()
+            _databaseService.UserToPermissionRelation.Add(new UserToPermission()
             {
-                Group = group,
-                GroupId = group.Id,
+                User = user,
+                UserId = user.Id,
                 Permission = PermissionBank.GroupOperationPermission(group.GroupName, "member", "add")
             });
 
-            _databaseService.GroupsToPermissionsRelation.Add(new GroupToPermission()
+            _databaseService.UserToPermissionRelation.Add(new UserToPermission()
             {
-                Group = group,
-                GroupId = group.Id,
+                User = user,
+                UserId = user.Id,
                 Permission = PermissionBank.GroupOperationPermission(group.GroupName, "member", "remove")
             });
             
-            _databaseService.GroupsToPermissionsRelation.Add(new GroupToPermission()
+            _databaseService.UserToPermissionRelation.Add(new UserToPermission()
             {
-                Group = group,
-                GroupId = group.Id,
+                User = user,
+                UserId = user.Id,
                 Permission = PermissionBank.GroupOperationPermission(group.GroupName, "member", "list")
             });
 
