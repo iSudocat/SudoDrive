@@ -45,7 +45,15 @@ namespace Server.Controllers.GroupManage
             {
                 throw new GroupNotExistException("Groupname Does Not Exist when trying to delete group.");
             }
-           
+
+            var existFile = _databaseService.Files
+                .FirstOrDefault(s => s.Folder.StartsWith($"/groups/{group.GroupName}"));
+            if (existFile != null)
+            {
+                throw new DeletingGroupWithFileException("The group you attempt to delete is non empty",
+                    existFile.Path);
+            }
+
             var grouptouser_db = _databaseService.GroupsToUsersRelation.Where(t => t.Group.GroupName == group.GroupName);
             //try to update the updatetime of all the users which belongs to this group, but failed as below
             //var user_db = _databaseService.Users.Where(t => grouptouser_db.Contains(t.GroupToUser));

@@ -64,6 +64,13 @@ namespace Server.Controllers.GroupManage
             {
                 User = user,
                 UserId = user.Id,
+                Permission = PermissionBank.GroupOperationPermission(group.GroupName,"","delete")
+            });
+            
+            _databaseService.GroupsToPermissionsRelation.Add(new GroupToPermission()
+            {
+                Group = group,
+                GroupId = group.Id,
                 Permission = PermissionBank.GroupOperationPermission(group.GroupName, "member", "list")
             });
 
