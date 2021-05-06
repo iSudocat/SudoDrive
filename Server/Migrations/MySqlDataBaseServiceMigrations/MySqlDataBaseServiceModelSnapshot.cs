@@ -30,29 +30,29 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
 
                     b.Property<string>("Folder")
                         .IsRequired()
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("folder");
 
                     b.Property<string>("Guid")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("guid");
 
                     b.Property<string>("Md5")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4")
+                        .HasColumnType("longtext")
                         .HasColumnName("md5");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4")
+                        .HasColumnType("longtext")
                         .HasColumnName("name");
 
                     b.Property<string>("Path")
                         .IsRequired()
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("path");
 
                     b.Property<string>("Permission")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4")
+                        .HasColumnType("longtext")
                         .HasColumnName("permission");
 
                     b.Property<long>("Size")
@@ -64,12 +64,12 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                         .HasColumnName("status");
 
                     b.Property<string>("StorageName")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4")
+                        .HasColumnType("longtext")
                         .HasColumnName("storage_name");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4")
+                        .HasColumnType("longtext")
                         .HasColumnName("type");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -108,7 +108,7 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
 
                     b.Property<string>("GroupName")
                         .IsRequired()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4")
+                        .HasColumnType("longtext")
                         .HasColumnName("group_name");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -151,7 +151,7 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
 
                     b.Property<string>("Permission")
                         .HasMaxLength(255)
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("permission");
 
                     b.HasKey("GroupId", "Permission");
@@ -221,6 +221,11 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                         },
                         new
                         {
+                            GroupId = 2L,
+                            Permission = "groupmanager.group.member.list.basic"
+                        },
+                        new
+                        {
                             GroupId = 3L,
                             Permission = "user.auth.register"
                         },
@@ -267,12 +272,12 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                         .HasColumnName("create_at");
 
                     b.Property<string>("Nickname")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4")
+                        .HasColumnType("longtext")
                         .HasColumnName("nickname");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4")
+                        .HasColumnType("longtext")
                         .HasColumnName("password");
 
                     b.Property<int?>("Status")
@@ -285,7 +290,7 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("username");
 
                     b.HasKey("Id");
@@ -303,6 +308,22 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                             UpdatedAt = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Username = "admin"
                         });
+                });
+
+            modelBuilder.Entity("Server.Models.Entities.UserToPermission", b =>
+                {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("user_id");
+
+                    b.Property<string>("Permission")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("permission");
+
+                    b.HasKey("UserId", "Permission");
+
+                    b.ToTable("user_permission");
                 });
 
             modelBuilder.Entity("Server.Models.Entities.File", b =>
@@ -346,6 +367,17 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Server.Models.Entities.UserToPermission", b =>
+                {
+                    b.HasOne("Server.Models.Entities.User", "User")
+                        .WithMany("UserToPermission")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Server.Models.Entities.Group", b =>
                 {
                     b.Navigation("GroupToPermission");
@@ -356,6 +388,8 @@ namespace Server.Migrations.MySqlDataBaseServiceMigrations
             modelBuilder.Entity("Server.Models.Entities.User", b =>
                 {
                     b.Navigation("GroupToUser");
+
+                    b.Navigation("UserToPermission");
                 });
 #pragma warning restore 612, 618
         }

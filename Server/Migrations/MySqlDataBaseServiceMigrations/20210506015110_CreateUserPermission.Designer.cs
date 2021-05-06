@@ -2,60 +2,59 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Server.Services.Implements;
 
-namespace Server.Migrations.PostgreSqlDataBaseServiceMigrations
+namespace Server.Migrations.MySqlDataBaseServiceMigrations
 {
-    [DbContext(typeof(PostgreSqlDataBaseService))]
-    partial class PostgreSqlDataBaseServiceModelSnapshot : ModelSnapshot
+    [DbContext(typeof(MySqlDataBaseService))]
+    [Migration("20210506015110_CreateUserPermission")]
+    partial class CreateUserPermission
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.5")
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .HasAnnotation("ProductVersion", "5.0.5");
 
             modelBuilder.Entity("Server.Models.Entities.File", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("create_at");
 
                     b.Property<string>("Folder")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("folder");
 
                     b.Property<string>("Guid")
-                        .HasColumnType("text")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("guid");
 
                     b.Property<string>("Md5")
-                        .HasColumnType("text")
+                        .HasColumnType("longtext")
                         .HasColumnName("md5");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("longtext")
                         .HasColumnName("name");
 
                     b.Property<string>("Path")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("path");
 
                     b.Property<string>("Permission")
-                        .HasColumnType("text")
+                        .HasColumnType("longtext")
                         .HasColumnName("permission");
 
                     b.Property<long>("Size")
@@ -63,20 +62,20 @@ namespace Server.Migrations.PostgreSqlDataBaseServiceMigrations
                         .HasColumnName("size");
 
                     b.Property<int>("Status")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("status");
 
                     b.Property<string>("StorageName")
-                        .HasColumnType("text")
+                        .HasColumnType("longtext")
                         .HasColumnName("storage_name");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("longtext")
                         .HasColumnName("type");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("update_at");
 
                     b.Property<long>("UserId")
@@ -103,20 +102,19 @@ namespace Server.Migrations.PostgreSqlDataBaseServiceMigrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("create_at");
 
                     b.Property<string>("GroupName")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("longtext")
                         .HasColumnName("group_name");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("update_at");
 
                     b.HasKey("Id");
@@ -155,7 +153,7 @@ namespace Server.Migrations.PostgreSqlDataBaseServiceMigrations
 
                     b.Property<string>("Permission")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("permission");
 
                     b.HasKey("GroupId", "Permission");
@@ -269,33 +267,32 @@ namespace Server.Migrations.PostgreSqlDataBaseServiceMigrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("create_at");
 
                     b.Property<string>("Nickname")
-                        .HasColumnType("text")
+                        .HasColumnType("longtext")
                         .HasColumnName("nickname");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("longtext")
                         .HasColumnName("password");
 
                     b.Property<int?>("Status")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("status");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("update_at");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("username");
 
                     b.HasKey("Id");
@@ -323,7 +320,7 @@ namespace Server.Migrations.PostgreSqlDataBaseServiceMigrations
 
                     b.Property<string>("Permission")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("permission");
 
                     b.HasKey("UserId", "Permission");
