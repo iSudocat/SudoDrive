@@ -54,13 +54,17 @@ namespace Server.Controllers.GroupManage
                     existFile.Path);
             }
 
-            var grouptouser_db = _databaseService.GroupsToUsersRelation.Where(t => t.Group.GroupName == group.GroupName);
-            //try to update the updatetime of all the users which belongs to this group, but failed as below
-            //var user_db = _databaseService.Users.Where(t => grouptouser_db.Contains(t.GroupToUser));
-            var grouptopermission_db = _databaseService.GroupsToPermissionsRelation.Where(t => t.Group.GroupName == group.GroupName);
-            _databaseService.GroupsToPermissionsRelation.RemoveRange(grouptopermission_db);
-            _databaseService.GroupsToUsersRelation.RemoveRange(grouptouser_db);
+            var groupVo = new GroupModel(group); 
             _databaseService.Groups.Remove(group);
+            _databaseService.SaveChanges();
+
+            var groupToUserDb = _databaseService.GroupsToUsersRelation.Where(t => t.GroupId == groupVo.Id);
+            var groupToPermissionDb = _databaseService.GroupsToPermissionsRelation.Where(t => t.GroupId == groupVo.Id);
+            var userToPermissionDb = _databaseService.UserToPermissionRelation.Where(t => t.Permission.StartsWith($"groupmanager.group.operation.{groupVo.GroupName}"));
+            _databaseService.GroupsToPermissionsRelation.RemoveRange(groupToPermissionDb);
+            _databaseService.GroupsToUsersRelation.RemoveRange(groupToUserDb);
+            _databaseService.UserToPermissionRelation.RemoveRange(userToPermissionDb);
+            
             _databaseService.SaveChanges();
             return Ok(new GroupDeleteResultModel(group));
         }
