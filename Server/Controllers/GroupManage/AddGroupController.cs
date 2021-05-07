@@ -81,9 +81,10 @@ namespace Server.Controllers.GroupManage
 
             //waiting for adding permissions for the group
 
-            var groupDirectory = EntityFile.CreateDirectoryRecord(group.GroupName, "/groups", $"/groups/{group.GroupName}", user);
-            _databaseService.Files.Add(groupDirectory);
-            
+            if (!_databaseService.Files.Any(s => s.Path == $"/groups/{group.GroupName}")) { 
+                var groupDirectory = EntityFile.CreateDirectoryRecord(group.GroupName, "/groups", $"/groups/{group.GroupName}", user);
+                _databaseService.Files.Add(groupDirectory);
+            }
             _databaseService.SaveChanges();
             
             return Ok(new GroupCreateResultModel(group));
