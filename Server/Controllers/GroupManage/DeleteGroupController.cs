@@ -50,7 +50,7 @@ namespace Server.Controllers.GroupManage
                 .FirstOrDefault(s => s.Folder.StartsWith($"/groups/{group.GroupName}"));
             if (existFile != null)
             {
-                throw new DeletingGroupWithFileException("The group you attempt to delete is non empty",
+                throw new DeletingGroupWithFileException("The group you attempt to delete is not empty",
                     existFile.Path);
             }
 

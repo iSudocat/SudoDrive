@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Server.Mixin;
 
 namespace Server.Exceptions
 {
     public class DeletingGroupWithFileException : APIException
     {
-        public DeletingGroupWithFileException(string msg, string path) : base(-107, "Groupname Does Not Exist.",
+        public DeletingGroupWithFileException(string msg, string path) : base(-116, "The group you attempt to delete is not empty.",
             new Dictionary<string, object>().Also(
                 s =>
                 {
