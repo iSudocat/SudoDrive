@@ -1,22 +1,9 @@
 # 概述
+- 主要功能目标：建立一个低成本、高速度、权限可控、分组完善的文件存储与共享协作系统。
+- 面向用户：具有文件存储与共享协作需求的小规模团体（如：一个班级的同学、一个小的开发团队等等）。
 
-# 模块
-- Client
-    - 该模块主要用于调用 CEF 以加载本程序的界面。
-- ClientWebView
-    - 该模块主要实现用户界面。
-    
-# 客户端调试
-1. 以 Debug 模式运行 ClientWebView 项目。保证 NodeJS 调试 web 服务器端口为 `8080` 。
-2. 以 Debug 模式运行 Client 项目。在 `MainWindow.xaml.cs` 中定义了 NodeJS 调试 web 服务器端口为 `8080` 。
-3. 使用浏览器打开 `http://localhost:8088/` 访问 CEF 调试工具。
-
-# 服务端调试
+# 服务端说明
 - 见 [/Server](/Server)
 
-# 客户端发布
-- 择日再写
-
-# 服务端发布
-- 择日再写
-
+# 前端
+- 转到[SudoDrive前端](https://github.com/iSudocat/SudoDrive_Front)
