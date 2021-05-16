@@ -29,11 +29,11 @@ namespace Server.Controllers.Storage
 
         private readonly TencentCosManagementModel _tencentCosManagement;
 
-        public FileUploadRequestController(IDatabaseService databaseService, ITencentCos tencentCos, IOptions<TencentCosManagementModel> TencentCosManagement, ILogger<GlobalExceptionFilter> logger)
+        public FileUploadRequestController(IDatabaseService databaseService, ITencentCos tencentCos, IOptions<TencentCosManagementModel> tencentCosManagement, ILogger<GlobalExceptionFilter> logger)
         {
             _databaseService = databaseService;
             _tencentCos = tencentCos;
-            _tencentCosManagement = TencentCosManagement.Value;
+            _tencentCosManagement = tencentCosManagement.Value;
             _logger = logger;
         }
 
