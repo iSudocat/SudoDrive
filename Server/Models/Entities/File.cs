@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Server.Exceptions;
 using Server.Models.VO;
 
 namespace Server.Models.Entities
@@ -185,6 +186,11 @@ namespace Server.Models.Entities
 
         public static File CreateDirectoryRecord(string name, string folder, string path, User user)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new FileNameIsEmptyException();
+            }
+
             var ret = new File()
             {
                 // Name: 文件夹名
