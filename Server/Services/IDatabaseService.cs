@@ -7,6 +7,7 @@ namespace Server.Services
     public interface IDatabaseService
     {
         public DbSet<File> Files { get; set; }
+        public DbSet<FileRepository> FileRepository { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupToUser> GroupsToUsersRelation { get; set; }
