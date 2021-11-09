@@ -21,12 +21,6 @@ namespace Server.Models.Entities
         public string Guid { get; set; }
 
         /// <summary>
-        /// 存储文件名
-        /// </summary>
-        [Column("storage_name")]
-        public string StorageName { get; set; }
-
-        /// <summary>
         /// 文件哈希值
         /// </summary>
         [Column("md5")]

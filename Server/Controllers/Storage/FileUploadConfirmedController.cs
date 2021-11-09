@@ -107,6 +107,16 @@ namespace Server.Controllers.Storage
             // TODO 确认保存后删除无用记录
 
             _databaseService.SaveChanges();
+
+            var fileRepositoryRecord = new FileRepository()
+            {
+                Guid = file.Guid,
+                Md5 = file.Md5,
+                Size = file.Size,
+                User = loginUser,
+            };
+            _databaseService.FileRepository.Add(fileRepositoryRecord);
+            _databaseService.SaveChanges();
             
             return Ok(file.ToVo());
         }
