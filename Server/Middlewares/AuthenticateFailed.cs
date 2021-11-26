@@ -29,8 +29,8 @@ namespace Server.Middlewares
                 byte[] buffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(result, Formatting.None));
 
                 context.Response.ContentType = "application/json";
+                // context.Response.ContentLength = buffer.Length;
                 await context.Response.Body.WriteAsync(buffer);
-                context.Response.ContentLength = buffer.Length;
             }
         }
     }
